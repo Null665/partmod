@@ -1,1 +1,19 @@
 * text=auto !eol
+GUI/gmon.out -text
+GUI/icon1.ico -text
+Partmod/definitions.cpp -text
+Partmod/definitions.h -text
+Partmod/dllcall.cpp -text
+Partmod/gmon.out -text
+Partmod/partition_manager.cpp -text
+diskio/diskio-linux.cpp -text
+diskio/diskio.cpp -text
+diskio/gmon.out -text
+wxGUI/dlg_guid_list.cpp -text
+wxGUI/dlg_guid_list.h -text
+wxGUI/dlg_newpart.cpp -text
+wxGUI/dlg_newpart.hpp -text
+wxGUI/dlg_open_diskimage.cpp -text
+wxGUI/dlg_open_diskimage.h -text
+wxGUI/gmon.out -text
+wxGUI/main_app.cpp -text

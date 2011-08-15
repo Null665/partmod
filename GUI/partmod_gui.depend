@@ -1,0 +1,132 @@
+# depslib dependency file v1.0
+1290364580 source:d:\c++\tvarka\partmod\src\gui\dlg_backup.cpp
+	"gui.h"
+	"resource.h"
+
+1311877876 d:\c++\tvarka\partmod\src\gui\gui.h
+	<string>
+	<windows.h>
+	"../Partmod/disk.h"
+	"../Partmod/disk_exception.h"
+
+1313340614 d:\c++\tvarka\partmod\src\partmod\disk.h
+	"mbr.h"
+	"gpt.h"
+	<vector>
+	<exception>
+	<sstream>
+	<utility>
+	"definitions.h"
+	"../diskio/diskio.hpp"
+	"partition_manager.h"
+	"free_space_manager.h"
+	"pending_manager.h"
+	"guid_manager.h"
+	"fsid_manager.h"
+
+1292611758 d:\c++\tvarka\partmod\src\partmod\mbr.h
+	"definitions.h"
+	<stdint.h>
+
+1313429997 d:\c++\tvarka\partmod\src\partmod\definitions.h
+	<stdint.h>
+	<string>
+
+1294311413 d:\c++\tvarka\partmod\src\partmod\gpt.h
+	"definitions.h"
+
+1293383932 d:\c++\tvarka\partmod\src\diskio\diskio.hpp
+	<stdint.h>
+	<windows.h>
+	"../Partmod/definitions.h"
+
+1313229310 d:\c++\tvarka\partmod\src\gui\resource.h
+
+1312186513 source:d:\c++\tvarka\partmod\src\gui\dlg_diskimage.cpp
+	"gui.h"
+	"../Partmod/chs.hpp"
+	"../Partmod/disk.h"
+	"resource.h"
+	<string>
+
+1288431567 d:\c++\tvarka\partmod\src\partmod\chs.hpp
+
+1310199977 source:d:\c++\tvarka\partmod\src\gui\dlg_format.cpp
+	"gui.h"
+	"resource.h"
+	<windowsx.h>
+
+1310223958 source:d:\c++\tvarka\partmod\src\gui\dlg_newpart.cpp
+	"gui.h"
+	"resource.h"
+	<windowsx.h>
+
+1292959064 source:d:\c++\tvarka\partmod\src\gui\dlg_save.cpp
+	"gui.h"
+	"resource.h"
+	<commctrl.h>
+	<sstream>
+
+1288981447 source:d:\c++\tvarka\partmod\src\gui\gui.cpp
+	"gui.h"
+	"../Partmod/chs.hpp"
+	"../Partmod/disk.h"
+	<algorithm>
+	<cstdarg>
+
+1292865482 source:d:\c++\tvarka\partmod\src\gui\main.cpp
+	"resource.h"
+	"gui.h"
+	<commctrl.h>
+
+1313430991 source:d:\c++\tvarka\partmod\src\gui\partmod_main_dlg.cpp
+	"gui.h"
+	"resource.h"
+	<commctrl.h>
+	<algorithm>
+	<sstream>
+
+1313229310 source:d:\c++\tvarka\partmod\src\gui\resource.rc
+	<windows.h>
+	<commctrl.h>
+	<richedit.h>
+	"resource.h"
+
+1288982725 source:d:\c++\tvarka\partmod\src\gui\dlg_check_disk.cpp
+	"gui.h"
+	"../Partmod/disk.h"
+	"resource.h"
+	<string>
+	<commctrl.h>
+
+1312278138 d:\c++\tvarka\partmod\src\partmod\partition_manager.h
+	"definitions.h"
+	<vector>
+	<stdint.h>
+
+1293819231 d:\c++\tvarka\partmod\src\partmod\free_space_manager.h
+	"definitions.h"
+	"partition_manager.h"
+	<vector>
+
+1294161706 d:\c++\tvarka\partmod\src\partmod\pending_manager.h
+	"definitions.h"
+	<vector>
+	<utility>
+
+1313314801 d:\c++\tvarka\partmod\src\partmod\guid_manager.h
+	"definitions.h"
+	<vector>
+	<string>
+
+1312133825 d:\c++\tvarka\partmod\src\partmod\fsid_manager.h
+	<stdint.h>
+	<string>
+	<vector>
+	"definitions.h"
+
+1311877389 d:\c++\tvarka\partmod\src\partmod\disk_exception.h
+	<string>
+	<exception>
+	<sstream>
+

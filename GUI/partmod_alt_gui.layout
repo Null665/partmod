@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
+<CodeBlocks_layout_file>
+	<ActiveTarget name="Release" />
+	<File name="dlg_backup.cpp" open="0" top="0" tabpos="3">
+		<Cursor position="521" topLine="0" />
+	</File>
+	<File name="dlg_diskimage.cpp" open="0" top="0" tabpos="1">
+		<Cursor position="682" topLine="3" />
+	</File>
+	<File name="dlg_format.cpp" open="0" top="0" tabpos="0">
+		<Cursor position="597" topLine="12" />
+	</File>
+	<File name="dlg_newpart.cpp" open="0" top="0" tabpos="0">
+		<Cursor position="154" topLine="0" />
+	</File>
+	<File name="dlg_save.cpp" open="0" top="0" tabpos="0">
+		<Cursor position="712" topLine="14" />
+	</File>
+	<File name="gui.cpp" open="0" top="0" tabpos="1">
+		<Cursor position="840" topLine="21" />
+	</File>
+	<File name="gui.h" open="1" top="0" tabpos="5">
+		<Cursor position="887" topLine="16" />
+	</File>
+	<File name="main.cpp" open="0" top="0" tabpos="0">
+		<Cursor position="177" topLine="0" />
+	</File>
+	<File name="partmod_main_dlg.cpp" open="1" top="1" tabpos="7">
+		<Cursor position="10099" topLine="305" />
+	</File>
+	<File name="resource.h" open="0" top="0" tabpos="0">
+		<Cursor position="572" topLine="0" />
+	</File>
+	<File name="resource.rc" open="0" top="0" tabpos="0">
+		<Cursor position="1340" topLine="58" />
+	</File>
+</CodeBlocks_layout_file>

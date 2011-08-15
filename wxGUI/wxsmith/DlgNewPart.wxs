@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<wxsmith>
+	<object class="wxDialog" name="DlgNewPart">
+		<title>Create a new partition</title>
+		<size>370,215</size>
+		<id_arg>0</id_arg>
+		<object class="wxSpinCtrl" name="IDA_HSHDGSDHUF" variable="SpinCtrlPartitionSize" member="yes">
+			<value>0</value>
+			<max>10000000</max>
+			<pos>48,64</pos>
+		</object>
+		<object class="wxChoice" name="ID_SIZE_MULTIPLIER" variable="ChoiceSizeMul" member="yes">
+			<pos>184,64</pos>
+			<size>112,21</size>
+		</object>
+		<object class="wxStaticText" name="ID_STATICTEXT1" variable="StaticText1" member="yes">
+			<label>Enter size of partition:</label>
+			<pos>48,40</pos>
+			<size>112,13</size>
+		</object>
+		<object class="wxButton" name="ID_OK" variable="ButtonOK" member="yes">
+			<label>OK</label>
+			<pos>72,144</pos>
+			<handler function="OnButtonOKClick" entry="EVT_BUTTON" />
+		</object>
+		<object class="wxButton" name="wxID_CANCEL" variable="ButtonCancel" member="yes">
+			<label>Cancel</label>
+			<pos>184,144</pos>
+		</object>
+		<object class="wxChoice" name="ID_CHOICE1" variable="ChoicePartitionType" member="yes">
+			<pos>48,112</pos>
+			<size>120,21</size>
+			<handler function="OnChoicePartitionTypeSelect" entry="EVT_CHOICE" />
+		</object>
+		<object class="wxStaticText" name="ID_STATICTEXT2" variable="StaticText2" member="yes">
+			<label>Select partition type:</label>
+			<pos>48,96</pos>
+			<size>112,13</size>
+		</object>
+		<object class="wxChoice" name="ID_CHOICE2" variable="ChoiceFsType" member="yes">
+			<pos>184,112</pos>
+		</object>
+	</object>
+</wxsmith>

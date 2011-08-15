@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<wxsmith>
+	<object class="wxDialog" name="DlgGuidList">
+		<size>555,403</size>
+		<pos_arg>1</pos_arg>
+		<size_arg>1</size_arg>
+		<object class="wxListCtrl" name="ID_LISTCTRL1" variable="guidList" member="yes">
+			<pos>16,32</pos>
+			<size>512,312</size>
+			<style>wxLC_REPORT</style>
+		</object>
+		<object class="wxStaticText" name="ID_STATICTEXT1" variable="StaticText1" member="yes">
+			<label>Known GUIDs:</label>
+			<pos>16,16</pos>
+			<size>80,13</size>
+		</object>
+		<object class="wxButton" name="ID_CANCEL" variable="Button1" member="yes">
+			<label>Cancel</label>
+			<pos>216,360</pos>
+			<handler function="OnCancel" entry="EVT_BUTTON" />
+		</object>
+	</object>
+</wxsmith>

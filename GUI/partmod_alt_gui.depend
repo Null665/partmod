@@ -1,0 +1,86 @@
+# depslib dependency file v1.0
+1286644478 source:d:\c++\tvarka\partmod\src\partmod_alt_gui\resource.rc
+	<windows.h>
+	<commctrl.h>
+	<richedit.h>
+	"resource.h"
+
+1288888369 d:\c++\tvarka\partmod\src\partmod_alt_gui\resource.h
+
+1286695289 source:d:\c++\tvarka\partmod\src\partmod_alt_gui\main.cpp
+	"resource.h"
+	"gui.h"
+	<commctrl.h>
+
+1288630650 source:d:\c++\tvarka\partmod\src\partmod_alt_gui\partmod_main_dlg.cpp
+	"gui.h"
+	"resource.h"
+	<commctrl.h>
+	<algorithm>
+	<sstream>
+
+1288456555 d:\c++\tvarka\partmod\src\partmod_alt_gui\gui.h
+	<string>
+	<windows.h>
+	"../Partmod/disk.h"
+
+1288806624 d:\c++\tvarka\partmod\src\partmod\disk.h
+	"mbr.h"
+	"gpt.h"
+	<vector>
+	<exception>
+	"definitions.h"
+	"../diskio/diskio.hpp"
+
+1288717992 d:\c++\tvarka\partmod\src\partmod\mbr.h
+	"definitions.h"
+	<stdint.h>
+
+1288805922 d:\c++\tvarka\partmod\src\partmod\definitions.h
+	<stdint.h>
+	<string>
+
+1280846918 d:\c++\tvarka\partmod\src\partmod\gpt.h
+	"definitions.h"
+
+1283877097 d:\c++\tvarka\partmod\src\diskio\diskio.hpp
+	<stdint.h>
+	<windows.h>
+	"..\Partmod\definitions.h"
+
+1288452438 source:d:\c++\tvarka\partmod\src\partmod_alt_gui\gui.cpp
+	"gui.h"
+	"../Partmod/chs.hpp"
+	"../Partmod/disk.h"
+	<algorithm>
+	<cstdarg>
+
+1288427967 d:\c++\tvarka\partmod\src\partmod\chs.hpp
+
+1288457299 source:d:\c++\tvarka\partmod\src\partmod_alt_gui\dlg_diskimage.cpp
+	"gui.h"
+	"../Partmod/chs.hpp"
+	"../Partmod/disk.h"
+	"resource.h"
+	<string>
+
+1287066051 source:d:\c++\tvarka\partmod\src\partmod_alt_gui\dlg_backup.cpp
+	"gui.h"
+	"resource.h"
+
+1288457337 source:d:\c++\tvarka\partmod\src\partmod_alt_gui\dlg_format.cpp
+	"gui.h"
+	"resource.h"
+	<windowsx.h>
+
+1288457302 source:d:\c++\tvarka\partmod\src\partmod_alt_gui\dlg_newpart.cpp
+	"gui.h"
+	"resource.h"
+	<windowsx.h>
+
+1288457337 source:d:\c++\tvarka\partmod\src\partmod_alt_gui\dlg_save.cpp
+	"gui.h"
+	"resource.h"
+	<commctrl.h>
+	<sstream>
+

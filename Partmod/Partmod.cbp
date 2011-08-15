@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
+<CodeBlocks_project_file>
+	<FileVersion major="1" minor="6" />
+	<Project>
+		<Option title="Partmod" />
+		<Option pch_mode="2" />
+		<Option compiler="gcc" />
+		<Build>
+			<Script file="lib_finder.script" />
+			<Target title="Debug - Windows">
+				<Option platforms="Windows;" />
+				<Option output="..\..\bin\partmod" prefix_auto="1" extension_auto="1" />
+				<Option object_output="..\..\obj\windows\" />
+				<Option type="3" />
+				<Option compiler="gcc" />
+				<Option host_application="D:\C++\tvarka\Partmod\bin\partmod_gui.exe" />
+				<Option createDefFile="1" />
+				<Option createStaticLib="1" />
+				<Compiler>
+					<Add option="-pg" />
+					<Add option="-g" />
+				</Compiler>
+				<Linker>
+					<Add option="-pg -lgmon" />
+					<Add library="..\..\bin\libDiskio.dll.a" />
+				</Linker>
+			</Target>
+			<Target title="Release - Windows">
+				<Option platforms="Windows;" />
+				<Option output="..\..\bin\partmod" prefix_auto="1" extension_auto="1" />
+				<Option working_dir="..\..\bin" />
+				<Option object_output="..\..\obj\windows\" />
+				<Option type="3" />
+				<Option compiler="gcc" />
+				<Option host_application="D:\C++\tvarka\Partmod\bin\partmod_gui.exe" />
+				<Option createStaticLib="1" />
+				<Compiler>
+					<Add option="-g" />
+				</Compiler>
+				<Linker>
+					<Add option="-s" />
+					<Add library="..\..\bin\libDiskio.dll.a" />
+				</Linker>
+			</Target>
+			<Target title="Release - Linux">
+				<Option platforms="Unix;" />
+				<Option output="\usr\lib\libpartmod" prefix_auto="1" extension_auto="1" />
+				<Option object_output="..\..\obj\linux\" />
+				<Option type="3" />
+				<Option compiler="gcc" />
+				<Option host_application="D:\C++\tvarka\Partmod\bin\partmod_gui.exe" />
+				<Option createDefFile="1" />
+				<Option createStaticLib="1" />
+				<Compiler>
+					<Add option="-g" />
+				</Compiler>
+				<Linker>
+					<Add option="-s" />
+					<Add option="-L ../../bin" />
+					<Add library="diskio-partmod" />
+					<Add directory="..\..\bin" />
+				</Linker>
+			</Target>
+			<Target title="Debug - Linux">
+				<Option platforms="Unix;" />
+				<Option output="\usr\lib\libpartmodd" prefix_auto="1" extension_auto="1" />
+				<Option object_output="..\..\obj\linux\" />
+				<Option type="3" />
+				<Option compiler="gcc" />
+				<Option host_application="partmod_gui.exe" />
+				<Option createDefFile="1" />
+				<Option createStaticLib="1" />
+				<Compiler>
+					<Add option="-pg" />
+					<Add option="-g" />
+				</Compiler>
+				<Linker>
+					<Add option="-pg" />
+					<Add library="diskio-partmodd" />
+					<Add directory="..\..\bin" />
+				</Linker>
+				<Environment>
+					<Variable name="a" value="b" />
+				</Environment>
+			</Target>
+		</Build>
+		<Compiler>
+			<Add option="-std=c++0x" />
+			<Add option="-Wall" />
+			<Add option="-fexceptions" />
+		</Compiler>
+		<Unit filename="chs.cpp" />
+		<Unit filename="chs.hpp" />
+		<Unit filename="crc.cpp" />
+		<Unit filename="crc.hpp" />
+		<Unit filename="definitions.cpp" />
+		<Unit filename="definitions.h" />
+		<Unit filename="disk.cpp" />
+		<Unit filename="disk.h" />
+		<Unit filename="dllcall.cpp" />
+		<Unit filename="dllcall.hpp" />
+		<Unit filename="ebr.cpp" />
+		<Unit filename="free_space_manager.cpp" />
+		<Unit filename="free_space_manager.h" />
+		<Unit filename="fsid_manager.cpp" />
+		<Unit filename="fsid_manager.h" />
+		<Unit filename="gpt.cpp" />
+		<Unit filename="gpt.h" />
+		<Unit filename="guid_manager.cpp" />
+		<Unit filename="guid_manager.h" />
+		<Unit filename="mbr.cpp" />
+		<Unit filename="mbr.h" />
+		<Unit filename="partition_manager.cpp" />
+		<Unit filename="partition_manager.h" />
+		<Unit filename="pending_manager.cpp" />
+		<Unit filename="pending_manager.h" />
+		<Unit filename="version.h" />
+		<Extensions>
+			<code_completion />
+			<envvars />
+			<debugger />
+			<lib_finder disable_auto="1" />
+			<AutoVersioning>
+				<Scheme minor_max="10" build_max="0" rev_max="0" rev_rand_max="10" build_times_to_increment_minor="100" />
+				<Settings autoincrement="1" date_declarations="1" do_auto_increment="0" ask_to_increment="0" language="C++" svn="0" svn_directory="D:\Repositories\Partmod\db" header_path="version.h" />
+				<Changes_Log show_changes_editor="0" app_title="released version %M.%m.%b of %p" changeslog_path="ChangesLog.txt" />
+				<Code header_guard="VERSION_H" namespace="AutoVersion" prefix="" />
+			</AutoVersioning>
+		</Extensions>
+	</Project>
+</CodeBlocks_project_file>
