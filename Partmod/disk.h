@@ -77,10 +77,11 @@ private:
 
   bool is_open;
 
-
   PartitionManager *part_man;
   FreeSpaceManager *frs_man;
   PendingActionManager *pending_man;
+
+  void init();
 
 protected:
 

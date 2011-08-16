@@ -46,15 +46,13 @@ for(unsigned i=0;i<partman->CountPartitions();i++)
 
 
 //
-// Default constructor: initializes variables, other constructors call this constructor too
+//  initialize variables, constructors must call this function
 //
-Disk::Disk()
+void Disk::init()
 {
   is_open=false;
 
-
   memset(&clbk,0,sizeof(clbk));
-
 
   ebr_parser=new EBRParser(this);
   gpt_parser=new GPTParser(this);
@@ -68,21 +66,26 @@ Disk::Disk()
   fsid_man=new FsidManager;
 }
 
-Disk::Disk(string _dsk)
+
+Disk::Disk()
 {
-  Disk();
-  Open(_dsk.c_str());
+  init();
 }
 
-Disk::Disk(int _dsk)
+Disk::Disk(string dsk)
 {
-Disk();
+  init();
+  Open(dsk.c_str());
+}
 
-stringstream ss;
-ss <<"\\\\.\\PhycicalDrive"<<_dsk;
-pd_str=ss.str();
-Open(pd_str.c_str());
+Disk::Disk(int dsk)
+{
+  init();
 
+  stringstream ss;
+  ss <<"\\\\.\\PhycicalDrive"<<dsk;
+  pd_str=ss.str();
+  Open(pd_str.c_str());
 }
 
 
@@ -217,7 +220,7 @@ for(int i=0;i<CountPartitions();i++)
 GEN_PART part_extended;
 try
   {
-    part_extended=get_extended();
+    part_extended=part_man->GetExtendedPartition();
     for(int i=0;i<CountPartitions();i++)
       {
           part_curr=GetPartition(i);
@@ -443,7 +446,7 @@ switch(part_type)
 
      break;
      case PART_LOGICAL:
-         mbr_extended_part=get_extended();
+         mbr_extended_part=part_man->GetExtendedPartition();
          if(frs.type==FREE_EXTENDED)
            {
               mspec.begin_sector_rel=mbr_extended_part.begin_sector;
@@ -674,12 +677,6 @@ int Disk::CountFreeSpaces()
 const GEN_PART &Disk::GetPartition(unsigned int _p)
 {
    return part_man->GetPartition(_p);
-}
-
-
-GEN_PART Disk::get_extended()
-{
-   return part_man->GetExtendedPartition();
 }
 
 

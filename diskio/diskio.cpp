@@ -10,6 +10,7 @@ DiskIO::DiskIO()
 {
    hDisk=0;
    is_open=false;
+
    memset(&disk_geometry,0,sizeof(GEOMETRY));
 }
 
