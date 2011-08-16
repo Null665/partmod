@@ -60,13 +60,13 @@ const char *error_table[]=
 
 
 
-unsigned short  GET_CYLINDER (MBRchs chs) { return ( (chs.cylinder_bits<<8)|(chs.cylinder));   }
-unsigned short  GET_HEAD     (MBRchs chs) { return (chs.head); }
-unsigned short  GET_SECTOR   (MBRchs chs) { return (chs.sector);}
+unsigned short  GET_CYLINDER (MBR_CHS chs) { return ( (chs.cylinder_bits<<8)|(chs.cylinder));   }
+unsigned short  GET_HEAD     (MBR_CHS chs) { return (chs.head); }
+unsigned short  GET_SECTOR   (MBR_CHS chs) { return (chs.sector);}
 
-void SET_CYLINDER (MBRchs &chs, short cyl)             { chs.cylinder_bits=cyl>>8; chs.cylinder=cyl&0xFF; }
-void SET_HEAD     (MBRchs &chs, unsigned char head)   { chs.head=head; }
-void SET_SECTOR   (MBRchs &chs, unsigned char sector) { chs.sector=sector; }
+void SET_CYLINDER (MBR_CHS &chs, short cyl)            { chs.cylinder_bits=cyl>>8; chs.cylinder=cyl&0xFF; }
+void SET_HEAD     (MBR_CHS &chs, unsigned char head)   { chs.head=head; }
+void SET_SECTOR   (MBR_CHS &chs, unsigned char sector) { chs.sector=sector; }
 
 
 string GetErrorDescription(int error_code)

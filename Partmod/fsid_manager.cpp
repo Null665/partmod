@@ -25,7 +25,7 @@ bool FsidManager::Add(uint8_t fsid,
 
 }
 
-FSID_INFO FsidManager::GetByFsid(int fsid)
+const FSID_INFO &FsidManager::GetByFsid(int fsid) const
 {
     for(int i=0;i<this->size();i++)
         if( this->operator [](i).fsid==fsid)
@@ -33,15 +33,12 @@ FSID_INFO FsidManager::GetByFsid(int fsid)
     throw DiskException("Unknown File System ID");
 }
 
-FSID_INFO FsidManager::GetByPartmodFsid(int fsid_partmod)
+const FSID_INFO &FsidManager::GetByPartmodFsid(int fsid_partmod) const
 {
-    for(int i=0;i<this->size();i++)
-        if( this->operator [](i).fsid_partmod==fsid_partmod)
-            return this->operator[](i);
-    throw DiskException("Unknown File System ID");
+   return GetByPartmodFsid(fsid_partmod,0);
 }
 
-FSID_INFO FsidManager::GetByPartmodFsid(int fsid_partmod,int num)
+const FSID_INFO &FsidManager::GetByPartmodFsid(int fsid_partmod,int num) const
 {
     for(int i=0,j=0;i<this->size();i++)
         if( this->operator [](i).fsid_partmod==fsid_partmod)
@@ -66,17 +63,17 @@ uint32_t FsidManager::Count(unsigned fsid_partmod)
   return c;
 }
 
-FSID_INFO FsidManager::Get(unsigned i)
+const FSID_INFO &FsidManager::Get(unsigned i) const
 {
   return this->at(i);
 }
-
 
 
 string FsidManager::GetDescription(int i)
 {
     return Get(i).description;
 }
+
 string FsidManager::GetDescription(int i,int fsid_partmod)
 {
     return GetByPartmodFsid(fsid_partmod,i).description;

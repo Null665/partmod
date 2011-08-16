@@ -18,23 +18,41 @@ protected:
 public:
   FsidManager();
 
-  bool Add(uint8_t fsid,
+//
+// Add file system ID to list
+//
+  bool Add(uint8_t fsid,            // mbr fsid
            std::string description,
-           uint64_t min_size,uint64_t max_size,
+           uint64_t min_size,uint64_t max_size, // min and max size, -1 if unknown
            uint32_t partmod_fsid);
+//
+// Get FSID_INFO  by its index in vector
+//
+  const FSID_INFO &Get(unsigned i) const;
+  std::string GetDescription(int i);
+//
+// Get description of nth element with specified partmod fsid
+//
+  std::string GetDescription(int i,int fsid_partmod);
 
- FSID_INFO Get(unsigned i);
- std::string GetDescription(int i);
- std::string GetDescription(int i,int fsid_partmod);
+//
+// Get FSID_INFO structure by fsid
+//
+  const FSID_INFO &GetByFsid(int fsid) const;
 
+//
+// Get FSID_INFO structure of nth element with specidfied partmnod fsid
+//
+  const FSID_INFO &GetByPartmodFsid(int fsid_partmod,int num) const ;
 
- FSID_INFO GetByFsid(int fsid);
- FSID_INFO GetByPartmodFsid(int fsid_partmod);
- FSID_INFO GetByPartmodFsid(int fsid_partmod,int num);
+//
+// Get 1st FSID_INFO structure with specified partmod fsid
+// this function is equivalent to GetByPartmodFsid(fsid_partmod,0)
+//
+  const FSID_INFO &GetByPartmodFsid(int fsid_partmod) const;
 
-
- uint32_t Count();
- uint32_t Count(unsigned fsid_partmod);
+  uint32_t Count();
+  uint32_t Count(unsigned fsid_partmod);
 };
 
 
