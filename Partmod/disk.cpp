@@ -21,9 +21,9 @@ void Sync(PartitionManager *partman,PendingActionManager *pending_man)
 bool found=false;
 uint32_t which;
 uint32_t uid_two;
-for(int i=0;i<partman->CountPartitions();i++)
+for(unsigned i=0;i<partman->CountPartitions();i++)
   {
-      for(int j=0;j<pending_man->CountPendingActions();j++)
+      for(unsigned j=0;j<pending_man->CountPendingActions();j++)
         {
             pending_man->GetUID(j,uid_two);
             if(partman->GetPartitionUID(i)==pending_man->GetUID(j) && partman->GetPartitionUID(i)==uid_two)
@@ -475,10 +475,9 @@ add_partition(new_part);
 
 
 
-bool Disk::find_free_space()
+void Disk::find_free_space()
 {
     frs_man->FindFreeSpace(part_man,LastSector(),GetDiskGeometry().bps,GetDiskGeometry().spt);
-
 }
 
 
@@ -815,7 +814,7 @@ crc32.Hash(&bfh,sizeof(bfh));
 
 part_man->DeleteAll();
 
-for(int i=0;i<bfh.n_partitions;i++)
+for(unsigned i=0;i<bfh.n_partitions;i++)
   {
      file.read((char*)&gpart,sizeof(GEN_PART));
      crc32.Hash(&gpart,sizeof(GEN_PART));
@@ -846,7 +845,7 @@ void Disk::do_pending()
 GEN_PART gpart;
 PENDING curr;
 uint32_t uid_one;
-for(int i=0;i<pending_man->CountPendingActions();i++)
+for(unsigned i=0;i<pending_man->CountPendingActions();i++)
   {
       try
         {
@@ -854,7 +853,7 @@ for(int i=0;i<pending_man->CountPendingActions();i++)
            gpart=GetPartitionByUID(uid_one);
            curr=GetPending(i);
         }
-       catch(...) // I should display a warning here or something...
+       catch(...)
          {
              continue;
          }

@@ -215,6 +215,7 @@ tmp<<setprecision(4)<<((long double)num_of_sect/div)<<suffix;
 return tmp.str();
 }
 
+/*
 int Write(GEN_HANDLE _gh,int64_t _offset_rel,void *_buff,int _size)
 {
 int bps=_gh.disk_geometry.bps;
@@ -244,7 +245,7 @@ if(_gh.hDisk->Read(_buff,_size))
 
 return 0;
 }
-
+*/
 
 
 void set_guid(__GUID &guid,uint32_t one,uint16_t two, uint16_t three,uint64_t four)

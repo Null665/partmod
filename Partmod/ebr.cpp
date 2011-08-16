@@ -58,9 +58,6 @@ void EBRParser::WriteChanges()
 {
 vector <EBR_DATA> ebrs;
 
-EBR_DATA ebr_tmp;
-MBR_CHS chs;
-
 int spt=disk->GetDiskGeometry().spt;
 
 //

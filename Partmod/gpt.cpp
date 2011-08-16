@@ -104,7 +104,7 @@ if(n_gpt_parts==1)
 else if(n_gpt_parts==0)
     throw(DiskException(ERR_GPT_NOT_FOUND));
 else // More than one GPT?
-    throw(DiskException(ERR_UNKNOWN_ERROR));
+    throw(DiskException(ERR_UNKNOWN_ERROR,"There's more than one GPT (?)"));
 
 }
 
@@ -218,10 +218,10 @@ uint32_t nsect=(sizeof(GPT_ENTRY)*gpt.n_entries)/bps;
 uint8_t *buff=new uint8_t[bps];
 memset(buff,0,bps);
 
-for(int i=0;i<nsect;i++)
+for(unsigned i=0;i<nsect;i++)
      disk->DiskWrite( (gpt.first_entry_lba+i)*bps,buff,bps);
 
-for(int i=0;i<nsect;i++)
+for(unsigned i=0;i<nsect;i++)
     disk->DiskWrite( (gpt.last_usable_lba-nsect)*bps,buff,bps);
 
 delete[] buff;
@@ -250,7 +250,7 @@ entries=new GPT_ENTRY[gpt.n_entries];
 disk->DiskRead(gpt.first_entry_lba*bps,entries,sizeof(GPT_ENTRY)*gpt.n_entries);
 
 
-for(int i=0;i<gpt.n_entries;++i)
+for(unsigned i=0;i<gpt.n_entries;++i)
   {
      if(entries[i].begin_lba>gpt.first_usable_lba && entries[i].begin_lba<gpt.last_usable_lba)
          if(entries[i].begin_lba<entries[i].end_lba)
@@ -266,8 +266,6 @@ for(int i=0;i<gpt.n_entries;++i)
               gspec.unique_guid=entries[i].unique_guid;
               memcpy(gspec.name,entries[i].name,32*sizeof(uint16_t));
               disk->set_gpt_specific(disk->CountPartitions()-1,gspec);
-
-
            }
          else throw(DiskException(ERR_UNKNOWN_ERROR));
   }

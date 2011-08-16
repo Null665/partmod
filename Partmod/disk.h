@@ -91,19 +91,14 @@ protected:
   GPTParser *gpt_parser;
 
   bool load();                // find partitoons on disk
-  bool get_geometry();        // get disk geometry
-  bool find_free_space();     // find free space on disk
+  void find_free_space();     // find free space on disk
 
   GEN_PART  get_extended();   // TODO: remove this function
 
-  bool find_free_space_gpt(GEN_PART); // called by find_+free_space();
-  bool find_free_space_ebr(GEN_PART); // called by find_+free_space();
+  void save_mbr();  // write MBR to disk
 
-
-  void save_mbr();  // writes MBR to disk
-
-  void modify_partition(unsigned int _p,GEN_PART new_data); // replaces partition[_p] with new_data
-  void add_partition(GEN_PART new_part);                    // Adds a partiton to list
+  void modify_partition(unsigned int _p,GEN_PART new_data);
+  void add_partition(GEN_PART new_part);
 
   void set_gpt_specific(unsigned p,GPT_SPECIFIC spec);
   void set_mbr_specific(unsigned p,MBR_SPECIFIC spec);

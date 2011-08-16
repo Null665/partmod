@@ -237,15 +237,13 @@ struct BACKUP_FILE_HEADER
 
 
 
-
-
 struct FSID_INFO
 {
 	uint8_t fsid;
     std::string description;
     int64_t min_size;
     int64_t max_size;
-    int fsid_partmod;
+    unsigned fsid_partmod;
 };
 
 

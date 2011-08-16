@@ -17,17 +17,17 @@ bool FsidManager::Add(uint8_t fsid,
 {
     FSID_INFO tmp={fsid,description,min_size,max_size,partmod_fsid};
 
-    for(int i=0;i<this->size();i++)
+    for(unsigned i=0;i<this->size();i++)
         if(memcmp(&this->operator[](i),&tmp,sizeof(tmp))==0)
             throw DiskException("Fsid already exists");
 
     this->push_back(tmp);
-
+    return true;
 }
 
 const FSID_INFO &FsidManager::GetByFsid(int fsid) const
 {
-    for(int i=0;i<this->size();i++)
+    for(unsigned i=0;i<this->size();i++)
         if( this->operator [](i).fsid==fsid)
             return this->operator[](i);
     throw DiskException("Unknown File System ID");
@@ -38,9 +38,9 @@ const FSID_INFO &FsidManager::GetByPartmodFsid(int fsid_partmod) const
    return GetByPartmodFsid(fsid_partmod,0);
 }
 
-const FSID_INFO &FsidManager::GetByPartmodFsid(int fsid_partmod,int num) const
+const FSID_INFO &FsidManager::GetByPartmodFsid(int fsid_partmod,unsigned num) const
 {
-    for(int i=0,j=0;i<this->size();i++)
+    for(unsigned i=0,j=0;i<this->size();i++)
         if( this->operator [](i).fsid_partmod==fsid_partmod)
             if(j==num)
                 return this->operator[](i);
@@ -57,7 +57,7 @@ uint32_t FsidManager::Count()
 uint32_t FsidManager::Count(unsigned fsid_partmod)
 {
   unsigned c=0;
-  for(auto i=0;i<this->size();i++)
+  for(unsigned i=0;i<this->size();i++)
       if(this->operator[](i).fsid_partmod==fsid_partmod)
           ++c;
   return c;

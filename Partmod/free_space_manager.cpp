@@ -86,7 +86,7 @@ void FreeSpaceManager::find_in(PartitionManager *partman,
 GEN_PART part_curr,part_next;
 FREE_SPACE tmp;
 
-for(int i=0,j=1;i<partman->CountPartitions()-1,j<partman->CountPartitions(); i++,j++)
+for(unsigned i=0,j=1;i<partman->CountPartitions()-1,j<partman->CountPartitions(); i++,j++)
   {
     part_curr=partman->GetPartition(i);
     if( !(part_curr.flags&child_flag))
@@ -126,7 +126,7 @@ if(parent_flag==0)
   }
 else
   {
-    for(int i=0;i<partman->CountPartitions();i++)
+    for(unsigned i=0;i<partman->CountPartitions();i++)
         if(partman->GetPartition(i).flags&parent_flag)
           {
             part_parent=partman->GetPartition(i);
@@ -140,7 +140,7 @@ else
 
 
 found=false;
-for(int i=0;i<partman->CountPartitions();i++)
+for(unsigned i=0;i<partman->CountPartitions();i++)
    if(partman->GetPartition(i).flags&child_flag)
     {
         last_logical=partman->GetPartition(i);
@@ -175,7 +175,7 @@ else
       }
 // Find free space between the parent and first child partition
      GEN_PART first_logical;
-      for(int i=0;i<partman->CountPartitions();i++)
+      for(unsigned i=0;i<partman->CountPartitions();i++)
           if(partman->GetPartition(i).flags&child_flag)
             {
                 first_logical=partman->GetPartition(i);

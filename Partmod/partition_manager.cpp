@@ -49,7 +49,7 @@ const GEN_PART &PartitionManager::GetPartition(uint32_t p)  const
 //
 const GEN_PART &PartitionManager::GetPartitionByUID(uint32_t uid)  const
 {
-  for(int i=0;i<CountPartitions();i++)
+  for(unsigned i=0;i<CountPartitions();i++)
     {
         if(GetPartitionUID(i)==uid)
             return GetPartition(i);
@@ -159,7 +159,7 @@ void PartitionManager::DeleteAll()
 
 const GEN_PART &PartitionManager::GetExtendedPartition()  const
 {
-for(int i=0;i<CountPartitions();i++)
+for(unsigned i=0;i<CountPartitions();i++)
   {
       if(GetPartition(i).flags&PART_EXTENDED)
           return GetPartition(i);

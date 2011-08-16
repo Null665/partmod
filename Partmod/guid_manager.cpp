@@ -110,7 +110,7 @@ string GuidManager::GetDescription(uint32_t which)
 
 string GuidManager::GetDescription(const __GUID &guid)
 {
-    for(int i=0; i<Count(); i++)
+    for(unsigned i=0; i<Count(); i++)
         if(
             guid.one==guid_data[i].first.guid.one &&
             guid.two==guid_data[i].first.guid.two &&
