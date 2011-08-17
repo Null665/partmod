@@ -1,5 +1,9 @@
 #ifndef CRC_H_CODEFROMCPPDOTCOMBYDISCH
 #define CRC_H_CODEFROMCPPDOTCOMBYDISCH
+//
+// Original source: http://www.cplusplus.com/forum/lounge/27570/
+//
+
 
 #include <stdint.h>
 

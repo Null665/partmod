@@ -10,6 +10,32 @@ using namespace std;
 bool cmp_lv(lvlist a,lvlist b);
 
 
+    const long MainFrame::ID_QUIT = wxNewId();
+    const long MainFrame::ID_ABOUT = wxNewId();
+
+    const long MainFrame::ID_SAVE_CHANGES = wxNewId();
+    const long MainFrame::ID_CLOSE_DISK = wxNewId() ;
+    const long MainFrame::ID_OPEN_DISK_IMAGE = wxNewId();
+    const long MainFrame::ID_CREATE_BACKUP = wxNewId();
+    const long MainFrame::ID_RESTORE_BACKUP = wxNewId();
+    const long MainFrame::ID_CHECK_DISK = wxNewId();
+
+    const long MainFrame::ID_CREATE_PARTITION = wxNewId() ;
+    const long MainFrame::ID_DELETE_PARTITION = wxNewId();
+    const long MainFrame::ID_SET_ACTIVE = wxNewId();
+    const long MainFrame::ID_SET_INACTIVE = wxNewId();
+    const long MainFrame::ID_EDIT_BOOTSECTOR = wxNewId();
+    const long MainFrame::ID_CHECK_FS = wxNewId();
+    const long MainFrame::ID_FORMAT = wxNewId();
+    const long MainFrame::ID_WIPE_PARTITION = wxNewId();
+
+    const long MainFrame::ID_DISK_LIST = wxNewId();
+    const long MainFrame:: ID_PARTITION_LIST = wxNewId();
+
+    const long MainFrame:: ID_LIST_GUID = wxNewId();
+
+
+
 MainFrame::MainFrame(const wxString& title, const wxPoint& pos, const wxSize& size)
        : wxFrame(NULL, -1, title, pos, size)
 {
@@ -48,6 +74,11 @@ MainFrame::MainFrame(const wxString& title, const wxPoint& pos, const wxSize& si
 
 void MainFrame::OnSaveChangesClick(wxCommandEvent& event)
 {
+
+  int ret=wxMessageBox( _("Are you sure want to write changes to disk?"),
+                        _("Warning"),wxYES_NO| wxICON_WARNING, this );
+  if(ret!=wxYES)
+      return;
   try
   {
      disk->Save();
@@ -55,7 +86,9 @@ void MainFrame::OnSaveChangesClick(wxCommandEvent& event)
   catch(exception &ex)
   {
      wxMessageBox( _(ex.what()),_("Error"),wxOK | wxICON_ERROR, this );
+     return;
   }
+   wxMessageBox( _("Finished succesfuly"),_("Information"),wxOK | wxICON_INFORMATION, this );
 }
 
 void MainFrame::OnDiskCloseClick(wxCommandEvent& event)
@@ -188,7 +221,7 @@ void MainFrame::OnPartitionListRightClick(wxListEvent& event)
 	else
 	  {
 	     selected_partition=disk_structure[event.GetIndex()].num;
-         menu.Append(ID_WIPE_PARTITION,"Wipe partition");
+      //   menu.Append(ID_WIPE_PARTITION,"Wipe partition");
          menu.Append(ID_DELETE_PARTITION,"Delete partition");
 
 	  }
@@ -200,16 +233,15 @@ void MainFrame::OnPartitionListRightClick(wxListEvent& event)
 
 void MainFrame::OnPartitionListPopupClick(wxListEvent& event)
 {
-	void *data=static_cast<wxMenu *>(event.GetEventObject())->GetClientData();
-	switch(event.GetId()) {
-		case ID_DELETE_PARTITION:
-		      disk->DeletePartition(selected_partition);
-			break;
-		case ID_CREATE_PARTITION:
-		     OnNewPartition(event);
-			break;
-	}
-  refresh_partition_list();
+//	void *data=static_cast<wxMenu *>(event.GetEventObject())->GetClientData();
+    int eid=event.GetId();
+
+	if(eid==ID_DELETE_PARTITION)
+        disk->DeletePartition(selected_partition);
+	else if(eid==ID_CREATE_PARTITION)
+		OnNewPartition(event);
+
+    refresh_partition_list();
 }
 
 void MainFrame::OnDiskListClick(wxListEvent& event)

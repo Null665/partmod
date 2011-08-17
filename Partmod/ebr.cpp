@@ -27,7 +27,7 @@ void EBRParser::ParsePartition(GEN_PART extended)
        disk->DiskRead( (uint64_t)(extended.begin_sector+next_lba)*bps,&ebr,sizeof(EBR));
 
        // No logical volumes on extended partition
-       if(ebr.partition_table[0].lba_blocks==0)
+       if(ebr.partition_table[0].lba_blocks==0 || ebr.partition_table[0].partition_type==0)
            break;
 
        // First sect. of partition =
@@ -56,8 +56,6 @@ void EBRParser::ParsePartition(GEN_PART extended)
 
 void EBRParser::WriteChanges()
 {
-vector <EBR_DATA> ebrs;
-
 int spt=disk->GetDiskGeometry().spt;
 
 //
@@ -77,7 +75,6 @@ if(extended_part==-1) // If extended partition doesn't exist
 //
 // Find out how many logical partitions exist
 //
-int first_logical=extended_part+1;
 int n_logical=0;
 for(int i=extended_part;i<disk->CountPartitions();i++)
   {
@@ -100,72 +97,65 @@ if(n_logical==0)
 
 //
 // NOW LET'S FUCK UP THE PARTITION TABLE!!!1
-//
-
+// Well, finally it works
+uint64_t extd_begin_sector=disk->GetPartition(extended_part).begin_sector;
+uint64_t ebr_sector=extd_begin_sector;
 uint64_t begin_sector_extd=disk->GetPartition(extended_part).begin_sector;
-uint64_t ebr_sector;
 
-uint64_t prev_end_sect=begin_sector_extd;
-
-for(int i=first_logical-1;i<first_logical+n_logical;i++)
+for(unsigned i=0;i<disk->CountPartitions();)
   {
-      GEN_PART gpart=disk->GetPartition(i);
-      MBR_SPECIFIC mspec=disk->GetMBRSpecific(i);
+    const GEN_PART &curr_part=disk->GetPartition(i);
+
+    if( (curr_part.flags&PART_LOGICAL)==false)
+      {
+        i++;
+        continue;
+      }
 
 
-      //
-      // Location of the EBR
-      //
-      ebr_sector=gpart.begin_sector-spt;
+    MBR_SPECIFIC mspec=disk->GetMBRSpecific(i);
+    EBR ebr={0};
 
-      EBR ebr;
-      memset(&ebr,0,sizeof(EBR));
+    ebr.partition_table[0].begin_lba=curr_part.begin_sector-ebr_sector;
+    ebr.partition_table[0].lba_blocks=curr_part.length;
+    ebr.partition_table[0].partition_type=mspec.fsid;
+    curr_part.flags&PART_ACTIVE ?
+        ebr.partition_table[i].status=0x80 :
+        ebr.partition_table[i].status=0x00;
 
-      // Fill the 1st partition entry
-    // ebr.partition_table[0].begin_lba=spt;
-      ebr.partition_table[0].begin_lba=spt;
-      ebr.partition_table[0].lba_blocks=gpart.length;
-      ebr.partition_table[0].partition_type=mspec.fsid;
-      gpart.flags&PART_ACTIVE ?
-          ebr.partition_table[i].status=0x80 :
-          ebr.partition_table[i].status=0x00;
+    MBR_CHS chs=lba_to_chs(curr_part.begin_sector,disk->GetDiskGeometry());
+    memcpy(&ebr.partition_table[0].begin_chs,&chs,sizeof(MBR_CHS));
+    chs=lba_to_chs(curr_part.begin_sector+curr_part.length,disk->GetDiskGeometry());
+    memcpy(&ebr.partition_table[0].end_chs,&chs,sizeof(MBR_CHS));
 
-      MBR_CHS chs=lba_to_chs(gpart.begin_sector,disk->GetDiskGeometry());
-      memcpy(&ebr.partition_table[0].begin_chs,&chs,sizeof(MBR_CHS));
-      chs=lba_to_chs(gpart.begin_sector+gpart.length,disk->GetDiskGeometry());
-      memcpy(&ebr.partition_table[0].end_chs,&chs,sizeof(MBR_CHS));
+    ++i;
+    while(i<disk->CountPartitions() && (disk->GetPartition(i).flags&PART_LOGICAL)==false)
+        i++;
+    if(i==disk->CountPartitions())
+      {
+        ebr_sector=curr_part.begin_sector-spt;
+        disk->DiskWrite(ebr_sector*disk->GetDiskGeometry().bps,&ebr,sizeof(EBR));
+        return;
+      }
 
+   // clog <<"i: "<<i<<endl;
+    const GEN_PART &next_part=disk->GetPartition(i);
 
-      prev_end_sect=gpart.begin_sector+gpart.length;
+    ebr.partition_table[1].begin_lba=next_part.begin_sector-begin_sector_extd-spt;
+    ebr.partition_table[1].lba_blocks=next_part.length+spt;
+    ebr.partition_table[1].partition_type=0x05;
 
-      // Fill, the 2nd partition entry
-      // if there are more logical volumes
-      if(i<(first_logical+n_logical-1))
-        {
-          GEN_PART next_part=disk->GetPartition(i+1);
+    chs=lba_to_chs(next_part.begin_sector,disk->GetDiskGeometry());
+    memcpy(&ebr.partition_table[1].begin_chs,&chs,sizeof(MBR_CHS));
+    chs=lba_to_chs(next_part.begin_sector+curr_part.length,disk->GetDiskGeometry());
+    memcpy(&ebr.partition_table[1].end_chs,&chs,sizeof(MBR_CHS));
 
-          ebr.partition_table[1].begin_lba=next_part.begin_sector-begin_sector_extd-spt;
-          ebr.partition_table[1].lba_blocks=next_part.length+spt;
-          ebr.partition_table[1].partition_type=0x05;
+    ebr.signature=BS_MAGIC;
 
-          MBR_CHS chs=lba_to_chs(next_part.begin_sector,disk->GetDiskGeometry());
-          memcpy(&ebr.partition_table[1].begin_chs,&chs,sizeof(MBR_CHS));
-          chs=lba_to_chs(next_part.begin_sector+gpart.length,disk->GetDiskGeometry());
-          memcpy(&ebr.partition_table[1].end_chs,&chs,sizeof(MBR_CHS));
+    disk->DiskWrite(ebr_sector*disk->GetDiskGeometry().bps,&ebr,sizeof(EBR));
 
-        }
-       else memset(&ebr.partition_table[1],0,sizeof(ebr.partition_table[1]));
-     ebr.signature=BS_MAGIC;
-
-     // EBR location in bytes
-     ebr_sector*=disk->GetDiskGeometry().bps;
-     // Read the boot code (just in case)
-  //   disk->DiskRead(ebr_sector,&ebr.boot_code,sizeof(ebr.boot_code));
-
-     disk->DiskWrite(ebr_sector,&ebr,sizeof(EBR));
-
+    ebr_sector=next_part.begin_sector-spt;
 
   }
-
 
 }

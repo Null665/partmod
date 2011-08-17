@@ -14,33 +14,8 @@
 #define S_FREE_SPACE   2
 
 
-enum
-{
-    ID_QUIT = 1,
-    ID_ABOUT,
 
-    ID_SAVE_CHANGES,
-    ID_CLOSE_DISK,
-    ID_OPEN_DISK_IMAGE,
-    ID_CREATE_BACKUP,
-    ID_RESTORE_BACKUP,
-    ID_CHECK_DISK,
 
-    ID_CREATE_PARTITION,
-    ID_DELETE_PARTITION,
-    ID_SET_ACTIVE,
-    ID_SET_INACTIVE,
-    ID_EDIT_BOOTSECTOR,
-    ID_CHECK_FS,
-    ID_FORMAT,
-    ID_WIPE_PARTITION,
-
-    ID_DISK_LIST,
-    ID_PARTITION_LIST,
-
-    ID_LIST_GUID,
-
-};
 
 struct sel_type
 {
@@ -96,6 +71,32 @@ protected:
   std::vector<lvlist> disk_structure; // list of partition and free space slices
 
   int selected_partition,selected_frs;
+
+  static const long
+    ID_QUIT ,
+    ID_ABOUT ,
+
+    ID_SAVE_CHANGES ,
+    ID_CLOSE_DISK  ,
+    ID_OPEN_DISK_IMAGE ,
+    ID_CREATE_BACKUP ,
+    ID_RESTORE_BACKUP ,
+    ID_CHECK_DISK ,
+
+    ID_CREATE_PARTITION  ,
+    ID_DELETE_PARTITION ,
+    ID_SET_ACTIVE ,
+    ID_SET_INACTIVE ,
+    ID_EDIT_BOOTSECTOR ,
+    ID_CHECK_FS ,
+    ID_FORMAT ,
+    ID_WIPE_PARTITION ,
+
+    ID_DISK_LIST ,
+    ID_PARTITION_LIST ,
+
+    ID_LIST_GUID ;
+
 
 public:
 
