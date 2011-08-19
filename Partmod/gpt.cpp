@@ -7,7 +7,6 @@
 #include "crc.hpp"
 #include "disk_exception.h"
 
-#include <iostream>
 using namespace std;
 
 
@@ -246,6 +245,11 @@ GPT_SPECIFIC gspec;
 int bps=disk->GetDiskGeometry().bps;
 
 disk->ReadGPT(gpt);
+
+if(!IsValidGPT(gpt))
+  {
+      throw(DiskException("Invalid GPT"));
+  }
 entries=new GPT_ENTRY[gpt.n_entries];
 disk->DiskRead(gpt.first_entry_lba*bps,entries,sizeof(GPT_ENTRY)*gpt.n_entries);
 

@@ -4,11 +4,11 @@
 	<File name="diskio-linux.cpp" open="0" top="0" tabpos="1">
 		<Cursor position="1104" topLine="0" />
 	</File>
-	<File name="diskio-windows.cpp" open="0" top="0" tabpos="1">
-		<Cursor position="795" topLine="19" />
+	<File name="diskio-windows.cpp" open="1" top="0" tabpos="2">
+		<Cursor position="1102" topLine="32" />
 	</File>
-	<File name="diskio.cpp" open="0" top="0" tabpos="0">
-		<Cursor position="1073" topLine="47" />
+	<File name="diskio.cpp" open="1" top="0" tabpos="1">
+		<Cursor position="1254" topLine="52" />
 	</File>
 	<File name="diskio.hpp" open="0" top="0" tabpos="2">
 		<Cursor position="110" topLine="0" />

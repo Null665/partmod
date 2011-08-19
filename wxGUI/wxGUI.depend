@@ -1,5 +1,5 @@
 # depslib dependency file v1.0
-1313337198 source:d:\c++\tvarka\partmod\src\wxgui\main_frame.cpp
+1313771198 source:d:\c++\tvarka\partmod\src\wxgui\main_frame.cpp
 	"main_frame.hpp"
 	"dlg_newpart.hpp"
 	"dlg_open_diskimage.h"
@@ -9,7 +9,7 @@
 
 1306770268 >
 
-1313336248 d:\c++\tvarka\partmod\src\wxgui\main_frame.hpp
+1313570468 d:\c++\tvarka\partmod\src\wxgui\main_frame.hpp
 	<wx/wx.h>
 	<wx/listctrl.h>
 	<string>
@@ -1929,7 +1929,7 @@
 1304239824 d:\c++\tvarka\partmod\src\wxgui\main_app.hpp
 	<wx/wx.h>
 
-1313340614 d:\c++\tvarka\partmod\src\partmod\disk.h
+1313771737 d:\c++\tvarka\partmod\src\partmod\disk.h
 	"mbr.h"
 	"gpt.h"
 	<vector>
@@ -1950,7 +1950,7 @@
 	"definitions.h"
 	<stdint.h>
 
-1313311947 d:\c++\tvarka\partmod\src\partmod\definitions.h
+1313486824 d:\c++\tvarka\partmod\src\partmod\definitions.h
 	<stdint.h>
 	<string>
 
@@ -1959,7 +1959,7 @@
 
 1294311413 ns.h"
 
-1293383932 d:\c++\tvarka\partmod\src\diskio\diskio.hpp
+1313687425 d:\c++\tvarka\partmod\src\diskio\diskio.hpp
 	<stdint.h>
 	<windows.h>
 	"../Partmod/definitions.h"
@@ -1981,7 +1981,7 @@
 	<vector>
 	<utility>
 
-1313428390 source:d:\c++\tvarka\partmod\src\wxgui\dlg_newpart.cpp
+1313777434 source:d:\c++\tvarka\partmod\src\wxgui\dlg_newpart.cpp
 	"dlg_newpart.hpp"
 	"../Partmod/definitions.h"
 	"../Partmod/disk_exception.h"
@@ -4158,7 +4158,7 @@
 	<vector>
 	<string>
 
-1312133825 d:\c++\tvarka\partmod\src\partmod\fsid_manager.h
+1313486551 d:\c++\tvarka\partmod\src\partmod\fsid_manager.h
 	<stdint.h>
 	<string>
 	<vector>

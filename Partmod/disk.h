@@ -122,23 +122,21 @@ public:
   unsigned         GetDiskSignature();            // Returns MBR disk signature
 
   GEN_HANDLE GetPartitionHandle(unsigned int p);  // Creates GEN_HANDLE for partition
-  // TODO: remove this function; it's much easier and simpler to use DiskIO instead
-  GEN_HANDLE GetDiskHandle();                     // Creates GEN_HANDLE for whole disk
 
 
-  Disk(std::string _dsk); // Constructor: takes string, eg. \\.\PhysicalDrive0
-  Disk(int _dsk);         // Constructor: takes disk number, eg. 0 and converts into string \\.\PhysicalDrive0
+  Disk(std::string dsk); // Constructor: takes string, eg. \\.\PhysicalDrive0
+  Disk(int dsk);         // Constructor: takes disk number, eg. 0 and converts into string \\.\PhysicalDrive0
   Disk();
   ~Disk();
 
-  void Open(std::string _dsk);                 // Open disk
-  void Open(std::string _dsk,GEOMETRY geom);   // Open a disk image
+  void Open(std::string dsk);                 // Open disk
+  void Open(std::string dsk,GEOMETRY geom);   // Open a disk image
   bool IsOpen();
 
   void Close(); // Close disk/disk image
   int  Save();  // Save changes to disk
 
-  int  CountPartitions(unsigned int _type) const;          // Returns number of partitions by type
+  int  CountPartitions(unsigned int type) const;          // Returns number of partitions by type
   int  CountPartitions() const;                            // Returns number of all partitions
   int  CountFreeSpaces();                            // Returns number of free spaces found on disk
 
@@ -160,6 +158,7 @@ public:
   void CreatePartitionExtended(int which_frs,uint64_t size,uint64_t sect_before,uint8_t fsid);
   void CreatePartitionLogical(int which_frs,uint64_t size,uint64_t sect_before,uint8_t fsid);
   void CreatePartitionGPT(int which_frs,uint64_t size,uint64_t sect_before,__GUID type_guid);
+  void CreatePartitionPrimaryGPT(int which_frs,uint64_t size,uint64_t sect_before);
 
 
   void SetActive(unsigned  p,bool set_active);

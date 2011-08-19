@@ -1,7 +1,6 @@
 //
 // Disk class implementation
 //
-//4899
 
 #include "disk.h"
 #include "definitions.h"
@@ -12,6 +11,7 @@
 #include <cstring>
 #include <fstream>
 #include <sstream>
+#include <iostream>
 using namespace std;
 
 
@@ -75,7 +75,7 @@ Disk::Disk()
 Disk::Disk(string dsk)
 {
   init();
-  Open(dsk.c_str());
+  Open(dsk);
 }
 
 Disk::Disk(int dsk)
@@ -85,7 +85,7 @@ Disk::Disk(int dsk)
   stringstream ss;
   ss <<"\\\\.\\PhycicalDrive"<<dsk;
   pd_str=ss.str();
-  Open(pd_str.c_str());
+  Open(pd_str);
 }
 
 
@@ -119,7 +119,6 @@ if(!diskio->IsOpen())
 
 verify_geometry();
 load();
-
 find_free_space();
 }
 
@@ -160,19 +159,6 @@ pending_man->DeleteAll();
 is_open=false;
 }
 
-
-GEN_HANDLE Disk::GetDiskHandle()
-{
-GEN_HANDLE gh;
-memset(&gh,0,sizeof(gh));
-
-gh.hDisk=this->diskio;
-gh.begin_sector=0;
-gh.length=this->LastSector();
-
-memcpy(&gh.disk_geometry,&GetDiskGeometry(),sizeof(gh.disk_geometry));
-return gh;
-}
 
 void Disk::CheckDisk(vector<DISK_ERROR> &error_list)
 {
@@ -325,6 +311,31 @@ void Disk::CreatePartitionExtended(int which_frs,uint64_t size,uint64_t sect_bef
 
   add_partition(new_part);
 
+}
+
+void Disk::CreatePartitionPrimaryGPT(int which_frs,uint64_t size,uint64_t sect_before)
+{
+  GEN_PART new_part;
+  MBR_SPECIFIC mspec;
+  const FREE_SPACE &frs=GetFreeSpace(which_frs);
+
+  if(frs.type!=FREE_UNALLOCATED)
+      throw DiskException(ERR_UNKNOWN_ERROR);
+
+  if(frs.length<size+sect_before)
+      throw DiskException(ERR_PART_TOO_BIG);
+
+  new_part.begin_sector=frs.begin_sector+sect_before;
+  new_part.length=size;
+  new_part.fsid=FS_GPT;
+  new_part.flags=PART_MBR_GPT;
+
+  mspec.begin_sector_rel=0;
+  mspec.fsid=fsid_man->GetByPartmodFsid(FS_GPT).fsid;
+
+  memcpy(new_part.data,&mspec,sizeof(mspec));
+
+  add_partition(new_part);
 }
 
 void Disk::CreatePartitionLogical(int which_frs,uint64_t size,uint64_t sect_before,uint8_t fsid)
@@ -537,7 +548,6 @@ return true;
 bool  Disk::load()
 {
 
-// load mbr
 MBR mbr;
 ReadMBR(mbr);
 GEN_PART gpart;
@@ -578,7 +588,6 @@ for(int i=0;i<4;i++)
          ebr_parser->ParsePartition(gpart);
      else if(gpart.flags&PART_MBR_GPT)
          gpt_parser->ParsePartition(gpart);
-
   }
 
 
@@ -648,11 +657,12 @@ if(diskio->Read(data,size)!=0)
 
 void Disk::DiskWrite(uint64_t offset,void* data,int size)
 {
+clog <<"Writing "<<size<<" bytes to sector "<<offset/GetDiskGeometry().bps;
 if(diskio->Seek(offset)!=0)
     throw(DiskException(ERR_INVALID_SEEK));
 if(diskio->Write(data,size)!=0)
     throw(DiskException(ERR_WRITE));
-
+clog<<" ... finished"<<endl;
 }
 
 

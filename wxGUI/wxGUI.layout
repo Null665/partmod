@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
 <CodeBlocks_layout_file>
 	<ActiveTarget name="Release - Windows" />
-	<File name="dlg_newpart.cpp" open="1" top="0" tabpos="1">
-		<Cursor position="5064" topLine="108" />
+	<File name="dlg_newpart.cpp" open="1" top="1" tabpos="3">
+		<Cursor position="5249" topLine="128" />
 	</File>
 	<File name="dlg_newpart.hpp" open="0" top="0" tabpos="2">
-		<Cursor position="74" topLine="0" />
+		<Cursor position="398" topLine="0" />
 	</File>
 	<File name="dlg_open_diskimage.cpp" open="0" top="0" tabpos="4">
 		<Cursor position="4168" topLine="129" />
@@ -19,10 +19,10 @@
 	<File name="main_app.hpp" open="0" top="0" tabpos="1">
 		<Cursor position="63" topLine="0" />
 	</File>
-	<File name="main_frame.cpp" open="1" top="1" tabpos="2">
-		<Cursor position="2539" topLine="76" />
+	<File name="main_frame.cpp" open="1" top="0" tabpos="1">
+		<Cursor position="10350" topLine="332" />
 	</File>
-	<File name="main_frame.hpp" open="0" top="0" tabpos="2">
-		<Cursor position="2069" topLine="85" />
+	<File name="main_frame.hpp" open="1" top="0" tabpos="2">
+		<Cursor position="1197" topLine="96" />
 	</File>
 </CodeBlocks_layout_file>

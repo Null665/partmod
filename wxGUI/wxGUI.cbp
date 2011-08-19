@@ -13,6 +13,7 @@
 				<Option compiler="gcc" />
 				<Option projectLinkerOptionsRelation="2" />
 				<Compiler>
+					<Add option="-pg" />
 					<Add option="-g" />
 					<Add option="-D__WXDEBUG__" />
 					<Add directory="$(#wx)\lib\gcc_lib\mswd" />
@@ -21,6 +22,7 @@
 					<Add directory="$(#wx)\lib\gcc_lib\mswd" />
 				</ResourceCompiler>
 				<Linker>
+					<Add option="-pg -lgmon" />
 					<Add library="libwxmsw28d_core.a" />
 					<Add library="libwxbase28d.a" />
 					<Add library="libwxpngd.a" />
@@ -34,11 +36,13 @@
 			<Target title="Release - Windows">
 				<Option output="..\..\bin\wxGUI" prefix_auto="1" extension_auto="1" />
 				<Option object_output="..\..\obj\" />
-				<Option type="0" />
+				<Option type="1" />
 				<Option compiler="gcc" />
+				<Option use_console_runner="0" />
 				<Option projectLinkerOptionsRelation="2" />
 				<Compiler>
 					<Add option="-O2" />
+					<Add option="-pg" />
 					<Add directory="$(#wx)\lib\gcc_lib\msw" />
 				</Compiler>
 				<ResourceCompiler>
@@ -46,6 +50,7 @@
 				</ResourceCompiler>
 				<Linker>
 					<Add option="-s" />
+					<Add option="-pg -lgmon" />
 					<Add library="libwxmsw28_core.a" />
 					<Add library="libwxbase28.a" />
 					<Add library="libwxpng.a" />

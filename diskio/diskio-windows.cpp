@@ -1,6 +1,6 @@
 #include "diskio.hpp"
 #include <winioctl.h>
-
+using namespace std;
 
 int DiskIO::open_handle(const char* disk)
 {
@@ -43,13 +43,26 @@ if(SetFilePointerEx(hDisk,li,0,FILE_BEGIN)==INVALID_SET_FILE_POINTER)
 return 0;
 }
 
-
 int DiskIO::write(void *buff,uint32_t buffer_size)
 {
-DWORD dwWritten;
+DWORD dwWritten=0;
 
 if(!WriteFile(hDisk,buff,buffer_size,&dwWritten,0) || dwWritten!=buffer_size)
-    return ERR_WRITE;
+  {
+     //
+     // Temorary bug fix: sometimes WriteFile fails with GetLastError() code 87(ERROR_INVALID_PARAMETER)
+     // Interesting part is that making copy of a buffer fixes the problem
+     uint8_t *buf=new uint8_t[buffer_size];
+     memcpy(buf,buff,buffer_size);
+     if(!WriteFile(hDisk,buf,buffer_size,&dwWritten,0) || dwWritten!=buffer_size)
+       {
+         delete[] buf;
+         return ERR_WRITE;
+       }
+
+      delete[] buf;
+  }
+
 
 return 0;
 }
@@ -69,6 +82,7 @@ int DiskIO::sync()
 {
 DWORD ret;
 DeviceIoControl(hDisk, IOCTL_DISK_UPDATE_PROPERTIES, NULL,0,NULL, 0, &ret, 0 );
+return 0;
 }
 
 
@@ -91,10 +105,7 @@ else
       size_lo=GetFileSize(hDisk,&size_hi);
 
       ret=size_lo|(size_hi<<16);
-
   }
-
-
 
 return 0;
 }

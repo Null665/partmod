@@ -7,6 +7,7 @@
 #include "disk.h"
 #include "mbr.h"
 #include <cstring>
+#include <iostream>
 using namespace std;
 
 void EBRParser::ParsePartition(GEN_PART extended)
@@ -72,15 +73,8 @@ if(extended_part==-1) // If extended partition doesn't exist
     return;
 
 
-//
 // Find out how many logical partitions exist
-//
-int n_logical=0;
-for(int i=extended_part;i<disk->CountPartitions();i++)
-  {
-      if(disk->GetPartition(i).flags&PART_LOGICAL)
-        n_logical++;
-  }
+unsigned n_logical=disk->CountPartitions(PART_LOGICAL);
 
 //
 // If there are no logical volumes, clear the ext. part. boot sector
@@ -91,13 +85,13 @@ if(n_logical==0)
       memset(&ebr,0,sizeof(EBR));
       ebr.signature=BS_MAGIC;
 
-      disk->DiskWrite(disk->GetPartition(extended_part).begin_sector,&ebr,sizeof(EBR));
+      disk->DiskWrite(disk->GetPartition(extended_part).begin_sector*disk->GetDiskGeometry().bps,&ebr,sizeof(EBR));
       return;
   }
 
 //
 // NOW LET'S FUCK UP THE PARTITION TABLE!!!1
-// Well, finally it works
+// Well, finally ths peace of code works
 uint64_t extd_begin_sector=disk->GetPartition(extended_part).begin_sector;
 uint64_t ebr_sector=extd_begin_sector;
 uint64_t begin_sector_extd=disk->GetPartition(extended_part).begin_sector;
@@ -134,11 +128,11 @@ for(unsigned i=0;i<disk->CountPartitions();)
     if(i==disk->CountPartitions())
       {
         ebr_sector=curr_part.begin_sector-spt;
+        ebr.signature=BS_MAGIC;
         disk->DiskWrite(ebr_sector*disk->GetDiskGeometry().bps,&ebr,sizeof(EBR));
         return;
       }
 
-   // clog <<"i: "<<i<<endl;
     const GEN_PART &next_part=disk->GetPartition(i);
 
     ebr.partition_table[1].begin_lba=next_part.begin_sector-begin_sector_extd-spt;

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
 <CodeBlocks_layout_file>
-	<ActiveTarget name="Release" />
+	<ActiveTarget name="Debug" />
 	<File name="dlg_diskimage.cpp" open="0" top="0" tabpos="0">
 		<Cursor position="3711" topLine="125" />
 	</File>
@@ -13,7 +13,7 @@
 	<File name="gui.h" open="0" top="0" tabpos="0">
 		<Cursor position="819" topLine="0" />
 	</File>
-	<File name="partmod_main_dlg.cpp" open="1" top="1" tabpos="3">
+	<File name="partmod_main_dlg.cpp" open="0" top="0" tabpos="3">
 		<Cursor position="18001" topLine="597" />
 	</File>
 	<File name="resource.rc" open="0" top="0" tabpos="0">

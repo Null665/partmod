@@ -300,7 +300,12 @@ for(int i=0,j=0;i<32;i++)
       {
           disk->Open(ss.str());
       }
-    catch(DiskException&) { continue; }
+    catch(DiskException&de)
+    {
+       if(de.error_code==ERR_OPEN_DISK)
+           continue;
+
+     }
 
     diskList->InsertItem(item_index,_(ss.str().c_str()));
 

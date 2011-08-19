@@ -87,7 +87,7 @@ int DlgNewPart::ShowModal(Disk *disk, int selected_frs)
   if(frs_type==FREE_UNALLOCATED)
     {
       ChoicePartitionType->Append(_("Primary"),(void*)PART_PRIMARY);
-   //   ChoicePartitionType->Append(_("GPT container"),(void*)PART_MBR_GPT);
+ //     ChoicePartitionType->Append(_("GPT container"),(void*)PART_MBR_GPT);
       ChoicePartitionType->Append(_("Extended"),(void*)PART_EXTENDED);
     }
   else if(frs_type==FREE_EXTENDED)
@@ -96,7 +96,7 @@ int DlgNewPart::ShowModal(Disk *disk, int selected_frs)
     }
   else if(frs_type==FREE_GPT)
     {
-   //    ChoicePartitionType->Append(_("Logical GPT"),(void*)PART_GPT);
+  //     ChoicePartitionType->Append(_("Logical GPT"),(void*)PART_GPT);
     }
   ChoicePartitionType->SetSelection(0);
   wxCommandEvent wcmd;
@@ -127,7 +127,7 @@ void DlgNewPart::OnButtonOKClick(wxCommandEvent& event)
                disk->CreatePartitionLogical(selected_frs,size,0,fs_type);
                break;
            case PART_MBR_GPT:
-               disk->CreatePartitionPrimary(selected_frs,size,0,FS_GPT);
+               disk->CreatePartitionPrimaryGPT(selected_frs,size,0);
                break;
            case PART_GPT:
                disk->CreatePartitionGPT(selected_frs,size,0,disk->guid_man->Get(fs_type));
