@@ -1,15 +1,16 @@
 # depslib dependency file v1.0
-1313771198 source:d:\c++\tvarka\partmod\src\wxgui\main_frame.cpp
+1313860722 source:d:\c++\tvarka\partmod\src\wxgui\main_frame.cpp
 	"main_frame.hpp"
 	"dlg_newpart.hpp"
 	"dlg_open_diskimage.h"
 	"dlg_guid_list.h"
+	"dlg_create_backup.h"
 	<sstream>
 	<algorithm>
 
 1306770268 >
 
-1313570468 d:\c++\tvarka\partmod\src\wxgui\main_frame.hpp
+1313864492 d:\c++\tvarka\partmod\src\wxgui\main_frame.hpp
 	<wx/wx.h>
 	<wx/listctrl.h>
 	<string>
@@ -1950,11 +1951,11 @@
 	"definitions.h"
 	<stdint.h>
 
-1313486824 d:\c++\tvarka\partmod\src\partmod\definitions.h
+1313862312 d:\c++\tvarka\partmod\src\partmod\definitions.h
 	<stdint.h>
 	<string>
 
-1294311413 d:\c++\tvarka\partmod\src\partmod\gpt.h
+1313834325 d:\c++\tvarka\partmod\src\partmod\gpt.h
 	"definitions.h"
 
 1294311413 ns.h"
@@ -1981,7 +1982,7 @@
 	<vector>
 	<utility>
 
-1313777434 source:d:\c++\tvarka\partmod\src\wxgui\dlg_newpart.cpp
+1313859437 source:d:\c++\tvarka\partmod\src\wxgui\dlg_newpart.cpp
 	"dlg_newpart.hpp"
 	"../Partmod/definitions.h"
 	"../Partmod/disk_exception.h"
@@ -4188,4 +4189,34 @@
 	"dlg_guid_list.h"
 	<wx/intl.h>
 	<wx/string.h>
+
+1313863049 d:\c++\tvarka\partmod\src\wxgui\dlg_create_backup.h
+	<wx/stattext.h>
+	<wx/textctrl.h>
+	<wx/filedlg.h>
+	<wx/button.h>
+	<wx/dialog.h>
+	"../Partmod/disk.h"
+	"../Partmod/disk_exception.h"
+
+1313864302 source:d:\c++\tvarka\partmod\src\wxgui\dlg_restore_backup.cpp
+	"dlg_restore_backup.h"
+	<wx/intl.h>
+	<wx/string.h>
+	<wx/msgdlg.h>
+
+1313864252 d:\c++\tvarka\partmod\src\wxgui\dlg_restore_backup.h
+	<wx/stattext.h>
+	<wx/textctrl.h>
+	<wx/filedlg.h>
+	<wx/button.h>
+	<wx/dialog.h>
+	"../Partmod/disk.h"
+	"../Partmod/disk_exception.h"
+
+1313863049 source:d:\c++\tvarka\partmod\src\wxgui\dlg_create_backup.cpp
+	"dlg_create_backup.h"
+	<wx/intl.h>
+	<wx/string.h>
+	<wx/msgdlg.h>
 

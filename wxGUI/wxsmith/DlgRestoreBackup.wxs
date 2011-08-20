@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<wxsmith>
+	<object class="wxDialog" name="DlgRestoreBackup">
+		<size>328,156</size>
+		<pos_arg>1</pos_arg>
+		<size_arg>1</size_arg>
+		<object class="wxStaticText" name="ID_STATICTEXT1" variable="StaticText1" member="yes">
+			<label>Backup file name</label>
+			<pos>24,32</pos>
+			<size>128,13</size>
+		</object>
+		<object class="wxTextCtrl" name="ID_TEXTCTRL1" variable="TextBackupFileName" member="yes">
+			<value>backup.ptb</value>
+			<pos>24,48</pos>
+			<size>168,21</size>
+		</object>
+		<object class="wxButton" name="ID_BUTTON1" variable="ButtonBrowse" member="yes">
+			<label>Browse...</label>
+			<pos>208,48</pos>
+			<handler function="OnButtonBrowseClick" entry="EVT_BUTTON" />
+		</object>
+		<object class="wxButton" name="ID_BUTTON2" variable="ButtonRestore" member="yes">
+			<label>Restore</label>
+			<pos>64,96</pos>
+			<handler function="OnButtonRestoreClick" entry="EVT_BUTTON" />
+		</object>
+		<object class="wxButton" name="ID_BUTTON3" variable="ButtonCancel" member="yes">
+			<label>Cancel</label>
+			<pos>160,96</pos>
+			<handler function="OnButtonCancelClick" entry="EVT_BUTTON" />
+		</object>
+		<object class="wxFileDialog" variable="FileDialog1" member="yes">
+			<message>Select file</message>
+		</object>
+	</object>
+</wxsmith>

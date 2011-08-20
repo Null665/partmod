@@ -124,6 +124,8 @@ public:
     void OnSetActiveClick(wxCommandEvent& event);
     void OnUnsetActiveClick(wxCommandEvent& event);
 
+    void OnCreateBackupClick(wxCommandEvent& event);
+    void OnRestoreBackupClick(wxCommandEvent& event);
 
     DECLARE_EVENT_TABLE()
 };

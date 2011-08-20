@@ -36,13 +36,11 @@
 			<Target title="Release - Windows">
 				<Option output="..\..\bin\wxGUI" prefix_auto="1" extension_auto="1" />
 				<Option object_output="..\..\obj\" />
-				<Option type="1" />
+				<Option type="0" />
 				<Option compiler="gcc" />
-				<Option use_console_runner="0" />
 				<Option projectLinkerOptionsRelation="2" />
 				<Compiler>
 					<Add option="-O2" />
-					<Add option="-pg" />
 					<Add directory="$(#wx)\lib\gcc_lib\msw" />
 				</Compiler>
 				<ResourceCompiler>
@@ -50,7 +48,6 @@
 				</ResourceCompiler>
 				<Linker>
 					<Add option="-s" />
-					<Add option="-pg -lgmon" />
 					<Add library="libwxmsw28_core.a" />
 					<Add library="libwxbase28.a" />
 					<Add library="libwxpng.a" />
@@ -143,12 +140,16 @@
 			<Add library="libwsock32.a" />
 			<Add library="libodbc32.a" />
 		</Linker>
+		<Unit filename="dlg_create_backup.cpp" />
+		<Unit filename="dlg_create_backup.h" />
 		<Unit filename="dlg_guid_list.cpp" />
 		<Unit filename="dlg_guid_list.h" />
 		<Unit filename="dlg_newpart.cpp" />
 		<Unit filename="dlg_newpart.hpp" />
 		<Unit filename="dlg_open_diskimage.cpp" />
 		<Unit filename="dlg_open_diskimage.h" />
+		<Unit filename="dlg_restore_backup.cpp" />
+		<Unit filename="dlg_restore_backup.h" />
 		<Unit filename="main_app.cpp" />
 		<Unit filename="main_app.hpp" />
 		<Unit filename="main_frame.cpp" />
@@ -163,6 +164,8 @@
 					<wxDialog wxs="wxsmith/DlgNewPart.wxs" src="dlg_newpart.cpp" hdr="dlg_newpart.hpp" name="DlgNewPart" language="CPP" />
 					<wxDialog wxs="wxsmith/DlgOpenDiskImage.wxs" src="dlg_open_diskimage.cpp" hdr="dlg_open_diskimage.h" name="DlgOpenDiskImage" language="CPP" />
 					<wxDialog wxs="wxsmith/DlgGuidList.wxs" src="dlg_guid_list.cpp" hdr="dlg_guid_list.h" name="DlgGuidList" language="CPP" />
+					<wxDialog wxs="wxsmith/DlgCreateBackup.wxs" src="dlg_create_backup.cpp" hdr="dlg_create_backup.h" name="DlgCreateBackup" language="CPP" />
+					<wxDialog wxs="wxsmith/DlgRestoreBackup.wxs" src="dlg_restore_backup.cpp" hdr="dlg_restore_backup.h" name="DlgRestoreBackup" language="CPP" />
 				</resources>
 			</wxsmith>
 		</Extensions>

@@ -20,7 +20,7 @@
 		<Cursor position="7284" topLine="205" />
 	</File>
 	<File name="disk.cpp" open="1" top="0" tabpos="3">
-		<Cursor position="6783" topLine="304" />
+		<Cursor position="8153" topLine="369" />
 	</File>
 	<File name="disk.h" open="1" top="0" tabpos="2">
 		<Cursor position="4012" topLine="129" />
@@ -31,7 +31,7 @@
 	<File name="dllcall.hpp" open="0" top="0" tabpos="0">
 		<Cursor position="94" topLine="9" />
 	</File>
-	<File name="ebr.cpp" open="1" top="1" tabpos="11">
+	<File name="ebr.cpp" open="1" top="0" tabpos="6">
 		<Cursor position="2854" topLine="102" />
 	</File>
 	<File name="free_space_manager.cpp" open="0" top="0" tabpos="5">
@@ -46,11 +46,11 @@
 	<File name="fsid_manager.h" open="0" top="0" tabpos="6">
 		<Cursor position="129" topLine="0" />
 	</File>
-	<File name="gpt.cpp" open="1" top="0" tabpos="5">
-		<Cursor position="5178" topLine="208" />
+	<File name="gpt.cpp" open="1" top="1" tabpos="5">
+		<Cursor position="5798" topLine="250" />
 	</File>
 	<File name="gpt.h" open="0" top="0" tabpos="2">
-		<Cursor position="1692" topLine="8" />
+		<Cursor position="1716" topLine="9" />
 	</File>
 	<File name="guid_manager.cpp" open="0" top="0" tabpos="5">
 		<Cursor position="2685" topLine="96" />

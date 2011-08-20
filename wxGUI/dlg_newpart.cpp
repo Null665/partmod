@@ -160,8 +160,11 @@ void DlgNewPart::OnChoicePartitionTypeSelect(wxCommandEvent& event)
   if((int)event.GetClientData()==PART_GPT)
     {
        for(int i=0;i<disk->guid_man->Count();i++)
+         {
            ChoiceFsType-> Append(_(disk->guid_man->GetDescription(i).c_str()));
-       ChoiceFsType->SetSelection(0);
+           ChoiceFsType->SetClientData(i,(void*)i);
+         }
+       ChoiceFsType->SetSelection(5);
     }
   else if((int)event.GetClientData()==PART_PRIMARY)
     {

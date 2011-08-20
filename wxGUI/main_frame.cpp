@@ -2,6 +2,8 @@
 #include "dlg_newpart.hpp"
 #include "dlg_open_diskimage.h"
 #include "dlg_guid_list.h"
+#include "dlg_create_backup.h"
+#include "dlg_restore_backup.h"
 
 #include <sstream>
 #include <algorithm>
@@ -108,6 +110,25 @@ void MainFrame::OnNewPartition(wxCommandEvent& event)
 {
     DlgNewPart *dlg=new DlgNewPart(this);
     dlg->ShowModal(disk,selected_frs);
+
+    refresh_partition_list();
+    delete dlg;
+}
+
+void MainFrame::OnCreateBackupClick(wxCommandEvent& event)
+{
+    DlgCreateBackup *dlg=new DlgCreateBackup(this);
+    dlg->ShowModal(disk);
+
+    refresh_partition_list();
+    delete dlg;
+}
+
+
+void MainFrame::OnRestoreBackupClick(wxCommandEvent& event)
+{
+    DlgRestoreBackup *dlg=new DlgRestoreBackup(this);
+    dlg->ShowModal(disk);
 
     refresh_partition_list();
     delete dlg;
@@ -482,8 +503,8 @@ void MainFrame::create_menus()
     menuDisk->Append(ID_CLOSE_DISK,_("Close disk (don\'t save changes)"),_("Close the disk handle"));
     menuDisk->Append(ID_OPEN_DISK_IMAGE,_("Open a disk image"),_("Open a disk image and partition it as a physical disk"));
     menuDisk->AppendSeparator();
-   // menuDisk->Append(ID_CREATE_BACKUP,_("Create partition table backup"));
-   // menuDisk->Append(ID_RESTORE_BACKUP,_("Restore partition table"));
+    menuDisk->Append(ID_CREATE_BACKUP,_("Create partition table backup"));
+    menuDisk->Append(ID_RESTORE_BACKUP,_("Restore partition table"));
     menuDisk->AppendSeparator();
    // menuDisk->Append(ID_CHECK_DISK,_("Check disk"));
 // Partitions menu
@@ -535,6 +556,9 @@ BEGIN_EVENT_TABLE(MainFrame, wxFrame)
     EVT_MENU(ID_SET_INACTIVE, MainFrame::OnUnsetActiveClick)
 
     EVT_MENU(ID_LIST_GUID, MainFrame::OnListGuidClick)
+
+    EVT_MENU(ID_CREATE_BACKUP, MainFrame::OnCreateBackupClick)
+    EVT_MENU(ID_RESTORE_BACKUP, MainFrame::OnRestoreBackupClick)
 
 
 // Disk list events

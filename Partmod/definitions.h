@@ -229,6 +229,7 @@ struct FORMAT_DISK
 struct BACKUP_FILE_HEADER
   {
      uint32_t magic;         // BACKUP_MAGIC
+     uint32_t header_size;   // size of backup file header in bytes
      GEOMETRY dg;            // Disk geometry
      uint32_t n_partitions;  // Number of partitions
      uint32_t n_sect;        // Number of sectors on disk

@@ -11,7 +11,6 @@
 #include <cstring>
 #include <fstream>
 #include <sstream>
-#include <iostream>
 using namespace std;
 
 
@@ -106,14 +105,14 @@ delete pending_man;
 
 
 
-void Disk::Open(string _dsk)
+void Disk::Open(string dsk)
 {
 if(IsOpen())
     throw DiskException(ERR_ALREADY_OPEN);
 
-pd_str=_dsk;
+pd_str=dsk;
 
-diskio->Open(_dsk.c_str());
+diskio->Open(dsk.c_str());
 if(!diskio->IsOpen())
     throw(DiskException(ERR_OPEN_DISK));
 
@@ -123,14 +122,14 @@ find_free_space();
 }
 
 
-void Disk::Open(string _dsk,GEOMETRY _geom)
+void Disk::Open(string dsk,GEOMETRY geom)
 {
 if(IsOpen())
     throw DiskException(ERR_ALREADY_OPEN);
 
-pd_str=_dsk;
+pd_str=dsk;
 
-diskio->Open(_dsk.c_str(),_geom);
+diskio->Open(dsk.c_str(),geom);
 if(!diskio->IsOpen())
     throw(DiskException(ERR_OPEN_DISK));
 
@@ -497,9 +496,9 @@ void Disk::find_free_space()
 
 
 
-void Disk::Split(unsigned int _p,uint64_t size_of_first_part)
+void Disk::Split(unsigned int p,uint64_t size_of_first_part)
 {
-GEN_PART old_part=GetPartition(_p);
+GEN_PART old_part=GetPartition(p);
 GEN_PART new_part;
 
 if(size_of_first_part>=old_part.length)
@@ -511,7 +510,7 @@ new_part.length=old_part.length-size_of_first_part;
 new_part.flags=old_part.flags & (~PART_ACTIVE) &(~PART_EXTENDED) & (~PART_MBR_GPT);
 old_part.length=size_of_first_part;
 
-modify_partition(_p,old_part);
+modify_partition(p,old_part);
 add_partition(new_part);
 
 }
@@ -682,9 +681,9 @@ int Disk::CountFreeSpaces()
 
 
 
-const GEN_PART &Disk::GetPartition(unsigned int _p)
+const GEN_PART &Disk::GetPartition(unsigned int p)
 {
-   return part_man->GetPartition(_p);
+   return part_man->GetPartition(p);
 }
 
 
@@ -700,9 +699,9 @@ int Disk::CountPartitions() const
 }
 
 
-void Disk::DeletePartition(unsigned int _p)
+void Disk::DeletePartition(unsigned p)
 {
-   part_man->DeletePartition(_p);
+   part_man->DeletePartition(p);
    Sync(part_man,pending_man);
    find_free_space();
 }
@@ -746,9 +745,9 @@ const GEOMETRY &Disk::GetDiskGeometry() const
 }
 
 
-void Disk::modify_partition(unsigned int _p,GEN_PART new_data)
+void Disk::modify_partition(unsigned int p,GEN_PART new_data)
 {
-    part_man->ModifyPartition(_p,new_data);
+    part_man->ModifyPartition(p,new_data);
 }
 
 void Disk::add_partition(GEN_PART new_part)
@@ -770,6 +769,7 @@ ofstream file;
 CRC32 crc32;
 
 bfh.magic=BACKUP_MAGIC;
+bfh.header_size=sizeof(BACKUP_FILE_HEADER);
 bfh.dg=GetDiskGeometry();
 bfh.n_partitions=n_partitions;
 bfh.n_sect=LastSector();
@@ -839,9 +839,9 @@ file.close();
 
 //-------------------------------------------------------------------
 
-void Disk::Wipe(unsigned int _p,int method)
+void Disk::Wipe(unsigned int p,int method)
 {
-    pending_man->WipePartition(part_man->GetPartitionUID(_p),method);
+    pending_man->WipePartition(part_man->GetPartitionUID(p),method);
 }
 
 
