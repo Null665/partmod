@@ -657,12 +657,10 @@ if(diskio->Read(data,size)!=0)
 
 void Disk::DiskWrite(uint64_t offset,void* data,int size)
 {
-clog <<"Writing "<<size<<" bytes to sector "<<offset/GetDiskGeometry().bps;
 if(diskio->Seek(offset)!=0)
     throw(DiskException(ERR_INVALID_SEEK));
 if(diskio->Write(data,size)!=0)
     throw(DiskException(ERR_WRITE));
-clog<<" ... finished"<<endl;
 }
 
 

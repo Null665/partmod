@@ -4,7 +4,7 @@ using namespace std;
 
 int DiskIO::open_handle(const char* disk)
 {
-    hDisk=CreateFile(disk,GENERIC_READ|GENERIC_WRITE,FILE_SHARE_WRITE,0,OPEN_EXISTING,0,0);
+    hDisk=CreateFile(disk,GENERIC_READ|GENERIC_WRITE,FILE_SHARE_READ,0,OPEN_EXISTING,FILE_FLAG_WRITE_THROUGH ,0);
     if(hDisk==INVALID_HANDLE_VALUE)
         return ERR_OPEN_DISK;
     return 0;
@@ -43,26 +43,43 @@ if(SetFilePointerEx(hDisk,li,0,FILE_BEGIN)==INVALID_SET_FILE_POINTER)
 return 0;
 }
 
+
 int DiskIO::write(void *buff,uint32_t buffer_size)
 {
 DWORD dwWritten=0;
 
-if(!WriteFile(hDisk,buff,buffer_size,&dwWritten,0) || dwWritten!=buffer_size)
+if(buffer_size%disk_geometry.bps==0)
   {
-     //
-     // Temorary bug fix: sometimes WriteFile fails with GetLastError() code 87(ERROR_INVALID_PARAMETER)
-     // Interesting part is that making copy of a buffer fixes the problem
-     uint8_t *buf=new uint8_t[buffer_size];
-     memcpy(buf,buff,buffer_size);
-     if(!WriteFile(hDisk,buf,buffer_size,&dwWritten,0) || dwWritten!=buffer_size)
-       {
-         delete[] buf;
-         return ERR_WRITE;
-       }
-
-      delete[] buf;
+    if(!WriteFile(hDisk,buff,buffer_size,&dwWritten,0) || dwWritten!=buffer_size)
+          return ERR_WRITE;
   }
+else
+  {
+    DWORD dwRead;
 
+    // create a new buffer where buffer_size%bytes_per_sector==0
+    unsigned size_new=disk_geometry.bps*( (buffer_size/disk_geometry.bps)+1 );
+    uint8_t *buff_new=new uint8_t[size_new];
+
+    LARGE_INTEGER seek_pos={0};
+    LARGE_INTEGER tmp={0};
+    SetFilePointerEx(hDisk,tmp,&seek_pos,FILE_CURRENT);
+
+    if(!ReadFile(hDisk,buff_new,size_new,&dwRead,0) || dwRead!=size_new)
+      {
+          delete[] buff_new;
+          return ERR_READ;
+      }
+    memcpy(buff_new+seek_pos.QuadPart%disk_geometry.bps,buff,buffer_size);
+
+    SetFilePointerEx(hDisk,seek_pos,0,FILE_BEGIN);
+    if(!WriteFile(hDisk,buff_new,size_new,&dwWritten,0) || dwWritten!=size_new)
+      {
+          delete[] buff_new;
+          return ERR_WRITE;
+      }
+    delete[] buff_new;
+  }
 
 return 0;
 }

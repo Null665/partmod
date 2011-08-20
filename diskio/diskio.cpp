@@ -8,10 +8,10 @@
 
 DiskIO::DiskIO()
 {
-   hDisk=0;
-   is_open=false;
+    hDisk=0;
+    is_open=false;
 
-   memset(&disk_geometry,0,sizeof(GEOMETRY));
+    memset(&disk_geometry,0,sizeof(GEOMETRY));
 }
 
 
@@ -39,16 +39,16 @@ int DiskIO::Open(const char *disk, GEOMETRY geom)
 
 int  DiskIO::GetDiskSize(uint64_t &length)
 {
-int ret = get_disk_length(length);
-if(ret!=0)
-    return ERR_GET_DISK_SIZE;
-length/=disk_geometry.bps;
-return ret;
+    int ret = get_disk_length(length);
+    if(ret!=0)
+        return ERR_GET_DISK_SIZE;
+    length/=disk_geometry.bps;
+    return ret;
 }
 
 bool DiskIO::IsOpen()
 {
-  return is_open;
+    return is_open;
 }
 
 void DiskIO::Close()
@@ -60,7 +60,7 @@ void DiskIO::Close()
 
 const GEOMETRY &DiskIO::GetDiskGeometry()
 {
-   return disk_geometry;
+    return disk_geometry;
 }
 
 int DiskIO::Seek(uint64_t sector)

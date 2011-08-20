@@ -6,7 +6,7 @@
 
 
 // ============= GPT disk structs =================
-
+#pragma pack(1)
 // GPT partition table header
 typedef struct __GPT_
 {
@@ -33,13 +33,13 @@ typedef struct __GPT_PARTITION_ENTRY_
 {
   __GUID   type_guid;              // GUID of partition type
   __GUID   unique_guid;            // GUID unique for this partition
-  uint64_t begin_lba;              // Begining of partitino in LBA blocks
+  uint64_t begin_lba;              // Begining of partition in LBA blocks
   uint64_t end_lba;                // End lba of partition
   uint64_t  flags;                 // Various flags
   uint16_t name[36];               // Partition name -- 36 UTF-16LE chars
 
 } GPT_ENTRY;
-
+#pragma pack(0)
 
 
 struct GPT_SPECIFIC
