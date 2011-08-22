@@ -64,8 +64,8 @@ struct CALLBACK_DATA
 };
 
 
-class GPTParser;
-class EBRParser;
+class GPTHelper;
+class EBRHelper;
 
 
 class Disk
@@ -85,11 +85,11 @@ private:
 
 protected:
 
-  friend class EBRParser;
-  friend class GPTParser;
+  friend class EBRHelper;
+  friend class GPTHelper;
 
-  EBRParser *ebr_parser;
-  GPTParser *gpt_parser;
+  EBRHelper *ebr_helper;
+  GPTHelper *gpt_helper;
 
   bool load();                // find partitoons on disk
   void find_free_space();     // find free space on disk
@@ -146,10 +146,10 @@ public:
   const FREE_SPACE &GetFreeSpace(unsigned int s);
 
 
-  void DiskRead(uint64_t offset,void* data,int size);   // Read from disk
-  void DiskWrite(uint64_t offset,void* data,int size);  // Write to disk
+  void DiskRead(uint64_t offset,void* data,unsigned size);   // Read from disk
+  void DiskWrite(uint64_t offset,const void* data,unsigned size);  // Write to disk
 
-  void DeletePartition(unsigned _p);
+  void DeletePartition(unsigned p);
 
   void CreatePartition(FREE_SPACE _frs,int _part_type,uint64_t _size);
 
@@ -199,28 +199,24 @@ public:
 
 
 
-// Base class for implementing EBR and GPT parsers
-class PartitionParser
+
+class PartitionHelper
 {
 protected:
     Disk *disk;
 
 public:
-    PartitionParser(Disk *disk) {this->disk=disk;}
+    PartitionHelper(Disk *disk) {this->disk=disk;}
     virtual void ParsePartition(GEN_PART)=0;
     virtual void WriteChanges()=0;
 
-   // virtual void FindFreeSpace();
-
-
-
 };
 
 
-class EBRParser:public PartitionParser
+class EBRHelper:public PartitionHelper
 {
 public:
-  EBRParser(Disk *_disk) : PartitionParser(_disk)
+  EBRHelper(Disk *disk) : PartitionHelper(disk)
   {}
   void ParsePartition(GEN_PART);
   void WriteChanges();
@@ -229,27 +225,32 @@ public:
 
 
 
-class GPTParser:public PartitionParser
+class GPTHelper:public PartitionHelper
 {
 public:
-  GPTParser(Disk *_disk) : PartitionParser(_disk)
+  GPTHelper(Disk *disk) : PartitionHelper(disk)
   {}
   void ParsePartition(GEN_PART);
   void WriteChanges();
-  void WriteGPT(GEN_PART, GPT);
-
   bool IsValidGPT(GPT gpt);
-  void DeleteAllEntries(GPT gpt);
-
-  void WritePartitionEntries(GPT gpt);
-
-  void UpdateChecksum(GPT &gpt);
-  void RestoreFromBackup();
-
-  void RestoreGPTFromBackup(GEN_PART gpt_part);
-
   GPT CreateGPT(GEN_PART gpt_part);
+
+/* TODO:
+ * GPT_ENTRY ReadGPTEntryFromDisk(uint32_t n);
+ * GPT_ENTRY WriteGPTEntryToDisk(const GPT_ENTRY &e,uint32_t n);
+*/
+
+
+
+//
+// It seems there's no reason to call rhese functions dirtectly
+//
+protected:
+  void WriteGPT(const GPT&);
+  uint32_t WritePartitionEntries(GPT gpt);
+  void RestoreGPTFromBackup(GEN_PART gpt_part);
   void WriteBackup(GPT gpt);
+
 
 };
 

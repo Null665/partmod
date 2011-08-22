@@ -6,6 +6,7 @@
 
 
 // ============= GPT disk structs =================
+
 #pragma pack(1)
 // GPT partition table header
 typedef struct __GPT_

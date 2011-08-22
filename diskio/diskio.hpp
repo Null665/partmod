@@ -39,7 +39,7 @@ public:
 
   int Seek(uint64_t sector);
   int Read(void *buff,uint32_t buffer_size);
-  int Write(void *buff,uint32_t buffer_size);
+  int Write(const void *buff,uint32_t buffer_size);
 
   void Sync();
 
@@ -50,7 +50,7 @@ protected:
 
     int seek(uint64_t sector);
     int read(void *buff,uint32_t buffer_size);
-    int write(void *buff,uint32_t buffer_size);
+    int write(const void *buff,uint32_t buffer_size);
 
     int sync();
 

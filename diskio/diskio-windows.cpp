@@ -44,7 +44,7 @@ return 0;
 }
 
 
-int DiskIO::write(void *buff,uint32_t buffer_size)
+int DiskIO::write(const void *buff,uint32_t buffer_size)
 {
 DWORD dwWritten=0;
 

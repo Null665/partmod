@@ -51,7 +51,7 @@ int DiskIO::seek(uint64_t sector)
   return 0;
 }
 
-int DiskIO::write(void *buff,uint32_t buffer_size)
+int DiskIO::write(const void *buff,uint32_t buffer_size)
 {
   uint64_t res=::write(hDisk,buff,buffer_size);
   if(res!=buffer_size)

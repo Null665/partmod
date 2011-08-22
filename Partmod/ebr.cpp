@@ -10,7 +10,7 @@
 #include <iostream>
 using namespace std;
 
-void EBRParser::ParsePartition(GEN_PART extended)
+void EBRHelper::ParsePartition(GEN_PART extended)
 {
   EBR ebr;
   uint64_t next_lba=0;
@@ -55,7 +55,7 @@ void EBRParser::ParsePartition(GEN_PART extended)
 }
 
 
-void EBRParser::WriteChanges()
+void EBRHelper::WriteChanges()
 {
 int spt=disk->GetDiskGeometry().spt;
 

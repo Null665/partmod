@@ -1,5 +1,5 @@
-// MBR spceific functions
 //
+// MBR spceific functions
 //
 
 #include "disk.h"
@@ -44,11 +44,11 @@ for(int i=0,j=0;i<CountPartitions();i++)
           gpart.flags&PART_ACTIVE ? mbr.partition_table[j].status=0x80 : mbr.partition_table[j].status=0x00;
 
 
-               chs=lba_to_chs(gpart.begin_sector,diskio->GetDiskGeometry());
-               memcpy(&mbr.partition_table[j].begin_chs,&chs,sizeof(MBR_CHS));
+           chs=lba_to_chs(gpart.begin_sector,diskio->GetDiskGeometry());
+           memcpy(&mbr.partition_table[j].begin_chs,&chs,sizeof(MBR_CHS));
 
-               chs=lba_to_chs(gpart.begin_sector+gpart.length,diskio->GetDiskGeometry());
-               memcpy(&mbr.partition_table[j].end_chs,&chs,sizeof(MBR_CHS));
+           chs=lba_to_chs(gpart.begin_sector+gpart.length,diskio->GetDiskGeometry());
+           memcpy(&mbr.partition_table[j].end_chs,&chs,sizeof(MBR_CHS));
 
           j++;
        }

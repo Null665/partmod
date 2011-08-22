@@ -53,8 +53,8 @@ void Disk::init()
 
   memset(&clbk,0,sizeof(clbk));
 
-  ebr_parser=new EBRParser(this);
-  gpt_parser=new GPTParser(this);
+  ebr_helper=new EBRHelper(this);
+  gpt_helper=new GPTHelper(this);
 
   diskio=new DiskIO;
 
@@ -93,8 +93,8 @@ Disk::Disk(int dsk)
 Disk::~Disk()
 {
 Close();
-delete ebr_parser;
-delete gpt_parser;
+delete ebr_helper;
+delete gpt_helper;
 
 delete part_man;
 delete frs_man;
@@ -524,9 +524,9 @@ int Disk::Save()
 // STEP 1: MBR
     save_mbr();
 // STEP 2: EBR (if there are extended partitions)
-    ebr_parser->WriteChanges();
+    ebr_helper->WriteChanges();
 // STEP 3: GPT (if exists)
-    gpt_parser->WriteChanges();
+    gpt_helper->WriteChanges();
 
 do_pending();
 diskio->Sync();
@@ -584,9 +584,9 @@ for(int i=0;i<4;i++)
      set_mbr_specific(CountPartitions()-1,mspec);
 
      if(gpart.flags&PART_EXTENDED)
-         ebr_parser->ParsePartition(gpart);
+         ebr_helper->ParsePartition(gpart);
      else if(gpart.flags&PART_MBR_GPT)
-         gpt_parser->ParsePartition(gpart);
+         gpt_helper->ParsePartition(gpart);
   }
 
 
@@ -643,7 +643,7 @@ return length;
 
 
 
-void Disk::DiskRead(uint64_t offset,void* data,int size)
+void Disk::DiskRead(uint64_t offset,void* data,unsigned size)
 {
 if(diskio->Seek(offset)!=0)
     throw(DiskException(ERR_INVALID_SEEK));
@@ -654,7 +654,7 @@ if(diskio->Read(data,size)!=0)
 
 
 
-void Disk::DiskWrite(uint64_t offset,void* data,int size)
+void Disk::DiskWrite(uint64_t offset,const void* data,unsigned size)
 {
 if(diskio->Seek(offset)!=0)
     throw(DiskException(ERR_INVALID_SEEK));

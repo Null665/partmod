@@ -73,7 +73,7 @@ int DiskIO::Read(void *buff,uint32_t buffer_size)
     return read(buff,buffer_size);
 }
 
-int DiskIO::Write(void *buff,uint32_t buffer_size)
+int DiskIO::Write(const void *buff,uint32_t buffer_size)
 {
     return write(buff,buffer_size);
 }
