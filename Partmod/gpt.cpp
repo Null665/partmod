@@ -2,6 +2,8 @@
 // GPT specific functions
 //
 
+// TODO: Restore GPT from backup
+
 #define GPT_VERSION 0x10000
 
 #include "disk.h"
@@ -37,7 +39,7 @@ if(IsValidGPT(gpt)==false)
 
 
   }
-//gpt=CreateGPT(disk->GetPartition(which_gpt));
+gpt=CreateGPT(disk->GetPartition(which_gpt));
 
 gpt.entries_checksum=WritePartitionEntries(gpt);
 gpt.checksum=0;
@@ -48,7 +50,7 @@ gpt.checksum=crc.Get();
 
 
 WriteGPT(gpt);
-//WriteBackup(gpt);
+WriteBackup(gpt);
 }
 
 
@@ -155,10 +157,36 @@ void GPTHelper::WriteGPT(const GPT &gpt)
 void GPTHelper::WriteBackup(GPT gpt)
 {
     int bps=disk->GetDiskGeometry().bps;
+    CRC32 crc;
+
+    gpt.current_lba=gpt.backup_lba;
+    gpt.backup_lba=gpt.backup_lba;
+    gpt.checksum=0;
+
+   // gpt.first_entry_lba=gpt.current_lba-1;
+
+    crc.Hash(&gpt,gpt.header_size);
+    gpt.checksum=crc;
+
     disk->DiskWrite( (gpt.backup_lba)*bps,&gpt,sizeof(GPT));
 
+    unsigned buff_size=gpt.entry_size*gpt.n_entries;
+    uint8_t *buff[buff_size];
+
+    disk->DiskRead(gpt.first_entry_lba*bps,buff,buff_size);
+    disk->DiskWrite((gpt.backup_lba*bps)-buff_size,buff,buff_size);
+
+}
+/*
+void GPTHelper::WriteBackup(GPT gpt)
+{
+    int bps=disk->GetDiskGeometry().bps;
+    disk->DiskWrite( (gpt.backup_lba)*bps,&gpt,sizeof(GPT));
+
+    gpt.current_lba=gpt.backup_lba;
 
     GEN_PART gpart;
+
     for(int i=0,n_gpt_entry=0;i<disk->CountPartitions();i++)
       {
          gpart=disk->GetPartition(i);
@@ -184,7 +212,7 @@ void GPTHelper::WriteBackup(GPT gpt)
 
 
 }
-
+*/
 
 uint32_t GPTHelper::WritePartitionEntries(GPT gpt)
 {
@@ -280,7 +308,7 @@ for(unsigned i=0;i<gpt.n_entries;++i)
            }
           else throw(DiskException("Invalid GPT entry: begin_lba>end_lba"));
        }
-     else throw("Invalid GPT entry: begin_lba<first_usable_lba or  begin_lba>last_usable_lba");
+     else throw DiskException("Invalid GPT entry: begin_lba<first_usable_lba or  begin_lba>last_usable_lba");
   }
  delete[] entries;
 }
