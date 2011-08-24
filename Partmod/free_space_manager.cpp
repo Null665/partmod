@@ -59,7 +59,7 @@ void FreeSpaceManager::FindFreeSpace(PartitionManager *partman,uint64_t num_sect
   if(found_gpt)
       find_in(partman,num_sect,0,PART_PRIMARY | PART_EXTENDED | PART_MBR_GPT,0,FREE_UNALLOCATED,NSECT_MB,1);
   else
-      find_in(partman,num_sect,0,PART_PRIMARY | PART_EXTENDED | PART_MBR_GPT,0,FREE_UNALLOCATED,NSECT_MB,spt);
+      find_in(partman,num_sect,0,PART_PRIMARY | PART_EXTENDED | PART_MBR_GPT,0,FREE_UNALLOCATED,NSECT_MB,1); //spt
 
   find_in(partman,num_sect,PART_EXTENDED,PART_LOGICAL,spt,FREE_EXTENDED,NSECT_MB);
   find_in(partman,num_sect,PART_MBR_GPT,PART_GPT,spt,FREE_GPT,NSECT_MB);

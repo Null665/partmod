@@ -4,7 +4,7 @@ using namespace std;
 
 int DiskIO::open_handle(const char* disk)
 {
-    hDisk=CreateFile(disk,GENERIC_READ|GENERIC_WRITE,FILE_SHARE_READ,0,OPEN_EXISTING,FILE_FLAG_WRITE_THROUGH ,0);
+    hDisk=CreateFile(disk,GENERIC_READ|GENERIC_WRITE,FILE_SHARE_READ,0,OPEN_EXISTING,FILE_FLAG_WRITE_THROUGH,0);
     if(hDisk==INVALID_HANDLE_VALUE)
         return ERR_OPEN_DISK;
     return 0;

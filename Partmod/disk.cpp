@@ -36,9 +36,31 @@ for(unsigned i=0;i<partman->CountPartitions();i++)
       found=false;
   }
 
+}
 
+//
+// Align partition to megabyte, cylinder, or track boundary.
+//
+uint64_t align_to(uint64_t sector,const GEOMETRY &dg,unsigned align_type)
+{
+  uint64_t div;
 
-
+  switch(align_type)
+    {
+      case ALIGN_SECTOR:
+        return sector;
+        break;
+      case ALIGN_TRACK:
+        div=dg.spt;
+        break;
+      case ALIGN_CYLINDER:
+        div=dg.spt*dg.tpc;
+        break;
+      case ALIGN_MEGABYTE:
+        div=MB/dg.bps;
+        break;
+    }
+  return sector+=div-(sector%div);
 }
 
 
@@ -269,8 +291,11 @@ void Disk::CreatePartitionPrimary(int which_frs,uint64_t size,uint64_t sect_befo
   if(frs.length<size+sect_before)
       throw DiskException(ERR_PART_TOO_BIG);
 
-  new_part.begin_sector=frs.begin_sector+sect_before;
-  new_part.length=size;
+  uint64_t begin_unaligned=frs.begin_sector+sect_before;
+  new_part.begin_sector=align_to(begin_unaligned,GetDiskGeometry(),ALIGN_MEGABYTE);
+
+//  new_part.begin_sector=frs.begin_sector+sect_before;
+  new_part.length=size-(new_part.begin_sector-begin_unaligned);
   new_part.fsid=fsid_man->GetByFsid(fsid).fsid_partmod;
   new_part.flags=PART_PRIMARY;
 
@@ -298,8 +323,10 @@ void Disk::CreatePartitionExtended(int which_frs,uint64_t size,uint64_t sect_bef
   if(fsid_man->GetByFsid(fsid).fsid_partmod!=FS_EXTENDED)
       throw DiskException("File system id "+U64ToStr(fsid)+" is not compatible with selected partition type");
 
-  new_part.begin_sector=frs.begin_sector+sect_before;
-  new_part.length=size;
+  uint64_t begin_unaligned=frs.begin_sector+sect_before;
+  new_part.begin_sector=align_to(begin_unaligned,GetDiskGeometry(),ALIGN_MEGABYTE);
+  new_part.length=size-(new_part.begin_sector-begin_unaligned);
+
   new_part.fsid=fsid_man->GetByFsid(fsid).fsid_partmod;
   new_part.flags=PART_EXTENDED;
 
@@ -324,8 +351,10 @@ void Disk::CreatePartitionPrimaryGPT(int which_frs,uint64_t size,uint64_t sect_b
   if(frs.length<size+sect_before)
       throw DiskException(ERR_PART_TOO_BIG);
 
-  new_part.begin_sector=frs.begin_sector+sect_before;
-  new_part.length=size;
+  uint64_t begin_unaligned=frs.begin_sector+sect_before;
+  new_part.begin_sector=align_to(begin_unaligned,GetDiskGeometry(),ALIGN_MEGABYTE);
+  new_part.length=size-(new_part.begin_sector-begin_unaligned);
+
   new_part.fsid=FS_GPT;
   new_part.flags=PART_MBR_GPT;
 
@@ -349,8 +378,10 @@ void Disk::CreatePartitionLogical(int which_frs,uint64_t size,uint64_t sect_befo
   if(frs.length<size+sect_before)
       throw DiskException(ERR_PART_TOO_BIG);
 
-  new_part.begin_sector=frs.begin_sector+sect_before;
-  new_part.length=size;
+  uint64_t begin_unaligned=frs.begin_sector+sect_before;
+  new_part.begin_sector=align_to(begin_unaligned,GetDiskGeometry(),ALIGN_MEGABYTE);
+  new_part.length=size-(new_part.begin_sector-begin_unaligned);
+
   new_part.fsid=fsid_man->GetByFsid(fsid).fsid_partmod;
   new_part.flags=PART_LOGICAL;
 
@@ -375,8 +406,10 @@ void Disk::CreatePartitionGPT(int which_frs,uint64_t size,uint64_t sect_before,_
   if(frs.length<size+sect_before)
       throw DiskException(ERR_PART_TOO_BIG);
 
-  new_part.begin_sector=frs.begin_sector+sect_before;
-  new_part.length=size;
+  uint64_t begin_unaligned=frs.begin_sector+sect_before;
+  new_part.begin_sector=align_to(begin_unaligned,GetDiskGeometry(),ALIGN_MEGABYTE);
+  new_part.length=size-(new_part.begin_sector-begin_unaligned);
+
   new_part.fsid=FS_FAT16;
   new_part.flags=PART_GPT;
 

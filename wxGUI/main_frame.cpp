@@ -172,6 +172,7 @@ void MainFrame::OnUnsetActiveClick(wxCommandEvent& event)
    {
        wxMessageBox(_(de.what()),_("Error"),wxICON_ERROR,this);
    }
+   refresh_partition_list();
 }
 
 void MainFrame::OnListGuidClick(wxCommandEvent& event)
@@ -299,33 +300,41 @@ void MainFrame::OnAbout(wxCommandEvent& WXUNUSED(event))
 
 
 
-
-
-
-
 //
 // -------------------------------------------------------------------------------
 //
+
+
 void MainFrame::refresh_disk_list()
 {
 stringstream ss;
 Disk *disk=new Disk;
 int item_index=0;
 
+
+#if defined(_WIN32) || defined(WIN32)
 for(int i=0,j=0;i<32;i++)
   {
     ss.str("");
     ss<<"\\\\.\\PhysicalDrive"<<i;
-
+#else // Linux
+for(char i='a',j=0;i<='z';i++)
+  {
+    ss.str("");
+    ss<<"/dev/sd"<<i;
+#endif
     try
       {
           disk->Open(ss.str());
       }
     catch(DiskException&de)
     {
-       if(de.error_code==ERR_OPEN_DISK)
-           continue;
 
+       if(de.error_code==ERR_OPEN_DISK)
+          {
+              disk->Close();
+              continue;
+          }
      }
 
     diskList->InsertItem(item_index,_(ss.str().c_str()));
@@ -339,7 +348,7 @@ for(int i=0,j=0;i<32;i++)
 
     diskList->SetItem(item_index,2,_(size_str(disk->LastSector(),disk->GetDiskGeometry().bps).c_str()),-1);
 
-    unsigned __int64 free=0;
+    unsigned long long free=0;
     for(int i=0;i<disk->CountFreeSpaces();i++)
         free+=disk->GetFreeSpace(i).length;
 
@@ -358,6 +367,9 @@ for(int i=0,j=0;i<32;i++)
   }
 delete disk;
 }
+
+
+
 
 void MainFrame::refresh_partition_list()
 {
@@ -438,10 +450,10 @@ void MainFrame::refresh_partition_list()
           partitionList->SetItem(i,1,_(tmp.type.c_str()),-1);
           partitionList->SetItem(i,2,_(tmp.fs_type.c_str()),-1);
           partitionList->SetItem(i,3,_(tmp.size.c_str()),-1);
-          partitionList->SetItem(i,4,_(tmp.free.c_str()),-1);
-          partitionList->SetItem(i,5,_(tmp.begin_sect.c_str()),-1);
-          partitionList->SetItem(i,6,_(tmp.last_sect.c_str()),-1);
-          partitionList->SetItem(i,7,_(tmp.mountpoint.c_str()),-1);
+         // partitionList->SetItem(i,4,_(tmp.free.c_str()),-1);
+          partitionList->SetItem(i,4,_(tmp.begin_sect.c_str()),-1);
+          partitionList->SetItem(i,5,_(tmp.last_sect.c_str()),-1);
+          partitionList->SetItem(i,6,_(tmp.mountpoint.c_str()),-1);
 
           if(tmp.selection_type==S_FREE_SPACE)
             {
@@ -485,7 +497,7 @@ void MainFrame::create_partition_listctrl()
     partitionList->InsertColumn(1,_("Type"),0,100);
     partitionList->InsertColumn(2,_("FS type"),0,70);
     partitionList->InsertColumn(3,_("Size"),0,70);
-    partitionList->InsertColumn(4,_("Free"),0,70);
+    //partitionList->InsertColumn(4,_("Free"),0,70);
     partitionList->InsertColumn(5,_("First sect."),0,80);
     partitionList->InsertColumn(6,_("Last sect."),0,80);
     partitionList->InsertColumn(7,_("Mount point"),0,100);

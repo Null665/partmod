@@ -61,7 +61,7 @@ typedef uint32_t uid_t;
 #define DISK_HYBRID            4 // MBR + GPT
 
 
-// Error list
+// Error codes
 #define ERR_OPEN_DISK            1  // Can't open disk
 #define ERR_OPEN_FILE            2  // Can't open file
 #define ERR_CREATE_FILE          3  // Can't create file
@@ -94,7 +94,11 @@ typedef uint32_t uid_t;
 #define ERR_GET_DISK_SIZE        30 // Could not get disk size
 #define ERR_ALREADY_OPEN         31 // Disk is already open
 
-
+// Values for sector alignment
+#define ALIGN_SECTOR    0
+#define ALIGN_CYLINDER  1
+#define ALIGN_TRACK     2
+#define ALIGN_MEGABYTE  3
 
 
 // Partmod file system IDs
@@ -107,9 +111,8 @@ typedef uint32_t uid_t;
 #define FS_LINUX                  8 // Ext2, Ext3, Ext4, ReiserFS... -- Linux
 #define FS_DYNAMIC                9 // Microsoft Windows dynamic volume manager partition
 
-// TODO: FSID_<anything> should be removed
+
 // MS-DOS partition IDs
-//
 #define FSID_GPT               0xEE
 #define FSID_EXTENDED          0x0F
 #define FSID_EXTENDED_LBA      0x05
