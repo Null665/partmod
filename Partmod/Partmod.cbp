@@ -9,11 +9,11 @@
 			<Script file="lib_finder.script" />
 			<Target title="Debug - Windows">
 				<Option platforms="Windows;" />
-				<Option output="..\..\bin\partmod" prefix_auto="1" extension_auto="1" />
-				<Option object_output="..\..\obj\windows\" />
+				<Option output="../../bin/partmod" prefix_auto="1" extension_auto="1" />
+				<Option object_output="../../obj/windows/" />
 				<Option type="3" />
 				<Option compiler="gcc" />
-				<Option host_application="D:\C++\tvarka\Partmod\bin\partmod_gui.exe" />
+				<Option host_application="D:/C++/tvarka/Partmod/bin/partmod_gui.exe" />
 				<Option createDefFile="1" />
 				<Option createStaticLib="1" />
 				<Compiler>
@@ -22,30 +22,30 @@
 				</Compiler>
 				<Linker>
 					<Add option="-pg -lgmon" />
-					<Add library="..\..\bin\libDiskio.dll.a" />
+					<Add library="../../bin/libDiskio.dll.a" />
 				</Linker>
 			</Target>
 			<Target title="Release - Windows">
 				<Option platforms="Windows;" />
-				<Option output="..\..\bin\partmod" prefix_auto="1" extension_auto="1" />
-				<Option working_dir="..\..\bin" />
-				<Option object_output="..\..\obj\windows\" />
+				<Option output="../../bin/partmod" prefix_auto="1" extension_auto="1" />
+				<Option working_dir="../../bin" />
+				<Option object_output="../../obj/windows/" />
 				<Option type="3" />
 				<Option compiler="gcc" />
-				<Option host_application="D:\C++\tvarka\Partmod\bin\partmod_gui.exe" />
+				<Option host_application="D:/C++/tvarka/Partmod/bin/partmod_gui.exe" />
 				<Option createStaticLib="1" />
 				<Linker>
 					<Add option="-s" />
-					<Add library="..\..\bin\libDiskio.dll.a" />
+					<Add library="../../bin/libDiskio.dll.a" />
 				</Linker>
 			</Target>
 			<Target title="Release - Linux">
 				<Option platforms="Unix;" />
-				<Option output="\usr\lib\libpartmod" prefix_auto="1" extension_auto="1" />
-				<Option object_output="..\..\obj\linux\" />
+				<Option output="../../bin/libpartmod" prefix_auto="1" extension_auto="1" />
+				<Option object_output="../../obj/linux/" />
 				<Option type="3" />
 				<Option compiler="gcc" />
-				<Option host_application="D:\C++\tvarka\Partmod\bin\partmod_gui.exe" />
+				<Option host_application="D:/C++/tvarka/Partmod/bin/partmod_gui.exe" />
 				<Option createDefFile="1" />
 				<Option createStaticLib="1" />
 				<Compiler>
@@ -55,13 +55,13 @@
 					<Add option="-s" />
 					<Add option="-L ../../bin" />
 					<Add library="diskio-partmod" />
-					<Add directory="..\..\bin" />
+					<Add directory="../../bin" />
 				</Linker>
 			</Target>
 			<Target title="Debug - Linux">
 				<Option platforms="Unix;" />
-				<Option output="\usr\lib\libpartmodd" prefix_auto="1" extension_auto="1" />
-				<Option object_output="..\..\obj\linux\" />
+				<Option output="../../bin/libpartmodd" prefix_auto="1" extension_auto="1" />
+				<Option object_output="../../obj/linux/" />
 				<Option type="3" />
 				<Option compiler="gcc" />
 				<Option host_application="partmod_gui.exe" />
@@ -74,7 +74,7 @@
 				<Linker>
 					<Add option="-pg" />
 					<Add library="diskio-partmodd" />
-					<Add directory="..\..\bin" />
+					<Add directory="../../bin" />
 				</Linker>
 				<Environment>
 					<Variable name="a" value="b" />

@@ -7,22 +7,22 @@
 		<Option compiler="gcc" />
 		<Build>
 			<Target title="Debug - Windows">
+				<Option platforms="Windows;" />
 				<Option output="..\..\bin\wxGUI" prefix_auto="1" extension_auto="1" />
-				<Option object_output="..\..\obj\" />
+				<Option object_output="..\..\obj\windows" />
 				<Option type="0" />
 				<Option compiler="gcc" />
 				<Option projectLinkerOptionsRelation="2" />
 				<Compiler>
-					<Add option="-pg" />
 					<Add option="-g" />
 					<Add option="-D__WXDEBUG__" />
 					<Add directory="$(#wx)\lib\gcc_lib\mswd" />
+					<Add directory="$(#wx)\include" />
 				</Compiler>
 				<ResourceCompiler>
 					<Add directory="$(#wx)\lib\gcc_lib\mswd" />
 				</ResourceCompiler>
 				<Linker>
-					<Add option="-pg -lgmon" />
 					<Add library="libwxmsw28d_core.a" />
 					<Add library="libwxbase28d.a" />
 					<Add library="libwxpngd.a" />
@@ -30,19 +30,25 @@
 					<Add library="libwxtiffd.a" />
 					<Add library="libwxzlibd.a" />
 					<Add library="..\..\bin\libPartmod.dll.a" />
+					<Add library="ole32" />
+					<Add library="comctl32" />
+					<Add library="winspool" />
+					<Add library="uuid" />
+					<Add library="oleaut32" />
 					<Add directory="$(#wx)\lib\gcc_lib" />
 				</Linker>
 			</Target>
 			<Target title="Release - Windows">
+				<Option platforms="Windows;" />
 				<Option output="..\..\bin\wxGUI" prefix_auto="1" extension_auto="1" />
-				<Option object_output="..\..\obj\" />
-				<Option type="1" />
+				<Option object_output="..\..\obj\windows" />
+				<Option type="0" />
 				<Option compiler="gcc" />
-				<Option use_console_runner="0" />
 				<Option projectLinkerOptionsRelation="2" />
 				<Compiler>
 					<Add option="-O2" />
 					<Add directory="$(#wx)\lib\gcc_lib\msw" />
+					<Add directory="$(#wx)\include" />
 				</Compiler>
 				<ResourceCompiler>
 					<Add directory="$(#wx)\lib\gcc_lib\msw" />
@@ -56,91 +62,56 @@
 					<Add library="libwxtiff.a" />
 					<Add library="libwxzlib.a" />
 					<Add library="..\..\bin\libPartmod.dll.a" />
+					<Add library="ole32" />
+					<Add library="comctl32" />
+					<Add library="winspool" />
+					<Add library="uuid" />
+					<Add library="oleaut32" />
 					<Add directory="$(#wx)\lib\gcc_lib" />
 				</Linker>
 			</Target>
 			<Target title="Debug - Linux">
+				<Option platforms="Unix;" />
 				<Option output="..\..\bin\wxGUI" prefix_auto="1" extension_auto="1" />
-				<Option object_output="..\..\obj\" />
+				<Option object_output="..\..\obj\linux" />
 				<Option type="0" />
 				<Option compiler="gcc" />
 				<Option projectLinkerOptionsRelation="2" />
 				<Compiler>
 					<Add option="-g" />
+					<Add option="`wx-config  --version=2.9 --static=no --unicode=no --debug=yes --cflags`" />
 					<Add option="-D__WXDEBUG__" />
-					<Add directory="$(#wx)\lib\gcc_lib\mswd" />
 				</Compiler>
-				<ResourceCompiler>
-					<Add directory="$(#wx)\lib\gcc_lib\mswd" />
-				</ResourceCompiler>
 				<Linker>
-					<Add library="libwxmsw28d_core.a" />
-					<Add library="libwxbase28d.a" />
-					<Add library="libwxpngd.a" />
-					<Add library="libwxjpegd.a" />
-					<Add library="libwxtiffd.a" />
-					<Add library="libwxzlibd.a" />
-					<Add library="partmodd" />
-					<Add library="diskio-partmodd" />
-					<Add directory="$(#wx)\lib\gcc_lib" />
+					<Add option="`wx-config  --version=2.9 --static=no --unicode=no --debug=yes --libs`" />
+					<Add library="libpartmodd" />
+					<Add library="libdiskio-partmodd" />
+					<Add directory="$(TARGET_OUTPUT_DIR)" />
 				</Linker>
 			</Target>
 			<Target title="Release - Linux">
+				<Option platforms="Unix;" />
 				<Option output="..\..\bin\wxGUI" prefix_auto="1" extension_auto="1" />
-				<Option object_output="..\..\obj\" />
+				<Option object_output="..\..\obj\linux" />
 				<Option type="0" />
 				<Option compiler="gcc" />
 				<Option projectLinkerOptionsRelation="2" />
 				<Compiler>
 					<Add option="-O2" />
-					<Add directory="$(#wx)\lib\gcc_lib\msw" />
+					<Add option="`wx-config --cflags`" />
 				</Compiler>
-				<ResourceCompiler>
-					<Add directory="$(#wx)\lib\gcc_lib\msw" />
-				</ResourceCompiler>
 				<Linker>
 					<Add option="-s" />
-					<Add library="libwxmsw28_core.a" />
-					<Add library="libwxbase28.a" />
-					<Add library="libwxpng.a" />
-					<Add library="libwxjpeg.a" />
-					<Add library="libwxtiff.a" />
-					<Add library="libwxzlib.a" />
-					<Add library="partmod" />
-					<Add library="diskio-partmod" />
-					<Add directory="$(#wx)\lib\gcc_lib" />
+					<Add option="`wx-config  --version=2.9 --static=no --unicode=no --debug=no --libs`" />
+					<Add library="libpartmod" />
+					<Add library="libdiskio-partmod" />
+					<Add directory="$(TARGET_OUTPUT_DIR)" />
 				</Linker>
 			</Target>
 		</Build>
 		<Compiler>
-			<Add option="-pipe" />
-			<Add option="-mthreads" />
-			<Add option="-D__GNUWIN32__" />
-			<Add option="-D__WXMSW__" />
-			<Add option='[[if (PLATFORM == PLATFORM_MSW &amp;&amp; (GetCompilerFactory().GetCompilerVersionString(_T(&quot;gcc&quot;)) &gt;= _T(&quot;4.0.0&quot;))) print(_T(&quot;-Wno-attributes&quot;));]]' />
 			<Add option="-Wall" />
-			<Add directory="$(#wx)\include" />
-			<Add directory="$(#wx)\contrib\include" />
 		</Compiler>
-		<ResourceCompiler>
-			<Add directory="$(#wx)\include" />
-		</ResourceCompiler>
-		<Linker>
-			<Add option="-mthreads" />
-			<Add library="libkernel32.a" />
-			<Add library="libuser32.a" />
-			<Add library="libgdi32.a" />
-			<Add library="libwinspool.a" />
-			<Add library="libcomdlg32.a" />
-			<Add library="libadvapi32.a" />
-			<Add library="libshell32.a" />
-			<Add library="libole32.a" />
-			<Add library="liboleaut32.a" />
-			<Add library="libuuid.a" />
-			<Add library="libcomctl32.a" />
-			<Add library="libwsock32.a" />
-			<Add library="libodbc32.a" />
-		</Linker>
 		<Unit filename="dlg_create_backup.cpp" />
 		<Unit filename="dlg_create_backup.h" />
 		<Unit filename="dlg_guid_list.cpp" />
@@ -151,6 +122,8 @@
 		<Unit filename="dlg_open_diskimage.h" />
 		<Unit filename="dlg_restore_backup.cpp" />
 		<Unit filename="dlg_restore_backup.h" />
+		<Unit filename="dlg_save_changes.cpp" />
+		<Unit filename="dlg_save_changes.h" />
 		<Unit filename="main_app.cpp" />
 		<Unit filename="main_app.hpp" />
 		<Unit filename="main_frame.cpp" />
@@ -167,6 +140,7 @@
 					<wxDialog wxs="wxsmith/DlgGuidList.wxs" src="dlg_guid_list.cpp" hdr="dlg_guid_list.h" name="DlgGuidList" language="CPP" />
 					<wxDialog wxs="wxsmith/DlgCreateBackup.wxs" src="dlg_create_backup.cpp" hdr="dlg_create_backup.h" name="DlgCreateBackup" language="CPP" />
 					<wxDialog wxs="wxsmith/DlgRestoreBackup.wxs" src="dlg_restore_backup.cpp" hdr="dlg_restore_backup.h" name="DlgRestoreBackup" language="CPP" />
+					<wxDialog wxs="wxsmith/DlgSaveChanges.wxs" src="dlg_save_changes.cpp" hdr="dlg_save_changes.h" name="DlgSaveChanges" language="CPP" />
 				</resources>
 			</wxsmith>
 		</Extensions>

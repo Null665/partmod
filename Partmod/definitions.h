@@ -1,7 +1,7 @@
 /*
  * Various functions and definitions that are used by Disk class
  *
- * NOTE: I don't like the dependency between disk.h, definitions.h and diskio.hpp
+ * NOTE: I don't like the dependency between disk.h, definitions.h and diskio.hpp. Will fix it one day
  *
  */
 
@@ -44,7 +44,7 @@ typedef uint32_t uid_t;
 #define PART_UNKNOWN          0  // Entry is unused
 #define PART_PRIMARY          1  // Primary partition
 #define PART_EXTENDED         2  // Partition is the "Extended LBA" partition
-#define PART_LOGICAL      4  // partition is in extended partition ( logical partition )
+#define PART_LOGICAL          4  // partition is in extended partition ( logical partition )
 #define PART_ACTIVE           8  // Active (bootable)
 #define PART_NOT_FORMATTED    16 // FIXME: PART_NOT_FORMATTED flag is totally ignored
 #define PART_GPT              32 // GPT partition

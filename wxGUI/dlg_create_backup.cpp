@@ -46,9 +46,11 @@ DlgCreateBackup::~DlgCreateBackup()
 
 void DlgCreateBackup::OnButtonBrowseClick(wxCommandEvent& event)
 {
+    wxString wstr=_("partition table backups (*.ptb)|*.ptb|All files (*.*)|*.*");
+
     wxFileDialog
-       openFileDialog(this, _("Save partition table backup"), "", "",
-                       "partition table backups (*.ptb)|*.ptb|All files (*.*)|*.*", wxFD_SAVE|wxFD_FILE_MUST_EXIST);
+       openFileDialog(this, _("Save partition table backup"), _(""), _(""),
+                       wstr, wxFD_SAVE|wxFD_FILE_MUST_EXIST);
     if (openFileDialog.ShowModal() == wxID_CANCEL)
         return;
 

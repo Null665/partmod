@@ -127,6 +127,8 @@ public:
     void OnCreateBackupClick(wxCommandEvent& event);
     void OnRestoreBackupClick(wxCommandEvent& event);
 
+    void OnWipePartitionClick(wxCommandEvent& event);
+
     DECLARE_EVENT_TABLE()
 };
 

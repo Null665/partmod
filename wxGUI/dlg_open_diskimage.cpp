@@ -10,7 +10,6 @@ using namespace std;
 //(*InternalHeaders(DlgOpenDiskImage)
 #include <wx/intl.h>
 #include <wx/string.h>
-
 //*)
 
 //(*IdInit(DlgOpenDiskImage)
@@ -43,8 +42,8 @@ DlgOpenDiskImage::DlgOpenDiskImage(wxWindow* parent,wxWindowID id,const wxPoint&
     TextImagePath = new wxTextCtrl(this, ID_TEXTCTRL1, wxEmptyString, wxPoint(24,48), wxSize(192,21), 0, wxDefaultValidator, _T("ID_TEXTCTRL1"));
     ButtonBrowse = new wxButton(this, ID_BUTTON1, _("Browse..."), wxPoint(240,48), wxDefaultSize, 0, wxDefaultValidator, _T("ID_BUTTON1"));
     StaticText1 = new wxStaticText(this, ID_STATICTEXT1, _("Disk image file path:"), wxPoint(24,32), wxSize(144,13), 0, _T("ID_STATICTEXT1"));
-    ButtonOK = new wxButton(this, ID_BUTTON2, _("Open"), wxPoint(48,216), wxDefaultSize, 0, wxDefaultValidator, _T("ID_BUTTON2"));
-    Button3 = new wxButton(this, wxID_CANCEL, _("Cancel"), wxPoint(152,216), wxDefaultSize, 0, wxDefaultValidator, _T("wxID_CANCEL"));
+    ButtonOK = new wxButton(this, ID_BUTTON2, _("Open"), wxPoint(72,216), wxDefaultSize, 0, wxDefaultValidator, _T("ID_BUTTON2"));
+    Button3 = new wxButton(this, wxID_CANCEL, _("Cancel"), wxPoint(176,216), wxDefaultSize, 0, wxDefaultValidator, _T("wxID_CANCEL"));
     StaticBox1 = new wxStaticBox(this, ID_STATICBOX1, _("Disk image properties"), wxPoint(24,80), wxSize(288,128), 0, _T("ID_STATICBOX1"));
     TextBPS = new wxTextCtrl(this, ID_TEXTCTRL2, wxEmptyString, wxPoint(40,120), wxSize(88,21), 0, wxDefaultValidator, _T("ID_TEXTCTRL2"));
     TextTPC = new wxTextCtrl(this, ID_TEXTCTRL3, wxEmptyString, wxPoint(168,120), wxSize(88,21), 0, wxDefaultValidator, _T("ID_TEXTCTRL3"));
@@ -77,7 +76,10 @@ void DlgOpenDiskImage::OnButtonOKClick(wxCommandEvent& event)
     TextBPS->GetLineText(0).ToLong(&bps);
     TextSPT->GetLineText(0).ToLong(&spt);
     TextTPC->GetLineText(0).ToLong(&tpc);
-    cylinders=StrToU64(TextCylinders->GetLineText(0).c_str());
+    cylinders=StrToU64(TextCylinders->GetLineText(0).ToAscii());
+
+
+
 
 
 
@@ -138,7 +140,7 @@ void DlgOpenDiskImage::OnButtonBrowseClick(wxCommandEvent& event)
 
     FILE *fp=fopen(openFileDialog.GetPath().c_str(),"rb");
     fseek(fp,0,SEEK_END);
-    uint64_t file_size=ftell(fp);
+    uint64_t file_size=ftello64(fp);
     fclose(fp);
 #endif
 
@@ -148,7 +150,7 @@ void DlgOpenDiskImage::OnButtonBrowseClick(wxCommandEvent& event)
 
     if(file_size/bps<10485760)
         chs.SetTPC(16);
-    else if(file_size/bps<68719476736)
+    else if(file_size/bps<(uint64_t)68719476736)
         chs.SetTPC(255);
 
 

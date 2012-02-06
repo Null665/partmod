@@ -20,12 +20,12 @@
 		</object>
 		<object class="wxButton" name="ID_BUTTON2" variable="ButtonOK" member="yes">
 			<label>Open</label>
-			<pos>48,216</pos>
+			<pos>72,216</pos>
 			<handler function="OnButtonOKClick" entry="EVT_BUTTON" />
 		</object>
 		<object class="wxButton" name="wxID_CANCEL" variable="Button3" member="yes">
 			<label>Cancel</label>
-			<pos>152,216</pos>
+			<pos>176,216</pos>
 		</object>
 		<object class="wxStaticBox" name="ID_STATICBOX1" variable="StaticBox1" member="yes">
 			<label>Disk image properties</label>

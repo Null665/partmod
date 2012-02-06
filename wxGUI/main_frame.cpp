@@ -4,6 +4,7 @@
 #include "dlg_guid_list.h"
 #include "dlg_create_backup.h"
 #include "dlg_restore_backup.h"
+#include "dlg_save_changes.h"
 
 #include <sstream>
 #include <algorithm>
@@ -81,6 +82,14 @@ void MainFrame::OnSaveChangesClick(wxCommandEvent& event)
                         _("Warning"),wxYES_NO| wxICON_WARNING, this );
   if(ret!=wxYES)
       return;
+/*
+  DlgSaveChanges *dlg=new DlgSaveChanges(this);
+  dlg->ShowModal(disk);
+
+  refresh_partition_list();
+  delete dlg;
+*/
+
   try
   {
      disk->Save();
@@ -162,6 +171,24 @@ void MainFrame::OnSetActiveClick(wxCommandEvent& event)
    }
 
 }
+
+void MainFrame::OnWipePartitionClick(wxCommandEvent& event)
+{
+   int ret=wxMessageBox( _("Do you really want to wipe all data on the selected partition? Data recovery will not be possible."),
+                        _("Warning"),wxYES_NO| wxICON_WARNING, this );
+   if(ret!=wxYES)
+      return;
+
+   try{
+   disk->Wipe(selected_partition,false);
+   }
+   catch(DiskException &de)
+   {
+       wxMessageBox(_(de.what()),_("Error"),wxICON_ERROR,this);
+   }
+   refresh_partition_list();
+}
+
 
 void MainFrame::OnUnsetActiveClick(wxCommandEvent& event)
 {
@@ -273,7 +300,7 @@ void MainFrame::OnDiskListClick(wxListEvent& event)
    if(disk->IsOpen())
         disk->Close();
    try{
-   disk->Open(diskname.c_str());
+   disk->Open(diskname.ToAscii());
    }
    catch(DiskException &de)
    {
@@ -530,7 +557,7 @@ void MainFrame::create_menus()
  //   menuPartition->Append(ID_CHECK_FS,_("Check file system"));
  //   menuPartition->Append(ID_FORMAT,_("Format"));
     menuPartition->AppendSeparator();
-   // menuPartition->Append(ID_WIPE_PARTITION,_("Wipe"),_("Wipe all data on the partition"));
+    menuPartition->Append(ID_WIPE_PARTITION,_("Wipe"),_("Wipe all data on the partition"));
 
     menuTools->Append(ID_LIST_GUID,_("List known GUIDs"),_("List known Partition Globally Unique Identifiers"));
 
@@ -571,6 +598,8 @@ BEGIN_EVENT_TABLE(MainFrame, wxFrame)
 
     EVT_MENU(ID_CREATE_BACKUP, MainFrame::OnCreateBackupClick)
     EVT_MENU(ID_RESTORE_BACKUP, MainFrame::OnRestoreBackupClick)
+
+    EVT_MENU(ID_WIPE_PARTITION, MainFrame::OnWipePartitionClick)
 
 
 // Disk list events

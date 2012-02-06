@@ -1,20 +1,23 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
 <CodeBlocks_layout_file>
-	<ActiveTarget name="Release - Windows" />
-	<File name="dlg_create_backup.cpp" open="0" top="0" tabpos="0">
-		<Cursor position="119" topLine="0" />
+	<ActiveTarget name="Debug - Linux" />
+	<File name="dlg_create_backup.cpp" open="0" top="0" tabpos="4">
+		<Cursor position="2737" topLine="40" />
 	</File>
-	<File name="dlg_create_backup.h" open="0" top="0" tabpos="0">
-		<Cursor position="461" topLine="15" />
+	<File name="dlg_create_backup.h" open="0" top="0" tabpos="5">
+		<Cursor position="86" topLine="0" />
 	</File>
-	<File name="dlg_newpart.cpp" open="0" top="0" tabpos="3">
-		<Cursor position="6216" topLine="0" />
+	<File name="dlg_guid_list.cpp" open="1" top="0" tabpos="1">
+		<Cursor position="1065" topLine="10" />
+	</File>
+	<File name="dlg_newpart.cpp" open="0" top="0" tabpos="1">
+		<Cursor position="7572" topLine="186" />
 	</File>
 	<File name="dlg_newpart.hpp" open="0" top="0" tabpos="2">
 		<Cursor position="398" topLine="0" />
 	</File>
-	<File name="dlg_open_diskimage.cpp" open="0" top="0" tabpos="4">
-		<Cursor position="4486" topLine="120" />
+	<File name="dlg_open_diskimage.cpp" open="1" top="0" tabpos="2">
+		<Cursor position="5151" topLine="112" />
 	</File>
 	<File name="dlg_open_diskimage.h" open="0" top="0" tabpos="3">
 		<Cursor position="186" topLine="5" />
@@ -28,13 +31,13 @@
 	<File name="main_app.cpp" open="0" top="0" tabpos="1">
 		<Cursor position="335" topLine="0" />
 	</File>
-	<File name="main_app.hpp" open="0" top="0" tabpos="1">
+	<File name="main_app.hpp" open="0" top="0" tabpos="2">
 		<Cursor position="63" topLine="0" />
 	</File>
-	<File name="main_frame.cpp" open="1" top="1" tabpos="2">
-		<Cursor position="576" topLine="102" />
+	<File name="main_frame.cpp" open="0" top="0" tabpos="2">
+		<Cursor position="13709" topLine="451" />
 	</File>
-	<File name="main_frame.hpp" open="1" top="0" tabpos="1">
-		<Cursor position="2469" topLine="98" />
+	<File name="main_frame.hpp" open="0" top="0" tabpos="1">
+		<Cursor position="1526" topLine="0" />
 	</File>
 </CodeBlocks_layout_file>
