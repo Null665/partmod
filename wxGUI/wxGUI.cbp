@@ -98,7 +98,7 @@
 				<Option projectLinkerOptionsRelation="2" />
 				<Compiler>
 					<Add option="-O2" />
-					<Add option="`wx-config --cflags`" />
+					<Add option="`wx-config  --version=2.9 --static=no --unicode=no --debug=no --cflags`" />
 				</Compiler>
 				<Linker>
 					<Add option="-s" />
