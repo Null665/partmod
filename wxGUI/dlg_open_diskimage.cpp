@@ -2,7 +2,6 @@
 #include <string>
 #include <wx/filedlg.h>
 #include <wx/msgdlg.h>
-#include <stdio.h>
 
 
 
@@ -114,36 +113,14 @@ void DlgOpenDiskImage::OnButtonOKClick(wxCommandEvent& event)
 void DlgOpenDiskImage::OnButtonBrowseClick(wxCommandEvent& event)
 {
     wxFileDialog
-    openFileDialog(this, _("Open disk image"), "", "",
-                   ".img files (*.img)|*.img|All files (*.*)|*.*", wxFD_OPEN|wxFD_FILE_MUST_EXIST);
+    openFileDialog(this, _("Open disk image"), _(""), _(""),
+                   _(".img files (*.img)|*.img|All files (*.*)|*.*"), wxFD_OPEN|wxFD_FILE_MUST_EXIST);
     if (openFileDialog.ShowModal() == wxID_CANCEL)
         return;
 
     TextImagePath->SetValue(openFileDialog.GetPath());
 
-//
-// TODO: Find a portable way to get file size for files larger than 2GB and 4GB
-//
-#if  defined(_WIN32) || defined(WIN32)
-#include <windows.h>
-    HANDLE hFile=CreateFile(openFileDialog.GetPath().c_str(),GENERIC_READ|GENERIC_WRITE,7,0,OPEN_EXISTING,0,0);
-    if(hFile==INVALID_HANDLE_VALUE)
-    {
-        return;
-
-    }
-    LARGE_INTEGER li,unused;
-    SetFilePointerEx(hFile,unused,&li,FILE_END);
-    CloseHandle(hFile);
-    uint64_t file_size=li.QuadPart;
-#else
-
-    FILE *fp=fopen(openFileDialog.GetPath().c_str(),"rb");
-    fseek(fp,0,SEEK_END);
-    uint64_t file_size=ftello64(fp);
-    fclose(fp);
-#endif
-
+    uint64_t file_size=GetFileSize(openFileDialog.GetPath().c_str());
     int bps=512;
     CHS chs=file_size/bps;
 

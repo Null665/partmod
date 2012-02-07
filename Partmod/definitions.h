@@ -5,7 +5,6 @@
  *
  */
 
-class DiskIO;
 #ifndef DEFINITIONS_H
 #define DEFINITIONS_H
 
@@ -94,7 +93,7 @@ typedef uint32_t uid_t;
 #define ERR_GET_DISK_SIZE        30 // Could not get disk size
 #define ERR_ALREADY_OPEN         31 // Disk is already open
 
-// Values for sector alignment
+// Values for partition alignment
 #define ALIGN_SECTOR    0
 #define ALIGN_CYLINDER  1
 #define ALIGN_TRACK     2
@@ -143,6 +142,7 @@ typedef uint32_t uid_t;
 
 
 extern const char *error_table[];
+class DiskIO;
 
 
 #pragma pack(1)
@@ -324,4 +324,6 @@ void generate_guid(__GUID &);
 void set_guid(__GUID &guid,uint32_t one,uint16_t two, uint16_t three,uint64_t four);
 
 bool Dump2File(const char *fn,const void *data,int size);
+
+uint64_t GetFileSize(std::string filename);
 #endif // definitions.h

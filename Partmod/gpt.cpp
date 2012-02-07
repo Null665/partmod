@@ -25,7 +25,7 @@ for(int i=0;i<disk->CountPartitions();i++)
 
 
 GPT gpt;
-
+/*
 disk->ReadGPT(gpt);
 
 if(IsValidGPT(gpt)==false)
@@ -38,7 +38,8 @@ if(IsValidGPT(gpt)==false)
       }
 
 
-  }
+  }*/
+
 gpt=CreateGPT(disk->GetPartition(which_gpt));
 
 gpt.entries_checksum=WritePartitionEntries(gpt);
@@ -174,45 +175,10 @@ void GPTHelper::WriteBackup(GPT gpt)
     uint8_t *buff[buff_size];
 
     disk->DiskRead(gpt.first_entry_lba*bps,buff,buff_size);
-    disk->DiskWrite((gpt.backup_lba*bps)-buff_size,buff,buff_size);
+    disk->DiskWrite((gpt.backup_lba*bps)-(buff_size-buff_size%bps),buff,buff_size);
 
 }
-/*
-void GPTHelper::WriteBackup(GPT gpt)
-{
-    int bps=disk->GetDiskGeometry().bps;
-    disk->DiskWrite( (gpt.backup_lba)*bps,&gpt,sizeof(GPT));
 
-    gpt.current_lba=gpt.backup_lba;
-
-    GEN_PART gpart;
-
-    for(int i=0,n_gpt_entry=0;i<disk->CountPartitions();i++)
-      {
-         gpart=disk->GetPartition(i);
-         if( !(gpart.flags&PART_GPT) )
-             continue;
-         GPT_ENTRY entry;
-         GPT_SPECIFIC gspec;
-
-         gspec=disk->GetGPTSpecific(i);
-
-         entry.begin_lba=gpart.begin_sector;
-         entry.end_lba=gpart.begin_sector+gpart.length;
-         entry.flags=gspec.flags;
-         memcpy(entry.name,gspec.name,32*sizeof(uint16_t));
-         entry.type_guid=gspec.type_guid;
-         entry.unique_guid=gspec.unique_guid;
-
-         uint64_t write_loc=gpt.last_usable_lba*bps-(n_gpt_entry*gpt.entry_size);
-         disk->DiskWrite(write_loc,reinterpret_cast<char*>(&entry),sizeof(entry));
-
-          n_gpt_entry++;
-      }
-
-
-}
-*/
 
 uint32_t GPTHelper::WritePartitionEntries(GPT gpt)
 {

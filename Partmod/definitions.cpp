@@ -300,6 +300,18 @@ string get_mount_point(GEN_PART gpart,unsigned int disk_signature)
   return "Unknown";
 }
 
+uint64_t GetFileSize(std::string filename)
+{
+  HANDLE hFile=CreateFile(filename.c_str(),GENERIC_READ|GENERIC_WRITE,7,0,OPEN_EXISTING,0,0);
+  if(hFile==INVALID_HANDLE_VALUE)
+      return 0;
+
+  LARGE_INTEGER li,unused;
+  SetFilePointerEx(hFile,unused,&li,FILE_END);
+  CloseHandle(hFile);
+  return li.QuadPart;
+}
+
 
 void clrscr(void)
 {
@@ -323,7 +335,22 @@ void clrscr(void)
 
 string get_mount_point(GEN_PART gpart,unsigned int disk_signature)
 {
-  return "";
+  return "[not implemented]";
+}
+
+uint64_t GetFileSize(std::string filename)
+{
+    uint64_t file_size;
+    FILE *fp=fopen(openFileDialog.GetPath().c_str(),"rb");
+
+    if(fp==0)
+        return 0;
+
+    fseek(fp,0,SEEK_END);
+    file_size=ftello64(fp);
+
+    fclose(fp);
+    return file_size;
 }
 
 

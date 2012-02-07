@@ -352,7 +352,10 @@ void Disk::CreatePartitionPrimaryGPT(int which_frs,uint64_t size,uint64_t sect_b
       throw DiskException(ERR_PART_TOO_BIG);
 
   uint64_t begin_unaligned=frs.begin_sector+sect_before;
-  new_part.begin_sector=align_to(begin_unaligned,GetDiskGeometry(),ALIGN_MEGABYTE);
+
+  //new_part.begin_sector=align_to(begin_unaligned,GetDiskGeometry(),ALIGN_MEGABYTE);
+  new_part.begin_sector=begin_unaligned;
+
   new_part.length=size-(new_part.begin_sector-begin_unaligned);
 
   new_part.fsid=FS_GPT;
@@ -605,7 +608,6 @@ for(int i=0;i<4;i++)
           case FS_GPT:
             gpart.flags|=PART_MBR_GPT;
             break;
-
          default:
             gpart.flags|=PART_PRIMARY;
             break;
