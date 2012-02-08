@@ -87,8 +87,8 @@ int DlgNewPart::ShowModal(Disk *disk, int selected_frs)
   if(frs_type==FREE_UNALLOCATED)
     {
       ChoicePartitionType->Append(_("Primary"),(void*)PART_PRIMARY);
-      ChoicePartitionType->Append(_("GPT disk"),(void*)PART_MBR_GPT);
       ChoicePartitionType->Append(_("Extended"),(void*)PART_EXTENDED);
+      ChoicePartitionType->Append(_("GPT partition table"),(void*)PART_MBR_GPT);
     }
   else if(frs_type==FREE_EXTENDED)
     {

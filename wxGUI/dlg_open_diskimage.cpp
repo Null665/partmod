@@ -120,7 +120,7 @@ void DlgOpenDiskImage::OnButtonBrowseClick(wxCommandEvent& event)
 
     TextImagePath->SetValue(openFileDialog.GetPath());
 
-    uint64_t file_size=GetFileSize(openFileDialog.GetPath().c_str());
+    uint64_t file_size=GetFileSize(openFileDialog.GetPath().ToAscii());
     int bps=512;
     CHS chs=file_size/bps;
 

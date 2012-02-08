@@ -307,6 +307,8 @@ uint64_t GetFileSize(std::string filename)
       return 0;
 
   LARGE_INTEGER li,unused;
+  memset(&li,0,sizeof(LARGE_INTEGER));
+  memset(&unused,0,sizeof(LARGE_INTEGER));
   SetFilePointerEx(hFile,unused,&li,FILE_END);
   CloseHandle(hFile);
   return li.QuadPart;

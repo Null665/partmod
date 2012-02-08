@@ -382,7 +382,10 @@ void Disk::CreatePartitionLogical(int which_frs,uint64_t size,uint64_t sect_befo
       throw DiskException(ERR_PART_TOO_BIG);
 
   uint64_t begin_unaligned=frs.begin_sector+sect_before;
-  new_part.begin_sector=align_to(begin_unaligned,GetDiskGeometry(),ALIGN_MEGABYTE);
+
+ // new_part.begin_sector=align_to(begin_unaligned,GetDiskGeometry(),ALIGN_MEGABYTE);
+  new_part.begin_sector=begin_unaligned;
+
   new_part.length=size-(new_part.begin_sector-begin_unaligned);
 
   new_part.fsid=fsid_man->GetByFsid(fsid).fsid_partmod;

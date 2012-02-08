@@ -92,15 +92,15 @@ if(n_logical==0)
 //
 // NOW LET'S FUCK UP THE PARTITION TABLE!!!1
 // Well, finally ths peace of code works
-uint64_t extd_begin_sector=disk->GetPartition(extended_part).begin_sector;
-uint64_t ebr_sector=extd_begin_sector;
+
 uint64_t begin_sector_extd=disk->GetPartition(extended_part).begin_sector;
+uint64_t ebr_sector=begin_sector_extd;
 
 for(unsigned i=0;i<disk->CountPartitions();)
   {
     const GEN_PART &curr_part=disk->GetPartition(i);
 
-    if( (curr_part.flags&PART_LOGICAL)==false)
+    if((curr_part.flags&PART_LOGICAL)==false)
       {
         i++;
         continue;
@@ -108,14 +108,15 @@ for(unsigned i=0;i<disk->CountPartitions();)
 
 
     MBR_SPECIFIC mspec=disk->GetMBRSpecific(i);
-    EBR ebr={0};
+    EBR ebr;
+    memset(&ebr,0,sizeof(EBR));
 
     ebr.partition_table[0].begin_lba=curr_part.begin_sector-ebr_sector;
     ebr.partition_table[0].lba_blocks=curr_part.length;
     ebr.partition_table[0].partition_type=mspec.fsid;
     curr_part.flags&PART_ACTIVE ?
-        ebr.partition_table[i].status=0x80 :
-        ebr.partition_table[i].status=0x00;
+        ebr.partition_table[0].status=0x80:
+        ebr.partition_table[0].status=0x00;
 
     MBR_CHS chs=lba_to_chs(curr_part.begin_sector,disk->GetDiskGeometry());
     memcpy(&ebr.partition_table[0].begin_chs,&chs,sizeof(MBR_CHS));
@@ -125,6 +126,7 @@ for(unsigned i=0;i<disk->CountPartitions();)
     ++i;
     while(i<disk->CountPartitions() && (disk->GetPartition(i).flags&PART_LOGICAL)==false)
         i++;
+
     if(i==disk->CountPartitions())
       {
         ebr_sector=curr_part.begin_sector-spt;

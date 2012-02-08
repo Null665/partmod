@@ -417,9 +417,9 @@ void MainFrame::refresh_partition_list()
          else if(gpart.flags&PART_LOGICAL)
              tmp.type="Logical";
          else if(gpart.flags&PART_MBR_GPT)
-             tmp.type="GPT container";
+             tmp.type="GPT part. table";
          else if(gpart.flags&PART_GPT)
-             tmp.type="GPT logical";
+             tmp.type="GPT partition";
 
          if(gpart.flags&PART_EXTENDED || gpart.flags&PART_MBR_GPT)
              tmp.mountpoint="";
@@ -506,7 +506,7 @@ void MainFrame::refresh_partition_list()
 
 void MainFrame::create_disk_listctrl()
 {
-    diskList->InsertColumn(0,_("Disk"),0,100);
+    diskList->InsertColumn(0,_("Disk"),0,120);
     diskList->InsertColumn(1,_("Type"),0,50);
     diskList->InsertColumn(2,_("Size"),0,70);
     diskList->InsertColumn(3,_("Free"),0,70);
@@ -522,7 +522,7 @@ void MainFrame::create_partition_listctrl()
 {
     partitionList->InsertColumn(0,_("Partition #"),0,70);
     partitionList->InsertColumn(1,_("Type"),0,100);
-    partitionList->InsertColumn(2,_("FS type"),0,70);
+    partitionList->InsertColumn(2,_("FS type"),0,90);
     partitionList->InsertColumn(3,_("Size"),0,70);
     //partitionList->InsertColumn(4,_("Free"),0,70);
     partitionList->InsertColumn(5,_("First sect."),0,80);
