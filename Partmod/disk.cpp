@@ -622,9 +622,9 @@ for(int i=0;i<4;i++)
      set_mbr_specific(CountPartitions()-1,mspec);
 
      if(gpart.flags&PART_EXTENDED)
-         ebr_helper->ParsePartition(gpart);
+         ebr_helper->ReadPartitionTables(gpart);
      else if(gpart.flags&PART_MBR_GPT)
-         gpt_helper->ParsePartition(gpart);
+         gpt_helper->ReadPartitionTables(gpart);
   }
 
 
@@ -763,8 +763,8 @@ int Disk::GetDiskType() const
   unsigned part_gpt=CountPartitions(PART_MBR_GPT);
   unsigned part_mbr=CountPartitions(PART_PRIMARY|PART_EXTENDED);
 
-  if(part_gpt==0)
-      return DISK_MBR;
+  if(part_gpt==1)
+      return DISK_GPT;
   else if(part_gpt!=0 && part_mbr!=0)
       return DISK_HYBRID;
   else return DISK_MBR;

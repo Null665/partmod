@@ -28,30 +28,30 @@
 	"definitions.h"
 	<stdint.h>
 
-1327140288 d:\c++\tvarka\partmod\src\partmod\definitions.h
+1328633937 d:\c++\tvarka\partmod\src\partmod\definitions.h
 	<stdint.h>
 	<string>
 
 1313946636 d:\c++\tvarka\partmod\src\partmod\gpt.h
 	"definitions.h"
 
-1313940697 d:\c++\tvarka\partmod\src\diskio\diskio.hpp
+1313940696 d:\c++\tvarka\partmod\src\diskio\diskio.hpp
 	<stdint.h>
 	<windows.h>
 	"../Partmod/definitions.h"
 
 1313225710 d:\c++\tvarka\partmod\src\gui\resource.h
 
-1312182913 source:d:\c++\tvarka\partmod\src\gui\dlg_diskimage.cpp
+1312182912 source:d:\c++\tvarka\partmod\src\gui\dlg_diskimage.cpp
 	"gui.h"
 	"../Partmod/chs.hpp"
 	"../Partmod/disk.h"
 	"resource.h"
 	<string>
 
-1288427967 d:\c++\tvarka\partmod\src\partmod\chs.hpp
+1288427966 d:\c++\tvarka\partmod\src\partmod\chs.hpp
 
-1310196377 source:d:\c++\tvarka\partmod\src\gui\dlg_format.cpp
+1310196376 source:d:\c++\tvarka\partmod\src\gui\dlg_format.cpp
 	"gui.h"
 	"resource.h"
 	<windowsx.h>
@@ -67,7 +67,7 @@
 	<commctrl.h>
 	<sstream>
 
-1288977847 source:d:\c++\tvarka\partmod\src\gui\gui.cpp
+1288977846 source:d:\c++\tvarka\partmod\src\gui\gui.cpp
 	"gui.h"
 	"../Partmod/chs.hpp"
 	"../Partmod/disk.h"
@@ -86,13 +86,13 @@
 	<algorithm>
 	<sstream>
 
-1313428235 source:d:\c++\tvarka\partmod\src\gui\resource.rc
+1313428234 source:d:\c++\tvarka\partmod\src\gui\resource.rc
 	<windows.h>
 	<commctrl.h>
 	<richedit.h>
 	"resource.h"
 
-1288979125 source:d:\c++\tvarka\partmod\src\gui\dlg_check_disk.cpp
+1288979124 source:d:\c++\tvarka\partmod\src\gui\dlg_check_disk.cpp
 	"gui.h"
 	"../Partmod/disk.h"
 	"resource.h"
@@ -104,7 +104,7 @@
 	<vector>
 	<stdint.h>
 
-1293815631 d:\c++\tvarka\partmod\src\partmod\free_space_manager.h
+1293815630 d:\c++\tvarka\partmod\src\partmod\free_space_manager.h
 	"definitions.h"
 	"partition_manager.h"
 	<vector>
@@ -114,18 +114,18 @@
 	<vector>
 	<utility>
 
-1313311201 d:\c++\tvarka\partmod\src\partmod\guid_manager.h
+1313311200 d:\c++\tvarka\partmod\src\partmod\guid_manager.h
 	"definitions.h"
 	<vector>
 	<string>
 
-1313482951 d:\c++\tvarka\partmod\src\partmod\fsid_manager.h
+1313482950 d:\c++\tvarka\partmod\src\partmod\fsid_manager.h
 	<stdint.h>
 	<string>
 	<vector>
 	"definitions.h"
 
-1311873789 d:\c++\tvarka\partmod\src\partmod\disk_exception.h
+1311873788 d:\c++\tvarka\partmod\src\partmod\disk_exception.h
 	<string>
 	<exception>
 	<sstream>

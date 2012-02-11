@@ -24,7 +24,7 @@ int DiskIO::get_geometry()
   memset(&dg,0,sizeof(DISK_GEOMETRY));
 
   if(!DeviceIoControl(hDisk,IOCTL_DISK_GET_DRIVE_GEOMETRY,NULL,0,&dg,sizeof(DISK_GEOMETRY),&dwRead,NULL))
-      return ERR_GEOMETRY_NOT_FOUND;
+      return ERR_GET_DISK_GEOMETRY;
 
   disk_geometry.cylinders=dg.Cylinders.QuadPart;
   disk_geometry.spt=dg.SectorsPerTrack;
@@ -34,10 +34,10 @@ int DiskIO::get_geometry()
 }
 
 
-int DiskIO::seek(uint64_t sector)
+int DiskIO::seek(uint64_t pos)
 {
 LARGE_INTEGER li;
-li.QuadPart=sector;
+li.QuadPart=pos;
 if(SetFilePointerEx(hDisk,li,0,FILE_BEGIN)==INVALID_SET_FILE_POINTER)
     return ERR_INVALID_SEEK;
 return 0;
@@ -61,9 +61,17 @@ else
     unsigned size_new=disk_geometry.bps*( (buffer_size/disk_geometry.bps)+1 );
     uint8_t *buff_new=new uint8_t[size_new];
 
-    LARGE_INTEGER seek_pos={0};
-    LARGE_INTEGER tmp={0};
-    SetFilePointerEx(hDisk,tmp,&seek_pos,FILE_CURRENT);
+    LARGE_INTEGER seek_pos;
+    LARGE_INTEGER tmp;
+
+    memset(&seek_pos,0,sizeof(LARGE_INTEGER));
+    memset(&tmp,0,sizeof(LARGE_INTEGER));
+
+    if(!SetFilePointerEx(hDisk,tmp,&seek_pos,FILE_CURRENT))
+      {
+          delete[] buff_new;
+          return ERR_INVALID_SEEK;
+      }
 
     if(!ReadFile(hDisk,buff_new,size_new,&dwRead,0) || dwRead!=size_new)
       {
@@ -72,7 +80,12 @@ else
       }
     memcpy(buff_new+seek_pos.QuadPart%disk_geometry.bps,buff,buffer_size);
 
-    SetFilePointerEx(hDisk,seek_pos,0,FILE_BEGIN);
+    if(!SetFilePointerEx(hDisk,seek_pos,0,FILE_BEGIN))
+      {
+          delete[] buff_new;
+          return ERR_INVALID_SEEK;
+      }
+
     if(!WriteFile(hDisk,buff_new,size_new,&dwWritten,0) || dwWritten!=size_new)
       {
           delete[] buff_new;

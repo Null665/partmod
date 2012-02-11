@@ -35,6 +35,8 @@
 					<Add library="winspool" />
 					<Add library="uuid" />
 					<Add library="oleaut32" />
+					<Add library="gdi32" />
+					<Add library="comdlg32" />
 					<Add directory="$(#wx)\lib\gcc_lib" />
 				</Linker>
 			</Target>
@@ -42,11 +44,11 @@
 				<Option platforms="Windows;" />
 				<Option output="..\..\bin\wxGUI" prefix_auto="1" extension_auto="1" />
 				<Option object_output="..\..\obj\windows\wxGUI" />
-				<Option type="0" />
+				<Option type="1" />
 				<Option compiler="gcc" />
+				<Option use_console_runner="0" />
 				<Option projectLinkerOptionsRelation="2" />
 				<Compiler>
-					<Add option="-O2" />
 					<Add directory="$(#wx)\lib\gcc_lib\msw" />
 					<Add directory="$(#wx)\include" />
 				</Compiler>
@@ -67,6 +69,8 @@
 					<Add library="winspool" />
 					<Add library="uuid" />
 					<Add library="oleaut32" />
+					<Add library="gdi32" />
+					<Add library="comdlg32" />
 					<Add directory="$(#wx)\lib\gcc_lib" />
 				</Linker>
 			</Target>

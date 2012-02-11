@@ -79,7 +79,7 @@ typedef uint32_t uid_t;
 #define ERR_PRIMARY_ON_EXTENDED  16 // Priamry partition on extended partition
 #define ERR_INVALID_BACKUP       17 // Invalid backup file
 #define ERR_GPT_NOT_FOUND        18 // Probably someone called Disk::ReadGPT on non-GPT disk
-#define ERR_GEOMETRY_NOT_FOUND   19 // Function that gets disk geometry has failed
+#define ERR_GET_DISK_GEOMETRY    19 // Function that gets disk geometry has failed
 #define ERR_CANNOT_SPLIT         20 // Can't split partition
 #define ERR_PARTITIONS_OVERLAP   21 // Partitions overlap each other
 #define ERR_GPT_ALREADY_EXISTS   22 // GPT partiton already exists

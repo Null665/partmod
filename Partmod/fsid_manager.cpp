@@ -81,7 +81,7 @@ string FsidManager::GetDescription(int i,int fsid_partmod)
 
 void FsidManager::add_fsids()
 {
-    #define _S(x) (x) // yes, _S doesn nothing. I am just too lazy to remove it
+    #define _S(x) (x) // yes, _S does nothing. I am just too lazy to remove it
   //  Add( 0x00, _S("Empty"),             0,         0,         0              );
 	Add( 0x01, _S("FAT12"),             MIN_SIZE, 16*MB,      FS_FAT12       );
 	Add( 0x02, _S("XENIX root"),        -1,        -1,        0              );

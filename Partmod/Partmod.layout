@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
 <CodeBlocks_layout_file>
-	<ActiveTarget name="Debug - Linux" />
+	<ActiveTarget name="Release - Windows" />
 	<File name="chs.cpp" open="0" top="0" tabpos="2">
-		<Cursor position="271" topLine="121" />
+		<Cursor position="844" topLine="45" />
 	</File>
 	<File name="chs.hpp" open="0" top="0" tabpos="7">
 		<Cursor position="347" topLine="15" />
@@ -13,17 +13,17 @@
 	<File name="crc.hpp" open="0" top="0" tabpos="3">
 		<Cursor position="253" topLine="0" />
 	</File>
-	<File name="definitions.cpp" open="0" top="0" tabpos="1">
-		<Cursor position="1668" topLine="244" />
+	<File name="definitions.cpp" open="1" top="0" tabpos="4">
+		<Cursor position="6482" topLine="263" />
 	</File>
-	<File name="definitions.h" open="0" top="0" tabpos="1">
-		<Cursor position="1205" topLine="18" />
+	<File name="definitions.h" open="1" top="0" tabpos="3">
+		<Cursor position="3201" topLine="51" />
 	</File>
-	<File name="disk.cpp" open="1" top="1" tabpos="4">
-		<Cursor position="2063" topLine="77" />
+	<File name="disk.cpp" open="1" top="0" tabpos="1">
+		<Cursor position="14255" topLine="607" />
 	</File>
-	<File name="disk.h" open="0" top="0" tabpos="7">
-		<Cursor position="4513" topLine="148" />
+	<File name="disk.h" open="1" top="0" tabpos="9">
+		<Cursor position="5500" topLine="196" />
 	</File>
 	<File name="dllcall.cpp" open="0" top="0" tabpos="3">
 		<Cursor position="409" topLine="0" />
@@ -31,8 +31,8 @@
 	<File name="dllcall.hpp" open="0" top="0" tabpos="0">
 		<Cursor position="94" topLine="9" />
 	</File>
-	<File name="ebr.cpp" open="0" top="0" tabpos="2">
-		<Cursor position="4608" topLine="120" />
+	<File name="ebr.cpp" open="1" top="0" tabpos="6">
+		<Cursor position="414" topLine="0" />
 	</File>
 	<File name="free_space_manager.cpp" open="0" top="0" tabpos="1">
 		<Cursor position="1333" topLine="49" />
@@ -41,13 +41,13 @@
 		<Cursor position="595" topLine="3" />
 	</File>
 	<File name="fsid_manager.cpp" open="0" top="0" tabpos="4">
-		<Cursor position="9512" topLine="155" />
+		<Cursor position="4940" topLine="155" />
 	</File>
 	<File name="fsid_manager.h" open="0" top="0" tabpos="6">
 		<Cursor position="129" topLine="0" />
 	</File>
-	<File name="gpt.cpp" open="0" top="0" tabpos="2">
-		<Cursor position="100" topLine="292" />
+	<File name="gpt.cpp" open="1" top="1" tabpos="5">
+		<Cursor position="6012" topLine="244" />
 	</File>
 	<File name="gpt.h" open="0" top="0" tabpos="2">
 		<Cursor position="1716" topLine="9" />
@@ -58,23 +58,23 @@
 	<File name="guid_manager.h" open="0" top="0" tabpos="1">
 		<Cursor position="906" topLine="19" />
 	</File>
-	<File name="mbr.cpp" open="0" top="0" tabpos="1">
-		<Cursor position="1267" topLine="13" />
+	<File name="mbr.cpp" open="1" top="0" tabpos="2">
+		<Cursor position="1608" topLine="11" />
 	</File>
 	<File name="mbr.h" open="0" top="0" tabpos="2">
 		<Cursor position="1173" topLine="39" />
 	</File>
 	<File name="partition_manager.cpp" open="0" top="0" tabpos="3">
-		<Cursor position="3675" topLine="100" />
+		<Cursor position="669" topLine="174" />
 	</File>
 	<File name="partition_manager.h" open="0" top="0" tabpos="6">
-		<Cursor position="259" topLine="15" />
+		<Cursor position="259" topLine="0" />
 	</File>
 	<File name="pending_manager.cpp" open="0" top="0" tabpos="4">
 		<Cursor position="1409" topLine="31" />
 	</File>
 	<File name="pending_manager.h" open="0" top="0" tabpos="3">
-		<Cursor position="747" topLine="9" />
+		<Cursor position="357" topLine="0" />
 	</File>
 	<File name="version.h" open="0" top="0" tabpos="0">
 		<Cursor position="71" topLine="0" />

@@ -23,7 +23,7 @@ calc(lba);
 
 void CHS::calc(long long lba)
 {
-long temp;
+long long temp;
 
 cylinder =lba / (tpc * spt);
 temp     = lba % (tpc * spt);
@@ -33,7 +33,7 @@ sector   = temp % spt + 1;
 }
 
 
-bool CHS::SetCylinder(unsigned int cylinder)
+bool CHS::SetCylinder(long long cylinder)
 {
    this->cylinder=cylinder;
    return true;
@@ -54,7 +54,7 @@ bool CHS::SetSector(unsigned int sector)
 }
 
 
-unsigned int CHS::GetCylinder()
+unsigned long CHS::GetCylinder()
 {
   return this->cylinder;
 }
@@ -95,8 +95,7 @@ this->tpc=tpc;
 
 long long CHS::ToLBA()
 {
-long long lba= ( ( cylinder * tpc + head ) * spt ) + sector - 1;
-return lba;
+ return ( ( cylinder * tpc + head ) * spt ) + sector - 1;
 }
 
 

@@ -343,7 +343,7 @@ string get_mount_point(GEN_PART gpart,unsigned int disk_signature)
 uint64_t GetFileSize(std::string filename)
 {
     uint64_t file_size;
-    FILE *fp=fopen(openFileDialog.GetPath().c_str(),"rb");
+    FILE *fp=fopen(filename.c_str(),"rb");
 
     if(fp==0)
         return 0;

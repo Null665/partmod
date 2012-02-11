@@ -37,7 +37,7 @@ public:
   const GEOMETRY &GetDiskGeometry();
   int GetDiskSize(uint64_t &length);
 
-  int Seek(uint64_t sector);
+  int Seek(uint64_t pos);
   int Read(void *buff,uint32_t buffer_size);
   int Write(const void *buff,uint32_t buffer_size);
 
@@ -48,7 +48,7 @@ protected:
     void close_handle();
     int  get_geometry();
 
-    int seek(uint64_t sector);
+    int seek(uint64_t pos);
     int read(void *buff,uint32_t buffer_size);
     int write(const void *buff,uint32_t buffer_size);
 

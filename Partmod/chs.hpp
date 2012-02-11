@@ -22,11 +22,11 @@ public:
   CHS(long long lba);
   CHS();
 
-  bool SetCylinder(unsigned int);
+  bool SetCylinder(long long);
   bool SetHead(unsigned int);
   bool SetSector(unsigned int);
 
-  unsigned int GetCylinder();
+  unsigned long GetCylinder();
   unsigned int GetHead();
   unsigned int GetSector();
 

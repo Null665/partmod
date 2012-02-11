@@ -108,8 +108,8 @@ int DlgNewPart::ShowModal(Disk *disk, int selected_frs)
 
 void DlgNewPart::OnButtonOKClick(wxCommandEvent& event)
 {
-  uint64_t size_mul=(int)ChoiceSizeMul->GetClientObject(ChoiceSizeMul->GetSelection());
-  int part_type=(int)ChoicePartitionType->GetClientObject(ChoicePartitionType->GetSelection());
+  uint64_t size_mul=(int)ChoiceSizeMul->GetClientData(ChoiceSizeMul->GetSelection());
+  int part_type=(int)ChoicePartitionType->GetClientData(ChoicePartitionType->GetSelection());
   uint64_t size=SpinCtrlPartitionSize->GetValue()*(size_mul/disk->GetDiskGeometry().bps);
   unsigned fs_type=(unsigned)ChoiceFsType->GetClientData(ChoiceFsType->GetSelection());
 

@@ -75,7 +75,7 @@ void DlgOpenDiskImage::OnButtonOKClick(wxCommandEvent& event)
     TextBPS->GetLineText(0).ToLong(&bps);
     TextSPT->GetLineText(0).ToLong(&spt);
     TextTPC->GetLineText(0).ToLong(&tpc);
-    cylinders=StrToU64(TextCylinders->GetLineText(0).ToAscii());
+    cylinders=StrToU64(string(TextCylinders->GetLineText(0).c_str()));
 
 
 
@@ -121,6 +121,12 @@ void DlgOpenDiskImage::OnButtonBrowseClick(wxCommandEvent& event)
     TextImagePath->SetValue(openFileDialog.GetPath());
 
     uint64_t file_size=GetFileSize(openFileDialog.GetPath().ToAscii());
+    if(file_size==0)
+      {
+          wxMessageBox("File is empty or you don\'t have rights to access it","Error",wxOK | wxICON_ERROR,this);
+          return;
+      }
+
     int bps=512;
     CHS chs=file_size/bps;
 

@@ -231,7 +231,7 @@ for(int i=0;i<disk->CountPartitions();i++)
 
 
 
-void GPTHelper::ParsePartition(GEN_PART gpt_part)
+void GPTHelper::ReadPartitionTables(GEN_PART gpt_part)
 {
 GPT gpt;
 GPT_ENTRY *entries;

@@ -207,7 +207,7 @@ protected:
 
 public:
     PartitionHelper(Disk *disk) {this->disk=disk;}
-    virtual void ParsePartition(GEN_PART)=0;
+    virtual void ReadPartitionTables(GEN_PART)=0;
     virtual void WriteChanges()=0;
 
 };
@@ -218,7 +218,7 @@ class EBRHelper:public PartitionHelper
 public:
   EBRHelper(Disk *disk) : PartitionHelper(disk)
   {}
-  void ParsePartition(GEN_PART);
+  void ReadPartitionTables(GEN_PART);
   void WriteChanges();
 
 };
@@ -230,7 +230,7 @@ class GPTHelper:public PartitionHelper
 public:
   GPTHelper(Disk *disk) : PartitionHelper(disk)
   {}
-  void ParsePartition(GEN_PART);
+  void ReadPartitionTables(GEN_PART);
   void WriteChanges();
   bool IsValidGPT(GPT gpt);
   GPT CreateGPT(GEN_PART gpt_part);
@@ -240,10 +240,8 @@ public:
  * GPT_ENTRY WriteGPTEntryToDisk(const GPT_ENTRY &e,uint32_t n);
 */
 
-
-
 //
-// It seems there's no reason to call rhese functions dirtectly
+// I think there's no reason to call rhese functions dirtectly
 //
 protected:
   void WriteGPT(const GPT&);

@@ -31,7 +31,7 @@ int DiskIO::get_geometry()
 {
 struct hd_geometry dg;
 if(ioctl(hDisk,HDIO_GETGEO,&dg)!=0)
-    return ERR_GEOMETRY_NOT_FOUND;
+    return ERR_GET_DISK_GEOMETRY;
 
 disk_geometry.cylinders=dg.cylinders;
 disk_geometry.spt=dg.sectors;
@@ -39,7 +39,7 @@ disk_geometry.tpc=dg.heads;
 
 unsigned long bps;
 if(ioctl(hDisk,BLKSSZGET,&bps)!=0)
-    return ERR_GEOMETRY_NOT_FOUND;
+    return ERR_GET_DISK_GEOMETRY;
 
 disk_geometry.bps=bps;
 return 0;

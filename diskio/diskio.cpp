@@ -20,7 +20,7 @@ int DiskIO::Open(const char* disk)
     if(open_handle(disk)!=0)
         return ERR_OPEN_DISK;
     if(get_geometry()!=0)
-        return ERR_GEOMETRY_NOT_FOUND;
+        return ERR_GET_DISK_GEOMETRY;
     is_open=true;
     disk_image=false;
     return 0;
@@ -63,9 +63,9 @@ const GEOMETRY &DiskIO::GetDiskGeometry()
     return disk_geometry;
 }
 
-int DiskIO::Seek(uint64_t sector)
+int DiskIO::Seek(uint64_t pos)
 {
-    return seek(sector);
+    return seek(pos);
 }
 
 int DiskIO::Read(void *buff,uint32_t buffer_size)

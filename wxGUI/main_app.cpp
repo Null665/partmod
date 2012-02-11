@@ -1,9 +1,10 @@
 #include "main_app.hpp"
 #include "main_frame.hpp"
 
+#include "../Partmod/disk.h"
+
 bool MyApp::OnInit()
 {
-
 	wxInitAllImageHandlers();
 
     MainFrame *frame = new MainFrame( _("Partmod"), wxPoint(50, 50), wxSize(860, 500) );
