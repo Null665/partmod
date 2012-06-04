@@ -22,7 +22,7 @@ END_EVENT_TABLE()
 DlgCreateBackup::DlgCreateBackup(wxWindow* parent,wxWindowID id)
 {
 	//(*Initialize(DlgCreateBackup)
-	Create(parent, id, wxEmptyString, wxDefaultPosition, wxDefaultSize, wxDEFAULT_DIALOG_STYLE, _T("id"));
+	Create(parent, id, _("Create a partition table backup"), wxDefaultPosition, wxDefaultSize, wxDEFAULT_DIALOG_STYLE, _T("id"));
 	SetClientSize(wxSize(328,156));
 	StaticText1 = new wxStaticText(this, ID_STATICTEXT1, _("Backup file name:"), wxPoint(24,32), wxSize(152,13), 0, _T("ID_STATICTEXT1"));
 	TextBackupFileName = new wxTextCtrl(this, ID_TEXTCTRL1, _("backup.ptb"), wxPoint(24,48), wxSize(168,21), 0, wxDefaultValidator, _T("ID_TEXTCTRL1"));

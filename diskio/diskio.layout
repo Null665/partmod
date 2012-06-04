@@ -1,16 +1,16 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
 <CodeBlocks_layout_file>
 	<ActiveTarget name="Release - Windows" />
-	<File name="diskio-linux.cpp" open="0" top="0" tabpos="1">
-		<Cursor position="1104" topLine="0" />
+	<File name="diskio-windows.cpp" open="0" top="0" tabpos="2" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor1 position="907" topLine="23" />
 	</File>
-	<File name="diskio-windows.cpp" open="1" top="0" tabpos="10">
-		<Cursor position="907" topLine="23" />
+	<File name="diskio.cpp" open="0" top="0" tabpos="1" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor1 position="366" topLine="50" />
 	</File>
-	<File name="diskio.cpp" open="1" top="0" tabpos="9">
-		<Cursor position="366" topLine="50" />
+	<File name="diskio.hpp" open="0" top="0" tabpos="2" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor1 position="593" topLine="2" />
 	</File>
-	<File name="diskio.hpp" open="0" top="0" tabpos="2">
-		<Cursor position="593" topLine="2" />
+	<File name="diskio-linux.cpp" open="0" top="0" tabpos="1" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor1 position="1104" topLine="0" />
 	</File>
 </CodeBlocks_layout_file>

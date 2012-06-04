@@ -1,18 +1,20 @@
-#ifndef MAIN_FRAME_HPP
-#define MAIN_FRAME_HPP
+#ifndef MAIN_FRAME_H
+#define MAIN_FRAME_H
 
-#include <wx/wx.h>
+//(*Headers(MainFrame)
 #include <wx/listctrl.h>
-
-#include <string>
-#include <vector>
-#include <stdint.h>
+#include <wx/menu.h>
+#include <wx/panel.h>
+#include <wx/button.h>
+#include <wx/frame.h>
+#include <wx/statusbr.h>
+//*)
 
 #include "../Partmod/disk.h"
+#include "../Partmod/disk_exception.h"
 
 #define S_PARTITION    1
 #define S_FREE_SPACE   2
-
 
 
 
@@ -40,96 +42,101 @@ int      selection_type;
 uint32_t flags;
 
 
-
 };
-
-
 
 class MainFrame: public wxFrame
 {
-protected:
-  void create_menus();
+	public:
 
-  void create_disk_listctrl();
-  void create_partition_listctrl();
+		MainFrame(wxWindow* parent,wxWindowID id=wxID_ANY,const wxPoint& pos=wxDefaultPosition,const wxSize& size=wxDefaultSize);
+		virtual ~MainFrame();
 
-  void refresh_partition_list();
-  void refresh_disk_list();
+		//(*Declarations(MainFrame)
+		wxMenuItem* MenuOpenDiskImage;
+		wxMenuItem* MenuAbout;
+		wxListView* partitionList;
+		wxListView* diskList;
+		wxMenu* menuPartition;
+		wxMenuItem* MenuRestoreBackup;
+		wxMenuItem* MenuSaveChanges;
+		wxMenu* menuActions;
+		wxMenuItem* MenuSetInactive;
+		wxButton* Button1;
+		wxMenuItem* MenuListGuid;
+		wxMenuItem* MenuDeletePartition;
+		wxPanel* Panel1;
+		wxMenuItem* MenuCloseDisk;
+		wxMenuItem* MenuPartitionProperties;
+		wxButton* Button2;
+		wxMenuItem* MenuSetActive;
+		wxMenu* menuHelp;
+		wxMenuItem* MenuCreateBackup;
+		wxStatusBar* StatusBar1;
+		wxMenu* menuTools;
+		wxMenu* menuDisk;
+		wxMenuItem* MenuWipePartition;
+		wxMenuItem* MenuCreatePartition;
+		wxMenuItem* MenuQuit;
+		wxMenuBar* menuBar;
+		//*)
 
-  Disk *disk;
+	protected:
 
-  wxPanel *mainPanel;
-  wxListCtrl *diskList;
-  wxListCtrl *partitionList;
+		//(*Identifiers(MainFrame)
+		static const long ID_LISTVIEW1;
+		static const long ID_LISTVIEW2;
+		static const long ID_BUTTON1;
+		static const long ID_BUTTON2;
+		static const long ID_PANEL1;
+		static const long ID_SAVE_CHANGES;
+		static const long ID_QUIT;
+		static const long ID_CLOSE_DISK;
+		static const long ID_OPEN_DISK_IMAGE;
+		static const long ID_CREATE_BACKUP;
+		static const long ID_RESTORE_BACKUP;
+		static const long ID_CREATE_PARTITION;
+		static const long ID_DELETE_PARTITION;
+		static const long ID_SET_ACTIVE;
+		static const long ID_SET_INACTIVE;
+		static const long ID_PARTITION_PROPERTIES;
+		static const long ID_WIPE_PARTITION;
+		static const long ID_LIST_GUID;
+		static const long ID_ABOUT;
+		static const long ID_STATUSBAR1;
+		//*)
 
-    wxMenu *menuActions;
-    wxMenu *menuDisk;
-    wxMenu *menuPartition;
-    wxMenu *menuTools;
-    wxMenu *menuHelp;
+	private:
+	    Disk *disk;
+        std::vector<lvlist> disk_structure; // list of partition and free space slices
+        int selected_partition,selected_frs;
 
-  std::vector<lvlist> disk_structure; // list of partition and free space slices
-
-  int selected_partition,selected_frs;
-
-  static const long
-    ID_QUIT ,
-    ID_ABOUT ,
-
-    ID_SAVE_CHANGES ,
-    ID_CLOSE_DISK  ,
-    ID_OPEN_DISK_IMAGE ,
-    ID_CREATE_BACKUP ,
-    ID_RESTORE_BACKUP ,
-    ID_CHECK_DISK ,
-
-    ID_CREATE_PARTITION  ,
-    ID_DELETE_PARTITION ,
-    ID_SET_ACTIVE ,
-    ID_SET_INACTIVE ,
-    ID_EDIT_BOOTSECTOR ,
-    ID_CHECK_FS ,
-    ID_FORMAT ,
-    ID_WIPE_PARTITION ,
-
-    ID_DISK_LIST ,
-    ID_PARTITION_LIST ,
-
-    ID_LIST_GUID ;
+		//(*Handlers(MainFrame)
+		void OndiskListItemActivated(wxListEvent& event);
+		void OnMenuCloseDiskSelected(wxCommandEvent& event);
+		void OnMenuSaveChangesSelected(wxCommandEvent& event);
+		void OnMenuQuitSelected(wxCommandEvent& event);
+		void OnMenuOpenDiskImageSelected(wxCommandEvent& event);
+		void OnMenuCreateBackupSelected(wxCommandEvent& event);
+		void OnMenuRestoreBackupSelected(wxCommandEvent& event);
+		void OnMenuCreatePartitionSelected(wxCommandEvent& event);
+		void OnMenuDeletePartitionSelected(wxCommandEvent& event);
+		void OnMenuSetActiveSelected(wxCommandEvent& event);
+		void OnMenuSetInactiveSelected(wxCommandEvent& event);
+		void OnMenuWipePartitionSelected(wxCommandEvent& event);
+		void OnMenuListGuidSelected(wxCommandEvent& event);
+		void OnMenuAboutSelected(wxCommandEvent& event);
+		void OnPartitionListItemActivated(wxListEvent& event);
+		void OnPartitionListItemRClick(wxListEvent& event);
+		void OnMenuPartitionPropertiesSelected(wxCommandEvent& event);
+		void OnPartitionListItemDeselect(wxListEvent& event);
+		//*)
+        void OnPartitionListPopupClick(wxListEvent& event);
 
 
-public:
+        void refresh_disk_list();
+        void refresh_partition_list();
 
-    MainFrame(const wxString& title, const wxPoint& pos, const wxSize& size);
-
-    void OnDiskListClick(wxListEvent& event);
-    void OnPartitionListClick(wxListEvent& event);
-
-    void OnPartitionListDeselect(wxListEvent& event);
-
-    void OnPartitionListRightClick(wxListEvent& event);
-    void OnPartitionListPopupClick(wxListEvent& event);
-
-    void OnQuit(wxCommandEvent& event);
-    void OnAbout(wxCommandEvent& event);
-
-    void OnNewPartition(wxCommandEvent& event);
-    void OnOpenDiskImage(wxCommandEvent& event);
-
-    void OnDiskCloseClick(wxCommandEvent& event);
-    void OnSaveChangesClick(wxCommandEvent& event);
-
-    void OnListGuidClick(wxCommandEvent& event);
-
-    void OnSetActiveClick(wxCommandEvent& event);
-    void OnUnsetActiveClick(wxCommandEvent& event);
-
-    void OnCreateBackupClick(wxCommandEvent& event);
-    void OnRestoreBackupClick(wxCommandEvent& event);
-
-    void OnWipePartitionClick(wxCommandEvent& event);
-
-    DECLARE_EVENT_TABLE()
+		DECLARE_EVENT_TABLE()
 };
 
 #endif

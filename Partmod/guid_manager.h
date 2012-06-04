@@ -30,6 +30,8 @@ protected:
     void add_default_guids();
 
 public:
+    static std::string GuidToString(const __GUID &guid);
+
 
     GuidManager();
 

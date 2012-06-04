@@ -139,6 +139,19 @@ string GuidManager::GetGuidAsString(uint32_t which)
 
 }
 
+string GuidManager::GuidToString(const __GUID &guid)
+{
+  string parts[5];
+  parts[0]=U64ToStr(guid.one,16);
+  parts[1]=U64ToStr(guid.two,16);
+  parts[2]=U64ToStr(guid.three,16);
+  parts[3]=U64ToStr(invert_endianess(guid.four)>>48,16);
+  parts[4]=U64ToStr(invert_endianess(guid.four)&0xFFFFFFFFFFFF,16);
+
+  string str;
+  str=parts[0]+"-"+parts[1]+"-"+parts[2]+"-"+parts[3]+"-"+parts[4];
+  return str;
+}
 
 void GuidManager::add_default_guids()
 {

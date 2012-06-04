@@ -1,22 +1,22 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
 <CodeBlocks_layout_file>
 	<ActiveTarget name="Release" />
-	<File name="dlg_diskimage.cpp" open="0" top="0" tabpos="0">
-		<Cursor position="1205" topLine="38" />
+	<File name="dlg_newpart.cpp" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor1 position="8035" topLine="0" />
 	</File>
-	<File name="dlg_format.cpp" open="0" top="0" tabpos="0">
-		<Cursor position="2656" topLine="68" />
+	<File name="dlg_format.cpp" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor1 position="2656" topLine="68" />
 	</File>
-	<File name="dlg_newpart.cpp" open="0" top="0" tabpos="0">
-		<Cursor position="8035" topLine="0" />
+	<File name="dlg_diskimage.cpp" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor1 position="1205" topLine="38" />
 	</File>
-	<File name="gui.h" open="0" top="0" tabpos="0">
-		<Cursor position="819" topLine="0" />
+	<File name="resource.rc" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor1 position="0" topLine="143" />
 	</File>
-	<File name="partmod_main_dlg.cpp" open="0" top="0" tabpos="3">
-		<Cursor position="2164" topLine="70" />
+	<File name="partmod_main_dlg.cpp" open="0" top="0" tabpos="3" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor1 position="2164" topLine="70" />
 	</File>
-	<File name="resource.rc" open="0" top="0" tabpos="0">
-		<Cursor position="0" topLine="143" />
+	<File name="gui.h" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor1 position="819" topLine="0" />
 	</File>
 </CodeBlocks_layout_file>

@@ -94,8 +94,6 @@ protected:
   bool load();                // find partitoons on disk
   void find_free_space();     // find free space on disk
 
-  GEN_PART  get_extended();   // TODO: remove this function
-
   void save_mbr();  // write MBR to disk
 
   void modify_partition(unsigned int _p,GEN_PART new_data);

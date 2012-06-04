@@ -45,7 +45,7 @@ typedef uint32_t uid_t;
 #define PART_EXTENDED         2  // Partition is the "Extended LBA" partition
 #define PART_LOGICAL          4  // partition is in extended partition ( logical partition )
 #define PART_ACTIVE           8  // Active (bootable)
-#define PART_NOT_FORMATTED    16 // FIXME: PART_NOT_FORMATTED flag is totally ignored
+#define PART_NOT_FORMATTED    16 // FIXME: PART_NOT_FORMATTED flag is unused
 #define PART_GPT              32 // GPT partition
 #define PART_MBR_GPT          64 // MBR partition with fsid 0xEE -- (How is it called? GPT primary partition or what?)
 #define PART_DYNAMIC         128 // Windows dynamic partition/disk
@@ -157,13 +157,13 @@ uint8_t cylinder   ;      // cylinder (<=1023)
 };
 
 
-typedef struct __GUID_
+struct __GUID
 {
 uint32_t one;
 uint16_t two;
 uint16_t three;
 uint64_t four;  // Note: Must be in big endian
-}__GUID;
+};
 
 
 

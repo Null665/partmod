@@ -185,7 +185,7 @@ void Disk::CheckDisk(vector<DISK_ERROR> &error_list)
 {
 if(CountPartitions()==0)
     return;
-
+/*
 GEN_PART part_curr,part_next;
 DISK_ERROR de;
 
@@ -271,10 +271,9 @@ catch(...)
       // TODO: do something here
   }
 
-
 // what else?
 
-
+*/
 }
 
 
@@ -433,7 +432,7 @@ void Disk::CreatePartitionGPT(int which_frs,uint64_t size,uint64_t sect_before,_
 
 
 
-
+/*
 void Disk::CreatePartition(FREE_SPACE frs,int part_type,uint64_t size)
 {
 find_free_space();
@@ -524,8 +523,7 @@ new_part.fsid=FS_FAT16;
 add_partition(new_part);
 
 }
-
-
+*/
 
 void Disk::find_free_space()
 {
@@ -639,7 +637,7 @@ return true;
 
 
 
-
+/*
 GEN_HANDLE Disk::GetPartitionHandle(unsigned int p)
 {
 
@@ -656,6 +654,7 @@ tmp.flags=GetPartition(p).flags;
 memcpy(&tmp.disk_geometry,&GetDiskGeometry(),sizeof(GEOMETRY));
 return tmp;
 }
+*/
 
 void Disk::Move(unsigned p,uint64_t new_pos)
 {
@@ -981,6 +980,22 @@ while(true)
 }
 
 
+
+GPT_SPECIFIC Disk::GetGPTSpecific(unsigned p)
+{
+    GPT_SPECIFIC gspec;
+    memcpy(&gspec,GetPartition(p).data,sizeof(GPT_SPECIFIC));
+    return gspec;
+
+}
+
+void Disk::set_gpt_specific(unsigned p,GPT_SPECIFIC gspec)
+{
+   part_man->SetSpecificData(p,reinterpret_cast<void*>(&gspec),sizeof(gspec));
+}
+
+
+
 const GEN_PART &Disk::GetPartitionByUID(unsigned uid)
 {
  return  part_man->GetPartitionByUID(uid);
@@ -1005,3 +1020,5 @@ uint32_t Disk::GetPendingUID(unsigned p)
 {
     return pending_man->GetUID(p);
 }
+
+

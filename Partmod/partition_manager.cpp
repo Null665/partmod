@@ -49,12 +49,7 @@ const GEN_PART &PartitionManager::GetPartition(uint32_t p)  const
 //
 const GEN_PART &PartitionManager::GetPartitionByUID(uint32_t uid)  const
 {
-  for(unsigned i=0;i<CountPartitions();i++)
-    {
-        if(GetPartitionUID(i)==uid)
-            return GetPartition(i);
-    }
-throw DiskException(ERR_PART_NOT_EXIST);
+  return GetPartition(WhichByUID(uid));
 }
 
 

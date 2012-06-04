@@ -14,14 +14,13 @@
 				<Option type="3" />
 				<Option compiler="gcc" />
 				<Option host_application="D:\C++\tvarka\Partmod\bin\partmod_gui.exe" />
+				<Option run_host_application_in_terminal="0" />
 				<Option createDefFile="1" />
 				<Option createStaticLib="1" />
 				<Compiler>
-					<Add option="-pg" />
 					<Add option="-g" />
 				</Compiler>
 				<Linker>
-					<Add option="-pg -lgmon" />
 					<Add library="..\..\bin\libDiskio.dll.a" />
 				</Linker>
 			</Target>
@@ -33,6 +32,7 @@
 				<Option type="3" />
 				<Option compiler="gcc" />
 				<Option host_application="D:\C++\tvarka\Partmod\bin\partmod_gui.exe" />
+				<Option run_host_application_in_terminal="0" />
 				<Option createStaticLib="1" />
 				<Linker>
 					<Add option="-s" />
@@ -46,6 +46,7 @@
 				<Option type="3" />
 				<Option compiler="gcc" />
 				<Option host_application="D:\C++\tvarka\Partmod\bin\partmod_gui.exe" />
+				<Option run_host_application_in_terminal="0" />
 				<Option createDefFile="1" />
 				<Option createStaticLib="1" />
 				<Compiler>
@@ -65,6 +66,7 @@
 				<Option type="3" />
 				<Option compiler="gcc" />
 				<Option host_application="partmod_gui.exe" />
+				<Option run_host_application_in_terminal="0" />
 				<Option createDefFile="1" />
 				<Option createStaticLib="1" />
 				<Compiler>
@@ -119,7 +121,7 @@
 			<lib_finder disable_auto="1" />
 			<AutoVersioning>
 				<Scheme minor_max="10" build_max="0" rev_max="0" rev_rand_max="10" build_times_to_increment_minor="100" />
-				<Settings autoincrement="1" date_declarations="1" do_auto_increment="0" ask_to_increment="0" language="C++" svn="0" svn_directory="D:\Repositories\Partmod\db" header_path="version.h" />
+				<Settings autoincrement="1" date_declarations="1" update_manifest="5" do_auto_increment="0" ask_to_increment="0" language="C++" svn="0" svn_directory="D:\Repositories\Partmod\db" header_path="version.h" />
 				<Changes_Log show_changes_editor="0" app_title="released version %M.%m.%b of %p" changeslog_path="ChangesLog.txt" />
 				<Code header_guard="VERSION_H" namespace="AutoVersion" prefix="" />
 			</AutoVersioning>

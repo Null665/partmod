@@ -1,335 +1,190 @@
 #include "main_frame.hpp"
+#include <sstream>
+#include <algorithm>
+using namespace std;
+
+//(*InternalHeaders(MainFrame)
+#include <wx/intl.h>
+#include <wx/string.h>
+//*)
+#include <wx/msgdlg.h>
+
 #include "dlg_newpart.hpp"
 #include "dlg_open_diskimage.h"
 #include "dlg_guid_list.h"
 #include "dlg_create_backup.h"
 #include "dlg_restore_backup.h"
 #include "dlg_save_changes.h"
-
-#include <sstream>
-#include <algorithm>
-using namespace std;
-
-bool cmp_lv(lvlist a,lvlist b);
-
-
-    const long MainFrame::ID_QUIT = wxNewId();
-    const long MainFrame::ID_ABOUT = wxNewId();
-
-    const long MainFrame::ID_SAVE_CHANGES = wxNewId();
-    const long MainFrame::ID_CLOSE_DISK = wxNewId() ;
-    const long MainFrame::ID_OPEN_DISK_IMAGE = wxNewId();
-    const long MainFrame::ID_CREATE_BACKUP = wxNewId();
-    const long MainFrame::ID_RESTORE_BACKUP = wxNewId();
-    const long MainFrame::ID_CHECK_DISK = wxNewId();
-
-    const long MainFrame::ID_CREATE_PARTITION = wxNewId() ;
-    const long MainFrame::ID_DELETE_PARTITION = wxNewId();
-    const long MainFrame::ID_SET_ACTIVE = wxNewId();
-    const long MainFrame::ID_SET_INACTIVE = wxNewId();
-    const long MainFrame::ID_EDIT_BOOTSECTOR = wxNewId();
-    const long MainFrame::ID_CHECK_FS = wxNewId();
-    const long MainFrame::ID_FORMAT = wxNewId();
-    const long MainFrame::ID_WIPE_PARTITION = wxNewId();
-
-    const long MainFrame::ID_DISK_LIST = wxNewId();
-    const long MainFrame:: ID_PARTITION_LIST = wxNewId();
-
-    const long MainFrame:: ID_LIST_GUID = wxNewId();
+#include "dlg_partition_properties.h"
 
 
 
-MainFrame::MainFrame(const wxString& title, const wxPoint& pos, const wxSize& size)
-       : wxFrame(NULL, -1, title, pos, size)
+//(*IdInit(MainFrame)
+const long MainFrame::ID_LISTVIEW1 = wxNewId();
+const long MainFrame::ID_LISTVIEW2 = wxNewId();
+const long MainFrame::ID_BUTTON1 = wxNewId();
+const long MainFrame::ID_BUTTON2 = wxNewId();
+const long MainFrame::ID_PANEL1 = wxNewId();
+const long MainFrame::ID_SAVE_CHANGES = wxNewId();
+const long MainFrame::ID_QUIT = wxNewId();
+const long MainFrame::ID_CLOSE_DISK = wxNewId();
+const long MainFrame::ID_OPEN_DISK_IMAGE = wxNewId();
+const long MainFrame::ID_CREATE_BACKUP = wxNewId();
+const long MainFrame::ID_RESTORE_BACKUP = wxNewId();
+const long MainFrame::ID_CREATE_PARTITION = wxNewId();
+const long MainFrame::ID_DELETE_PARTITION = wxNewId();
+const long MainFrame::ID_SET_ACTIVE = wxNewId();
+const long MainFrame::ID_SET_INACTIVE = wxNewId();
+const long MainFrame::ID_PARTITION_PROPERTIES = wxNewId();
+const long MainFrame::ID_WIPE_PARTITION = wxNewId();
+const long MainFrame::ID_LIST_GUID = wxNewId();
+const long MainFrame::ID_ABOUT = wxNewId();
+const long MainFrame::ID_STATUSBAR1 = wxNewId();
+//*)
+
+BEGIN_EVENT_TABLE(MainFrame,wxFrame)
+	//(*EventTable(MainFrame)
+	//*)
+END_EVENT_TABLE()
+
+
+bool cmp_lv(lvlist a,lvlist b)
+  {
+    return StrToU64((char*)a.begin_sect.c_str())<StrToU64((char*)b.begin_sect.c_str());
+  }
+
+
+
+MainFrame::MainFrame(wxWindow* parent,wxWindowID id,const wxPoint& pos,const wxSize& size)
 {
-    selected_partition=0,selected_frs=0;
+	//(*Initialize(MainFrame)
+	Create(parent, wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize, wxDEFAULT_FRAME_STYLE, _T("wxID_ANY"));
+	SetClientSize(wxSize(860,500));
+	Panel1 = new wxPanel(this, ID_PANEL1, wxPoint(160,144), wxDefaultSize, wxTAB_TRAVERSAL, _T("ID_PANEL1"));
+	diskList = new wxListView(Panel1, ID_LISTVIEW1, wxPoint(16,24), wxSize(800,120), wxLC_REPORT, wxDefaultValidator, _T("ID_LISTVIEW1"));
+	partitionList = new wxListView(Panel1, ID_LISTVIEW2, wxPoint(16,168), wxSize(800,200), wxLC_REPORT, wxDefaultValidator, _T("ID_LISTVIEW2"));
+	Button1 = new wxButton(Panel1, ID_BUTTON1, _(" Save changes "), wxPoint(328,392), wxDefaultSize, 0, wxDefaultValidator, _T("ID_BUTTON1"));
+	Button2 = new wxButton(Panel1, ID_BUTTON2, _("Quit"), wxPoint(336,424), wxDefaultSize, 0, wxDefaultValidator, _T("ID_BUTTON2"));
+	menuBar = new wxMenuBar();
+	menuActions = new wxMenu();
+	MenuSaveChanges = new wxMenuItem(menuActions, ID_SAVE_CHANGES, _("Save changes"), wxEmptyString, wxITEM_NORMAL);
+	menuActions->Append(MenuSaveChanges);
+	menuActions->AppendSeparator();
+	MenuQuit = new wxMenuItem(menuActions, ID_QUIT, _("Exit"), wxEmptyString, wxITEM_NORMAL);
+	menuActions->Append(MenuQuit);
+	menuBar->Append(menuActions, _("Actions"));
+	menuDisk = new wxMenu();
+	MenuCloseDisk = new wxMenuItem(menuDisk, ID_CLOSE_DISK, _("Close disk"), _("Close disk or a disk image without saving any changes"), wxITEM_NORMAL);
+	menuDisk->Append(MenuCloseDisk);
+	MenuOpenDiskImage = new wxMenuItem(menuDisk, ID_OPEN_DISK_IMAGE, _("Open a disk image..."), wxEmptyString, wxITEM_NORMAL);
+	menuDisk->Append(MenuOpenDiskImage);
+	menuDisk->AppendSeparator();
+	MenuCreateBackup = new wxMenuItem(menuDisk, ID_CREATE_BACKUP, _("Create partition table backup..."), wxEmptyString, wxITEM_NORMAL);
+	menuDisk->Append(MenuCreateBackup);
+	MenuRestoreBackup = new wxMenuItem(menuDisk, ID_RESTORE_BACKUP, _("Restore partition table..."), wxEmptyString, wxITEM_NORMAL);
+	menuDisk->Append(MenuRestoreBackup);
+	menuBar->Append(menuDisk, _("Disk"));
+	menuPartition = new wxMenu();
+	MenuCreatePartition = new wxMenuItem(menuPartition, ID_CREATE_PARTITION, _("Create partition..."), wxEmptyString, wxITEM_NORMAL);
+	menuPartition->Append(MenuCreatePartition);
+	MenuDeletePartition = new wxMenuItem(menuPartition, ID_DELETE_PARTITION, _("Delete partition"), wxEmptyString, wxITEM_NORMAL);
+	menuPartition->Append(MenuDeletePartition);
+	menuPartition->AppendSeparator();
+	MenuSetActive = new wxMenuItem(menuPartition, ID_SET_ACTIVE, _("Set active (bootable)"), wxEmptyString, wxITEM_NORMAL);
+	menuPartition->Append(MenuSetActive);
+	MenuSetInactive = new wxMenuItem(menuPartition, ID_SET_INACTIVE, _("Set inactive"), wxEmptyString, wxITEM_NORMAL);
+	menuPartition->Append(MenuSetInactive);
+	menuPartition->AppendSeparator();
+	MenuPartitionProperties = new wxMenuItem(menuPartition, ID_PARTITION_PROPERTIES, _("Properties..."), wxEmptyString, wxITEM_NORMAL);
+	menuPartition->Append(MenuPartitionProperties);
+	menuPartition->AppendSeparator();
+	MenuWipePartition = new wxMenuItem(menuPartition, ID_WIPE_PARTITION, _("Wipe partition"), wxEmptyString, wxITEM_NORMAL);
+	menuPartition->Append(MenuWipePartition);
+	menuBar->Append(menuPartition, _("Partition"));
+	menuTools = new wxMenu();
+	MenuListGuid = new wxMenuItem(menuTools, ID_LIST_GUID, _("List known GUIDs..."), wxEmptyString, wxITEM_NORMAL);
+	menuTools->Append(MenuListGuid);
+	menuBar->Append(menuTools, _("Tools"));
+	menuHelp = new wxMenu();
+	MenuAbout = new wxMenuItem(menuHelp, ID_ABOUT, _("About..."), _("About this program"), wxITEM_NORMAL);
+	menuHelp->Append(MenuAbout);
+	menuBar->Append(menuHelp, _("Help"));
+	SetMenuBar(menuBar);
+	StatusBar1 = new wxStatusBar(this, ID_STATUSBAR1, 0, _T("ID_STATUSBAR1"));
+	int __wxStatusBarWidths_1[1] = { -10 };
+	int __wxStatusBarStyles_1[1] = { wxSB_NORMAL };
+	StatusBar1->SetFieldsCount(1,__wxStatusBarWidths_1);
+	StatusBar1->SetStatusStyles(1,__wxStatusBarStyles_1);
+	SetStatusBar(StatusBar1);
 
-    menuActions = new wxMenu;
-    menuDisk = new wxMenu;
-    menuPartition = new wxMenu;
-    menuTools = new wxMenu;
-    menuHelp = new wxMenu;
-
-    mainPanel=new wxPanel(this,-1,wxDefaultPosition,wxDefaultSize,wxTAB_TRAVERSAL,"panel");
-    diskList=new wxListCtrl(mainPanel,ID_DISK_LIST, wxPoint(10,30),wxSize(800,120),wxLC_REPORT,wxDefaultValidator,wxListCtrlNameStr);
-    partitionList=new wxListCtrl(mainPanel,ID_PARTITION_LIST, wxPoint(10,180),wxSize(800,200),wxLC_REPORT,wxDefaultValidator,wxListCtrlNameStr);
-    create_menus();
-
-    create_disk_listctrl();
-    create_partition_listctrl();
-
-
-    CreateStatusBar();
-    SetStatusText( _("idle") );
+	Connect(ID_LISTVIEW1,wxEVT_COMMAND_LIST_ITEM_ACTIVATED,(wxObjectEventFunction)&MainFrame::OndiskListItemActivated);
+	Connect(ID_LISTVIEW2,wxEVT_COMMAND_LIST_ITEM_SELECTED,(wxObjectEventFunction)&MainFrame::OnPartitionListItemActivated);
+	Connect(ID_LISTVIEW2,wxEVT_COMMAND_LIST_ITEM_DESELECTED,(wxObjectEventFunction)&MainFrame::OnPartitionListItemDeselect);
+	Connect(ID_LISTVIEW2,wxEVT_COMMAND_LIST_ITEM_RIGHT_CLICK,(wxObjectEventFunction)&MainFrame::OnPartitionListItemRClick);
+	Connect(ID_SAVE_CHANGES,wxEVT_COMMAND_MENU_SELECTED,(wxObjectEventFunction)&MainFrame::OnMenuSaveChangesSelected);
+	Connect(ID_QUIT,wxEVT_COMMAND_MENU_SELECTED,(wxObjectEventFunction)&MainFrame::OnMenuQuitSelected);
+	Connect(ID_CLOSE_DISK,wxEVT_COMMAND_MENU_SELECTED,(wxObjectEventFunction)&MainFrame::OnMenuCloseDiskSelected);
+	Connect(ID_OPEN_DISK_IMAGE,wxEVT_COMMAND_MENU_SELECTED,(wxObjectEventFunction)&MainFrame::OnMenuOpenDiskImageSelected);
+	Connect(ID_CREATE_BACKUP,wxEVT_COMMAND_MENU_SELECTED,(wxObjectEventFunction)&MainFrame::OnMenuCreateBackupSelected);
+	Connect(ID_RESTORE_BACKUP,wxEVT_COMMAND_MENU_SELECTED,(wxObjectEventFunction)&MainFrame::OnMenuRestoreBackupSelected);
+	Connect(ID_CREATE_PARTITION,wxEVT_COMMAND_MENU_SELECTED,(wxObjectEventFunction)&MainFrame::OnMenuCreatePartitionSelected);
+	Connect(ID_DELETE_PARTITION,wxEVT_COMMAND_MENU_SELECTED,(wxObjectEventFunction)&MainFrame::OnMenuDeletePartitionSelected);
+	Connect(ID_SET_ACTIVE,wxEVT_COMMAND_MENU_SELECTED,(wxObjectEventFunction)&MainFrame::OnMenuSetActiveSelected);
+	Connect(ID_SET_INACTIVE,wxEVT_COMMAND_MENU_SELECTED,(wxObjectEventFunction)&MainFrame::OnMenuSetInactiveSelected);
+	Connect(ID_PARTITION_PROPERTIES,wxEVT_COMMAND_MENU_SELECTED,(wxObjectEventFunction)&MainFrame::OnMenuPartitionPropertiesSelected);
+	Connect(ID_WIPE_PARTITION,wxEVT_COMMAND_MENU_SELECTED,(wxObjectEventFunction)&MainFrame::OnMenuWipePartitionSelected);
+	Connect(ID_LIST_GUID,wxEVT_COMMAND_MENU_SELECTED,(wxObjectEventFunction)&MainFrame::OnMenuListGuidSelected);
+	Connect(ID_ABOUT,wxEVT_COMMAND_MENU_SELECTED,(wxObjectEventFunction)&MainFrame::OnMenuAboutSelected);
+	//*)
 
     disk=new Disk;
 
+    diskList->InsertColumn(0,_("Disk"),0,120);
+    diskList->InsertColumn(1,_("Type"),0,50);
+    diskList->InsertColumn(2,_("Size"),0,70);
+    diskList->InsertColumn(3,_("Free"),0,70);
+    diskList->InsertColumn(4,_("Cylinders"),0,70);
+    diskList->InsertColumn(5,_("bps"),0,50);
+    diskList->InsertColumn(6,_("spt"),0,50);
+    diskList->InsertColumn(7,_("tpc"),0,50);
+    diskList->InsertColumn(8,_("Total sectors"),0,100);
+    diskList->InsertColumn(9,_("MBR signature"),0,100);
+
+    partitionList->InsertColumn(0,_("Partition #"),0,70);
+    partitionList->InsertColumn(1,_("Type"),0,100);
+    partitionList->InsertColumn(2,_("FS type"),0,90);
+    partitionList->InsertColumn(3,_("Size"),0,70);
+    //partitionList->InsertColumn(4,_("Free"),0,70);
+    partitionList->InsertColumn(5,_("First sect."),0,80);
+    partitionList->InsertColumn(6,_("Last sect."),0,80);
+    partitionList->InsertColumn(7,_("Mount point"),0,100);
+
+// -----
+
+    menuPartition->Enable(ID_DELETE_PARTITION,false);
+    menuPartition->Enable(ID_SET_ACTIVE,false);
+    menuPartition->Enable(ID_SET_INACTIVE,false);
+    menuPartition->Enable(ID_CREATE_PARTITION,false);
+    menuPartition->Enable(ID_WIPE_PARTITION,false);
+    menuPartition->Enable(ID_PARTITION_PROPERTIES,false);
+
+    menuDisk->Enable(ID_CLOSE_DISK,false);
+    menuActions->Enable(ID_SAVE_CHANGES,false);
+// ---
     refresh_disk_list();
-
-    menuPartition->Enable(ID_DELETE_PARTITION,false);
-    menuPartition->Enable(ID_SET_ACTIVE,false);
-    menuPartition->Enable(ID_SET_INACTIVE,false);
-    menuPartition->Enable(ID_CREATE_PARTITION,false);
-    menuPartition->Enable(ID_WIPE_PARTITION,false);
-    menuDisk->Enable(ID_CLOSE_DISK,false);
-
 }
 
-void MainFrame::OnSaveChangesClick(wxCommandEvent& event)
+MainFrame::~MainFrame()
 {
-
-  int ret=wxMessageBox( _("Are you sure want to write changes to disk?"),
-                        _("Warning"),wxYES_NO| wxICON_WARNING, this );
-  if(ret!=wxYES)
-      return;
-/*
-  DlgSaveChanges *dlg=new DlgSaveChanges(this);
-  dlg->ShowModal(disk);
-
-  refresh_partition_list();
-  delete dlg;
-*/
-
-  try
-  {
-     disk->Save();
-  }
-  catch(exception &ex)
-  {
-     wxMessageBox( _(ex.what()),_("Error"),wxOK | wxICON_ERROR, this );
-     return;
-  }
-   wxMessageBox( _("Finished succesfuly"),_("Information"),wxOK | wxICON_INFORMATION, this );
-}
-
-void MainFrame::OnDiskCloseClick(wxCommandEvent& event)
-{
-    disk->Close();
-    refresh_partition_list();
-
-    menuPartition->Enable(ID_CREATE_PARTITION,false);
-    menuPartition->Enable(ID_DELETE_PARTITION,false);
-    menuPartition->Enable(ID_SET_ACTIVE,false);
-    menuPartition->Enable(ID_SET_INACTIVE,false);
-    menuPartition->Enable(ID_WIPE_PARTITION,false);
-    menuDisk->Enable(ID_CLOSE_DISK,false);
-}
-
-void MainFrame::OnNewPartition(wxCommandEvent& event)
-{
-    DlgNewPart *dlg=new DlgNewPart(this);
-    dlg->ShowModal(disk,selected_frs);
-
-    refresh_partition_list();
-    delete dlg;
-}
-
-void MainFrame::OnCreateBackupClick(wxCommandEvent& event)
-{
-    DlgCreateBackup *dlg=new DlgCreateBackup(this);
-    dlg->ShowModal(disk);
-
-    refresh_partition_list();
-    delete dlg;
-}
-
-
-void MainFrame::OnRestoreBackupClick(wxCommandEvent& event)
-{
-    DlgRestoreBackup *dlg=new DlgRestoreBackup(this);
-    dlg->ShowModal(disk);
-
-    refresh_partition_list();
-    delete dlg;
-}
-
-void MainFrame::OnSetActiveClick(wxCommandEvent& event)
-{
-   try{
-
-   if(disk->GetPartition(selected_partition).flags&PART_ACTIVE)
-     {
-       wxMessageBox(_("This partition is already active"),_("Information"),wxICON_EXCLAMATION,this);
-       return;
-     }
-   if(disk->CountPartitions(PART_ACTIVE)>0)
-     {
-       int r=wxMessageBox(_("One partition is already set as active. Do you want to continue?"),_("Information"), wxYES_NO,this);
-       if(r==wxYES)
-         {
-           disk->SetActive(selected_partition,true);
-           refresh_partition_list();
-         }
-       return;
-     }
-    disk->SetActive(selected_partition,true);
-    refresh_partition_list();
-   }
-   catch(DiskException &de)
-   {
-       wxMessageBox(_(de.what()),_("Error"),wxICON_ERROR,this);
-   }
-
-}
-
-void MainFrame::OnWipePartitionClick(wxCommandEvent& event)
-{
-   int ret=wxMessageBox( _("Do you really want to wipe all data on the selected partition? Data recovery will not be possible."),
-                        _("Warning"),wxYES_NO| wxICON_WARNING, this );
-   if(ret!=wxYES)
-      return;
-
-   try{
-   disk->Wipe(selected_partition,false);
-   }
-   catch(DiskException &de)
-   {
-       wxMessageBox(_(de.what()),_("Error"),wxICON_ERROR,this);
-   }
-   refresh_partition_list();
-}
-
-
-void MainFrame::OnUnsetActiveClick(wxCommandEvent& event)
-{
-   try{
-   disk->SetActive(selected_partition,false);
-   }
-   catch(DiskException &de)
-   {
-       wxMessageBox(_(de.what()),_("Error"),wxICON_ERROR,this);
-   }
-   refresh_partition_list();
-}
-
-void MainFrame::OnListGuidClick(wxCommandEvent& event)
-{
-    DlgGuidList *dlg=new DlgGuidList(this);
-    dlg->ShowModal(disk);
-
-    delete dlg;
-}
-
-void MainFrame::OnOpenDiskImage(wxCommandEvent& event)
-{
-    DlgOpenDiskImage *dlg=new DlgOpenDiskImage(this);
-    dlg->ShowModal(disk);
-
-    if(disk->IsOpen())
-        menuDisk->Enable(ID_CLOSE_DISK,true);
-
-
-    refresh_partition_list();
-    delete dlg;
-}
-
-void MainFrame::OnPartitionListClick(wxListEvent& event)
-{
-
-	if(disk_structure[event.GetIndex()].selection_type==S_FREE_SPACE)
-	  {
-	      menuPartition->Enable(ID_DELETE_PARTITION,false);
-	      menuPartition->Enable(ID_SET_ACTIVE,false);
-	      menuPartition->Enable(ID_SET_INACTIVE,false);
-	      menuPartition->Enable(ID_CREATE_PARTITION,true);
-	      menuPartition->Enable(ID_WIPE_PARTITION,false);
-
-	      selected_frs=disk_structure[event.GetIndex()].num;
-	  }
-	else
-	  {
-	     menuPartition->Enable(ID_DELETE_PARTITION,true);
-	     menuPartition->Enable(ID_SET_ACTIVE,true);
-	     menuPartition->Enable(ID_SET_INACTIVE,true);
-	     menuPartition->Enable(ID_CREATE_PARTITION,false);
-	     menuPartition->Enable(ID_WIPE_PARTITION,true);
-	     selected_partition=disk_structure[event.GetIndex()].num;
-	  }
-}
-
-void MainFrame::OnPartitionListDeselect(wxListEvent& event)
-{
-    menuPartition->Enable(ID_DELETE_PARTITION,false);
-    menuPartition->Enable(ID_SET_ACTIVE,false);
-    menuPartition->Enable(ID_SET_INACTIVE,false);
-    menuPartition->Enable(ID_CREATE_PARTITION,false);
-    menuPartition->Enable(ID_WIPE_PARTITION,false);
-}
-
-void MainFrame::OnPartitionListRightClick(wxListEvent& event)
-{
-	void *data = reinterpret_cast<void *>(event.GetItem().GetData());
-	wxMenu menu;
-	menu.SetClientData( data );
-	if(disk_structure[event.GetIndex()].selection_type==S_FREE_SPACE)
-	  {
-	      selected_frs=disk_structure[event.GetIndex()].num;
-          menu.Append(ID_CREATE_PARTITION,"Create new partition...");
-
-	  }
-	else
-	  {
-	     selected_partition=disk_structure[event.GetIndex()].num;
-      //   menu.Append(ID_WIPE_PARTITION,"Wipe partition");
-         menu.Append(ID_DELETE_PARTITION,"Delete partition");
-
-	  }
-
-	menu.Connect(wxEVT_COMMAND_MENU_SELECTED,(wxObjectEventFunction)&MainFrame::OnPartitionListPopupClick, NULL, this);
-	PopupMenu(&menu);
-}
-
-
-void MainFrame::OnPartitionListPopupClick(wxListEvent& event)
-{
-//	void *data=static_cast<wxMenu *>(event.GetEventObject())->GetClientData();
-    int eid=event.GetId();
-
-	if(eid==ID_DELETE_PARTITION)
-        disk->DeletePartition(selected_partition);
-	else if(eid==ID_CREATE_PARTITION)
-		OnNewPartition(event);
-
-    refresh_partition_list();
-}
-
-void MainFrame::OnDiskListClick(wxListEvent& event)
-{
-   wxString diskname=diskList->GetItemText ( event.GetIndex());
-
-   if(disk->IsOpen())
-        disk->Close();
-   try{
-   disk->Open(diskname.ToAscii());
-   }
-   catch(DiskException &de)
-   {
-       wxMessageBox(_(de.what()),_("Error"),wxICON_ERROR,this);
-   }
-    if(disk->IsOpen())
-        menuDisk->Enable(ID_CLOSE_DISK,true);
-
-   refresh_partition_list();
-}
-
-void MainFrame::OnQuit(wxCommandEvent& WXUNUSED(event))
-{
-    Close(true);
-}
-
-void MainFrame::OnAbout(wxCommandEvent& WXUNUSED(event))
-{
-    wxMessageBox( _("Version 0.2"),_("About"),wxOK | wxICON_INFORMATION, this );
+	//(*Destroy(MainFrame)
+	//*)
+	disk->Close();
+	delete disk;
 }
 
 
 
 
-
-
-//
-// -------------------------------------------------------------------------------
-//
 
 
 void MainFrame::refresh_disk_list()
@@ -397,11 +252,13 @@ delete disk;
 
 
 
-
 void MainFrame::refresh_partition_list()
 {
     partitionList->DeleteAllItems();
     disk_structure.clear();
+
+    if(disk->IsOpen()==false)
+        return;
 
     for(int i=0;i<disk->CountPartitions();i++)
       {
@@ -504,115 +361,274 @@ void MainFrame::refresh_partition_list()
 }
 
 
-void MainFrame::create_disk_listctrl()
+void MainFrame::OndiskListItemActivated(wxListEvent& event)
 {
-    diskList->InsertColumn(0,_("Disk"),0,120);
-    diskList->InsertColumn(1,_("Type"),0,50);
-    diskList->InsertColumn(2,_("Size"),0,70);
-    diskList->InsertColumn(3,_("Free"),0,70);
-    diskList->InsertColumn(4,_("Cylinders"),0,70);
-    diskList->InsertColumn(5,_("bps"),0,50);
-    diskList->InsertColumn(6,_("spt"),0,50);
-    diskList->InsertColumn(7,_("tpc"),0,50);
-    diskList->InsertColumn(8,_("Total sectors"),0,100);
-    diskList->InsertColumn(9,_("MBR signature"),0,100);
-}
+  wxString diskname=diskList->GetItemText ( event.GetIndex());
 
-void MainFrame::create_partition_listctrl()
-{
-    partitionList->InsertColumn(0,_("Partition #"),0,70);
-    partitionList->InsertColumn(1,_("Type"),0,100);
-    partitionList->InsertColumn(2,_("FS type"),0,90);
-    partitionList->InsertColumn(3,_("Size"),0,70);
-    //partitionList->InsertColumn(4,_("Free"),0,70);
-    partitionList->InsertColumn(5,_("First sect."),0,80);
-    partitionList->InsertColumn(6,_("Last sect."),0,80);
-    partitionList->InsertColumn(7,_("Mount point"),0,100);
-
-}
-
-void MainFrame::create_menus()
-{
-
-// Actions menu
-    menuActions->Append(ID_SAVE_CHANGES,_("Save changes"),_("Write changes to disk"));
-    menuActions->AppendSeparator();
-    menuActions->Append( ID_QUIT, _("E&xit"),_("Exit without saving changes") );
-// Disk menu
-    menuDisk->Append(ID_CLOSE_DISK,_("Close disk (don\'t save changes)"),_("Close the disk handle"));
-    menuDisk->Append(ID_OPEN_DISK_IMAGE,_("Open a disk image"),_("Open a disk image and partition it as a physical disk"));
-    menuDisk->AppendSeparator();
-    menuDisk->Append(ID_CREATE_BACKUP,_("Create partition table backup"));
-    menuDisk->Append(ID_RESTORE_BACKUP,_("Restore partition table"));
-    menuDisk->AppendSeparator();
-   // menuDisk->Append(ID_CHECK_DISK,_("Check disk"));
-// Partitions menu
-    menuPartition->Append(ID_CREATE_PARTITION,_("Create new"),_("Create a new partition"));
-    menuPartition->Append(ID_DELETE_PARTITION,_("Delete"));
-    menuPartition->AppendSeparator();
-
-    menuPartition->Append(ID_SET_ACTIVE,_("Set active"),_("Mark partition as active (bootable) partition"));
-    menuPartition->Append(ID_SET_INACTIVE,_("Set inactive"),_("Remove active partition flag"));
- //   menuPartition->Append(ID_EDIT_BOOTSECTOR,_("Modify bootsector"));
- //   menuPartition->Append(ID_CHECK_FS,_("Check file system"));
- //   menuPartition->Append(ID_FORMAT,_("Format"));
-    menuPartition->AppendSeparator();
-    menuPartition->Append(ID_WIPE_PARTITION,_("Wipe"),_("Wipe all data on the partition"));
-
-    menuTools->Append(ID_LIST_GUID,_("List known GUIDs"),_("List known Partition Globally Unique Identifiers"));
+   if(disk->IsOpen())
+        disk->Close();
+   try{
+   disk->Open(diskname.ToAscii());
+   }
+   catch(DiskException &de)
+   {
+       wxMessageBox(_(de.what()),_("Error"),wxICON_ERROR,this);
+   }
+    if(disk->IsOpen())
+    {
+       menuDisk->Enable(ID_CLOSE_DISK,true);
+       menuActions->Enable(ID_SAVE_CHANGES,true);
+    }
 
 
-
-// Help
-    menuHelp->Append( ID_ABOUT, _("&About..."),_("About the program") );
-
-
-    wxMenuBar *menuBar = new wxMenuBar;
-    menuBar->Append( menuActions, _("&Actions") );
-    menuBar->Append( menuDisk, _("&Disk") );
-    menuBar->Append( menuPartition, _("&Partition") );
-    menuBar->Append( menuTools, _("&Tools") );
-   // TODO: separator here
-    menuBar->Append( menuHelp, _("Help") );
-
-    SetMenuBar( menuBar );
+   refresh_partition_list();
 }
 
 
+void MainFrame::OnMenuCloseDiskSelected(wxCommandEvent& event)
+{
+    disk->Close();
+    refresh_partition_list();
+
+    menuPartition->Enable(ID_CREATE_PARTITION,false);
+    menuPartition->Enable(ID_DELETE_PARTITION,false);
+    menuPartition->Enable(ID_SET_ACTIVE,false);
+    menuPartition->Enable(ID_SET_INACTIVE,false);
+    menuPartition->Enable(ID_WIPE_PARTITION,false);
+    menuPartition->Enable(ID_PARTITION_PROPERTIES,false);
+
+    menuDisk->Enable(ID_CLOSE_DISK,false);
+    menuActions->Enable(ID_SAVE_CHANGES,false);
+}
+
+void MainFrame::OnMenuSaveChangesSelected(wxCommandEvent& event)
+{
+  int ret=wxMessageBox( _("Are you sure want to write changes to disk?"),
+                        _("Warning"),wxYES_NO| wxICON_WARNING, this );
+  if(ret!=wxYES)
+      return;
+
+  DlgSaveChanges *dlg=new DlgSaveChanges(this);
+  dlg->ShowModal(disk);
+  delete dlg;
+  refresh_partition_list();
+}
+
+void MainFrame::OnMenuQuitSelected(wxCommandEvent& event)
+{
+  Close(true);
+}
+
+void MainFrame::OnMenuOpenDiskImageSelected(wxCommandEvent& event)
+{
+    DlgOpenDiskImage *dlg=new DlgOpenDiskImage(this);
+    dlg->ShowModal(disk);
+    delete dlg;
+
+    if(disk->IsOpen())
+    {
+        menuDisk->Enable(ID_CLOSE_DISK,true);
+        menuActions->Enable(ID_SAVE_CHANGES,true);
+    }
 
 
-// --------------------------------------------
-BEGIN_EVENT_TABLE(MainFrame, wxFrame)
-    EVT_MENU(ID_QUIT,  MainFrame::OnQuit)
-    EVT_MENU(ID_ABOUT, MainFrame::OnAbout)
+    refresh_partition_list();
+}
 
-    EVT_MENU(ID_CREATE_PARTITION,MainFrame::OnNewPartition)
-    EVT_MENU(ID_OPEN_DISK_IMAGE,MainFrame::OnOpenDiskImage)
-    EVT_MENU(ID_CLOSE_DISK, MainFrame::OnDiskCloseClick)
-    EVT_MENU(ID_SAVE_CHANGES, MainFrame::OnSaveChangesClick)
+void MainFrame::OnMenuCreateBackupSelected(wxCommandEvent& event)
+{
+    DlgCreateBackup *dlg=new DlgCreateBackup(this);
+    dlg->ShowModal(disk);
+    delete dlg;
 
-    EVT_MENU(ID_SET_ACTIVE, MainFrame::OnSetActiveClick)
-    EVT_MENU(ID_SET_INACTIVE, MainFrame::OnUnsetActiveClick)
+    refresh_partition_list();
+}
 
-    EVT_MENU(ID_LIST_GUID, MainFrame::OnListGuidClick)
+void MainFrame::OnMenuRestoreBackupSelected(wxCommandEvent& event)
+{
+    DlgRestoreBackup *dlg=new DlgRestoreBackup(this);
+    dlg->ShowModal(disk);
+    delete dlg;
 
-    EVT_MENU(ID_CREATE_BACKUP, MainFrame::OnCreateBackupClick)
-    EVT_MENU(ID_RESTORE_BACKUP, MainFrame::OnRestoreBackupClick)
+    refresh_partition_list();
+}
 
-    EVT_MENU(ID_WIPE_PARTITION, MainFrame::OnWipePartitionClick)
+void MainFrame::OnMenuCreatePartitionSelected(wxCommandEvent& event)
+{
+    DlgNewPart *dlg=new DlgNewPart(this);
+    dlg->ShowModal(disk,selected_frs);
+    delete dlg;
 
+    refresh_partition_list();
+}
 
-// Disk list events
-    EVT_LIST_ITEM_ACTIVATED(ID_DISK_LIST, MainFrame::OnDiskListClick)
-    EVT_LIST_ITEM_SELECTED(ID_PARTITION_LIST, MainFrame::OnPartitionListClick)
-    EVT_LIST_ITEM_DESELECTED(ID_PARTITION_LIST, MainFrame::OnPartitionListDeselect)
-// Partition list events
-    EVT_LIST_ITEM_RIGHT_CLICK(ID_PARTITION_LIST, MainFrame::OnPartitionListRightClick)
-END_EVENT_TABLE()
+void MainFrame::OnMenuDeletePartitionSelected(wxCommandEvent& event)
+{
+  try
+    {
+        disk->DeletePartition(selected_partition);
+    }
+  catch(DiskException &de)
+    {
+      wxMessageBox(_(de.what()),_("Error"),wxICON_ERROR,this);
+    }
+  refresh_partition_list();
+}
 
+void MainFrame::OnMenuSetActiveSelected(wxCommandEvent& event)
+{
+   try{
 
-// ----------------------
-bool cmp_lv(lvlist a,lvlist b)
-  {
-    return StrToU64((char*)a.begin_sect.c_str())<StrToU64((char*)b.begin_sect.c_str());
-  }
+   if(disk->GetPartition(selected_partition).flags&PART_ACTIVE)
+     {
+       wxMessageBox(_("This partition is already active"),_("Information"),wxICON_EXCLAMATION,this);
+       return;
+     }
+   if(disk->CountPartitions(PART_ACTIVE)>0)
+     {
+       int r=wxMessageBox(_("One partition is already set as active. Do you want to continue?"),_("Information"), wxYES_NO,this);
+       if(r==wxYES)
+         {
+           disk->SetActive(selected_partition,true);
+           refresh_partition_list();
+         }
+       return;
+     }
+    disk->SetActive(selected_partition,true);
+    refresh_partition_list();
+   }
+   catch(DiskException &de)
+   {
+       wxMessageBox(_(de.what()),_("Error"),wxICON_ERROR,this);
+   }
+
+}
+
+void MainFrame::OnMenuSetInactiveSelected(wxCommandEvent& event)
+{
+   try{
+       disk->SetActive(selected_partition,false);
+   }
+   catch(DiskException &de)
+   {
+       wxMessageBox(_(de.what()),_("Error"),wxICON_ERROR,this);
+   }
+   refresh_partition_list();
+}
+
+void MainFrame::OnMenuWipePartitionSelected(wxCommandEvent& event)
+{
+   wxMessageBox(_("Action not implemented"),_("Not yet"),wxICON_INFORMATION,this);
+    /*
+   int ret=wxMessageBox( _("Do you really want to wipe all data on the selected partition? Data recovery will not be possible."),
+                        _("Warning"),wxYES_NO| wxICON_WARNING, this );
+   if(ret!=wxYES)
+      return;
+
+   try{
+   disk->Wipe(selected_partition,false);
+   }
+   catch(DiskException &de)
+   {
+       wxMessageBox(_(de.what()),_("Error"),wxICON_ERROR,this);
+   }
+   refresh_partition_list();*/
+}
+
+void MainFrame::OnMenuListGuidSelected(wxCommandEvent& event)
+{
+    DlgGuidList *dlg=new DlgGuidList(this);
+    dlg->ShowModal(disk);
+
+    delete dlg;
+}
+
+void MainFrame::OnMenuAboutSelected(wxCommandEvent& event)
+{
+  wxMessageBox( _("Version 0.2"),_("About"),wxOK | wxICON_INFORMATION, this );
+}
+
+// -------------------------------------------------------
+
+void MainFrame::OnPartitionListItemActivated(wxListEvent& event)
+{
+
+	if(disk_structure[event.GetIndex()].selection_type==S_FREE_SPACE)
+	  {
+	      menuPartition->Enable(ID_DELETE_PARTITION,false);
+	      menuPartition->Enable(ID_SET_ACTIVE,false);
+	      menuPartition->Enable(ID_SET_INACTIVE,false);
+	      menuPartition->Enable(ID_CREATE_PARTITION,true);
+	      menuPartition->Enable(ID_WIPE_PARTITION,false);
+          menuPartition->Enable(ID_PARTITION_PROPERTIES,false);
+
+	      selected_frs=disk_structure[event.GetIndex()].num;
+	  }
+	else
+	  {
+	     menuPartition->Enable(ID_DELETE_PARTITION,true);
+	     menuPartition->Enable(ID_SET_ACTIVE,true);
+	     menuPartition->Enable(ID_SET_INACTIVE,true);
+	     menuPartition->Enable(ID_CREATE_PARTITION,false);
+	     menuPartition->Enable(ID_WIPE_PARTITION,true);
+	     menuPartition->Enable(ID_PARTITION_PROPERTIES,true);
+
+	     selected_partition=disk_structure[event.GetIndex()].num;
+	  }
+}
+
+void MainFrame::OnPartitionListItemRClick(wxListEvent& event)
+{
+	void *data = reinterpret_cast<void *>(event.GetItem().GetData());
+	wxMenu menu;
+	menu.SetClientData( data );
+	if(disk_structure[event.GetIndex()].selection_type==S_FREE_SPACE)
+	  {
+	      selected_frs=disk_structure[event.GetIndex()].num;
+          menu.Append(ID_CREATE_PARTITION,"Create new partition...");
+
+	  }
+	else
+	  {
+	     selected_partition=disk_structure[event.GetIndex()].num;
+         menu.Append(ID_WIPE_PARTITION,"Wipe partition");
+         menu.Append(ID_DELETE_PARTITION,"Delete partition");
+         menu.AppendSeparator();
+         menu.Append(ID_PARTITION_PROPERTIES,"Properties...");
+
+	  }
+
+	menu.Connect(wxEVT_COMMAND_MENU_SELECTED,(wxObjectEventFunction)&MainFrame::OnPartitionListPopupClick, NULL, this);
+	PopupMenu(&menu);
+}
+
+void MainFrame::OnPartitionListPopupClick(wxListEvent& event)
+{
+    int eid=event.GetId();
+
+	if(eid==ID_DELETE_PARTITION)
+        OnMenuDeletePartitionSelected(event);
+	else if(eid==ID_CREATE_PARTITION)
+		OnMenuCreatePartitionSelected(event);
+	else if(eid==ID_PARTITION_PROPERTIES)
+		OnMenuPartitionPropertiesSelected(event);
+    refresh_partition_list();
+}
+
+void MainFrame::OnMenuPartitionPropertiesSelected(wxCommandEvent& event)
+{
+  DlgPartitionProperties *dlg=new DlgPartitionProperties(this);
+  dlg->ShowModal(disk,selected_partition);
+
+  delete dlg;
+}
+
+void MainFrame::OnPartitionListItemDeselect(wxListEvent& event)
+{
+    menuPartition->Enable(ID_DELETE_PARTITION,false);
+    menuPartition->Enable(ID_SET_ACTIVE,false);
+    menuPartition->Enable(ID_SET_INACTIVE,false);
+    menuPartition->Enable(ID_CREATE_PARTITION,false);
+    menuPartition->Enable(ID_WIPE_PARTITION,false);
+    menuPartition->Enable(ID_PARTITION_PROPERTIES,false);
+}

@@ -278,16 +278,3 @@ for(unsigned i=0;i<gpt.n_entries;++i)
   }
  delete[] entries;
 }
-
-GPT_SPECIFIC Disk::GetGPTSpecific(unsigned p)
-{
-    GPT_SPECIFIC gspec;
-    memcpy(&gspec,GetPartition(p).data,sizeof(GPT_SPECIFIC));
-    return gspec;
-
-}
-
-void Disk::set_gpt_specific(unsigned p,GPT_SPECIFIC gspec)
-{
-   part_man->SetSpecificData(p,reinterpret_cast<void*>(&gspec),sizeof(gspec));
-}

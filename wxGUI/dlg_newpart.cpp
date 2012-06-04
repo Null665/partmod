@@ -3,19 +3,19 @@
 #include "../Partmod/disk_exception.h"
 #include <wx/wx.h>
 //(*InternalHeaders(DlgNewPart)
-#include <wx/intl.h>
-#include <wx/string.h>
-//*)
+#include <wx/intl.h>
+#include <wx/string.h>
+//*)
 
 //(*IdInit(DlgNewPart)
-const long DlgNewPart::IDA_HSHDGSDHUF = wxNewId();
-const long DlgNewPart::ID_SIZE_MULTIPLIER = wxNewId();
-const long DlgNewPart::ID_STATICTEXT1 = wxNewId();
-const long DlgNewPart::ID_OK = wxNewId();
-const long DlgNewPart::ID_CHOICE1 = wxNewId();
-const long DlgNewPart::ID_STATICTEXT2 = wxNewId();
-const long DlgNewPart::ID_CHOICE2 = wxNewId();
-//*)
+const long DlgNewPart::IDA_HSHDGSDHUF = wxNewId();
+const long DlgNewPart::ID_SIZE_MULTIPLIER = wxNewId();
+const long DlgNewPart::ID_STATICTEXT1 = wxNewId();
+const long DlgNewPart::ID_OK = wxNewId();
+const long DlgNewPart::ID_CHOICE1 = wxNewId();
+const long DlgNewPart::ID_STATICTEXT2 = wxNewId();
+const long DlgNewPart::ID_CHOICE2 = wxNewId();
+//*)
 
 BEGIN_EVENT_TABLE(DlgNewPart,wxDialog)
 	//(*EventTable(DlgNewPart)
@@ -25,21 +25,21 @@ END_EVENT_TABLE()
 DlgNewPart::DlgNewPart(wxWindow* parent)
 {
 	//(*Initialize(DlgNewPart)
-	Create(parent, wxID_ANY, _("Create a new partition"), wxDefaultPosition, wxDefaultSize, wxDEFAULT_DIALOG_STYLE, _T("wxID_ANY"));
-	SetClientSize(wxSize(370,215));
-	SpinCtrlPartitionSize = new wxSpinCtrl(this, IDA_HSHDGSDHUF, _T("0"), wxPoint(48,64), wxDefaultSize, 0, 0, 10000000, 0, _T("IDA_HSHDGSDHUF"));
-	SpinCtrlPartitionSize->SetValue(_T("0"));
-	ChoiceSizeMul = new wxChoice(this, ID_SIZE_MULTIPLIER, wxPoint(184,64), wxSize(112,21), 0, 0, 0, wxDefaultValidator, _T("ID_SIZE_MULTIPLIER"));
-	StaticText1 = new wxStaticText(this, ID_STATICTEXT1, _("Enter size of partition:"), wxPoint(48,40), wxSize(112,13), 0, _T("ID_STATICTEXT1"));
-	ButtonOK = new wxButton(this, ID_OK, _("OK"), wxPoint(72,144), wxDefaultSize, 0, wxDefaultValidator, _T("ID_OK"));
-	ButtonCancel = new wxButton(this, wxID_CANCEL, _("Cancel"), wxPoint(184,144), wxDefaultSize, 0, wxDefaultValidator, _T("wxID_CANCEL"));
-	ChoicePartitionType = new wxChoice(this, ID_CHOICE1, wxPoint(48,112), wxSize(120,21), 0, 0, 0, wxDefaultValidator, _T("ID_CHOICE1"));
-	StaticText2 = new wxStaticText(this, ID_STATICTEXT2, _("Select partition type:"), wxPoint(48,96), wxSize(112,13), 0, _T("ID_STATICTEXT2"));
-	ChoiceFsType = new wxChoice(this, ID_CHOICE2, wxPoint(184,112), wxDefaultSize, 0, 0, 0, wxDefaultValidator, _T("ID_CHOICE2"));
+	Create(parent, wxID_ANY, _("Create a new partition"), wxDefaultPosition, wxDefaultSize, wxDEFAULT_DIALOG_STYLE, _T("wxID_ANY"));
+	SetClientSize(wxSize(370,215));
+	SpinCtrlPartitionSize = new wxSpinCtrl(this, IDA_HSHDGSDHUF, _T("0"), wxPoint(48,64), wxDefaultSize, 0, 0, 10000000, 0, _T("IDA_HSHDGSDHUF"));
+	SpinCtrlPartitionSize->SetValue(_T("0"));
+	ChoiceSizeMul = new wxChoice(this, ID_SIZE_MULTIPLIER, wxPoint(184,64), wxSize(112,21), 0, 0, 0, wxDefaultValidator, _T("ID_SIZE_MULTIPLIER"));
+	StaticText1 = new wxStaticText(this, ID_STATICTEXT1, _("Enter size of partition:"), wxPoint(48,40), wxSize(112,13), 0, _T("ID_STATICTEXT1"));
+	ButtonOK = new wxButton(this, ID_OK, _("OK"), wxPoint(72,144), wxDefaultSize, 0, wxDefaultValidator, _T("ID_OK"));
+	ButtonCancel = new wxButton(this, wxID_CANCEL, _("Cancel"), wxPoint(184,144), wxDefaultSize, 0, wxDefaultValidator, _T("wxID_CANCEL"));
+	ChoicePartitionType = new wxChoice(this, ID_CHOICE1, wxPoint(48,112), wxSize(120,21), 0, 0, 0, wxDefaultValidator, _T("ID_CHOICE1"));
+	StaticText2 = new wxStaticText(this, ID_STATICTEXT2, _("Select partition type:"), wxPoint(48,96), wxSize(112,13), 0, _T("ID_STATICTEXT2"));
+	ChoiceFsType = new wxChoice(this, ID_CHOICE2, wxPoint(184,112), wxDefaultSize, 0, 0, 0, wxDefaultValidator, _T("ID_CHOICE2"));
 
-	Connect(ID_OK,wxEVT_COMMAND_BUTTON_CLICKED,(wxObjectEventFunction)&DlgNewPart::OnButtonOKClick);
-	Connect(ID_CHOICE1,wxEVT_COMMAND_CHOICE_SELECTED,(wxObjectEventFunction)&DlgNewPart::OnChoicePartitionTypeSelect);
-	//*)
+	Connect(ID_OK,wxEVT_COMMAND_BUTTON_CLICKED,(wxObjectEventFunction)&DlgNewPart::OnButtonOKClick);
+	Connect(ID_CHOICE1,wxEVT_COMMAND_CHOICE_SELECTED,(wxObjectEventFunction)&DlgNewPart::OnChoicePartitionTypeSelect);
+	//*)
 }
 
 DlgNewPart::~DlgNewPart()
@@ -86,9 +86,12 @@ int DlgNewPart::ShowModal(Disk *disk, int selected_frs)
 
   if(frs_type==FREE_UNALLOCATED)
     {
-      ChoicePartitionType->Append(_("Primary"),(void*)PART_PRIMARY);
-      ChoicePartitionType->Append(_("Extended"),(void*)PART_EXTENDED);
-      ChoicePartitionType->Append(_("GPT partition table"),(void*)PART_MBR_GPT);
+      if(disk->CountPartitions(PART_PRIMARY | PART_EXTENDED | PART_MBR_GPT)<4)
+          ChoicePartitionType->Append(_("Primary"),(void*)PART_PRIMARY);
+      if(disk->CountPartitions(PART_EXTENDED)==0)
+          ChoicePartitionType->Append(_("Extended"),(void*)PART_EXTENDED);
+      if(disk->CountPartitions(PART_MBR_GPT)==0)
+          ChoicePartitionType->Append(_("GPT partition table"),(void*)PART_MBR_GPT);
     }
   else if(frs_type==FREE_EXTENDED)
     {

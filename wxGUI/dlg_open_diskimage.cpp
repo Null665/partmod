@@ -35,7 +35,7 @@ END_EVENT_TABLE()
 DlgOpenDiskImage::DlgOpenDiskImage(wxWindow* parent,wxWindowID id,const wxPoint& pos,const wxSize& size)
 {
     //(*Initialize(DlgOpenDiskImage)
-    Create(parent, id, wxEmptyString, wxDefaultPosition, wxDefaultSize, wxDEFAULT_DIALOG_STYLE, _T("id"));
+    Create(parent, id, _("Open a disk image"), wxDefaultPosition, wxDefaultSize, wxDEFAULT_DIALOG_STYLE, _T("id"));
     SetClientSize(wxSize(345,267));
     Move(wxDefaultPosition);
     TextImagePath = new wxTextCtrl(this, ID_TEXTCTRL1, wxEmptyString, wxPoint(24,48), wxSize(192,21), 0, wxDefaultValidator, _T("ID_TEXTCTRL1"));

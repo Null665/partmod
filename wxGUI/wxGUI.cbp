@@ -29,7 +29,7 @@
 					<Add library="libwxjpegd.a" />
 					<Add library="libwxtiffd.a" />
 					<Add library="libwxzlibd.a" />
-					<Add library="..\..\bin\libPartmod.dll.a" />
+					<Add library="..\..\bin\libpartmod.a" />
 					<Add library="ole32" />
 					<Add library="comctl32" />
 					<Add library="winspool" />
@@ -44,9 +44,8 @@
 				<Option platforms="Windows;" />
 				<Option output="..\..\bin\wxGUI" prefix_auto="1" extension_auto="1" />
 				<Option object_output="..\..\obj\windows\wxGUI" />
-				<Option type="1" />
+				<Option type="0" />
 				<Option compiler="gcc" />
-				<Option use_console_runner="0" />
 				<Option projectLinkerOptionsRelation="2" />
 				<Compiler>
 					<Add directory="$(#wx)\lib\gcc_lib\msw" />
@@ -63,7 +62,7 @@
 					<Add library="libwxjpeg.a" />
 					<Add library="libwxtiff.a" />
 					<Add library="libwxzlib.a" />
-					<Add library="..\..\bin\libPartmod.dll.a" />
+					<Add library="..\..\bin\libPartmod.a" />
 					<Add library="ole32" />
 					<Add library="comctl32" />
 					<Add library="winspool" />
@@ -124,6 +123,8 @@
 		<Unit filename="dlg_newpart.hpp" />
 		<Unit filename="dlg_open_diskimage.cpp" />
 		<Unit filename="dlg_open_diskimage.h" />
+		<Unit filename="dlg_partition_properties.cpp" />
+		<Unit filename="dlg_partition_properties.h" />
 		<Unit filename="dlg_restore_backup.cpp" />
 		<Unit filename="dlg_restore_backup.h" />
 		<Unit filename="dlg_save_changes.cpp" />
@@ -139,14 +140,26 @@
 			<wxsmith version="1">
 				<gui name="wxWidgets" src="main_app.cpp" main="-- None --" init_handlers="necessary" language="CPP" />
 				<resources>
-					<wxDialog wxs="wxsmith/DlgNewPart.wxs" src="dlg_newpart.cpp" hdr="dlg_newpart.hpp" name="DlgNewPart" language="CPP" />
-					<wxDialog wxs="wxsmith/DlgOpenDiskImage.wxs" src="dlg_open_diskimage.cpp" hdr="dlg_open_diskimage.h" name="DlgOpenDiskImage" language="CPP" />
-					<wxDialog wxs="wxsmith/DlgGuidList.wxs" src="dlg_guid_list.cpp" hdr="dlg_guid_list.h" name="DlgGuidList" language="CPP" />
-					<wxDialog wxs="wxsmith/DlgCreateBackup.wxs" src="dlg_create_backup.cpp" hdr="dlg_create_backup.h" name="DlgCreateBackup" language="CPP" />
-					<wxDialog wxs="wxsmith/DlgRestoreBackup.wxs" src="dlg_restore_backup.cpp" hdr="dlg_restore_backup.h" name="DlgRestoreBackup" language="CPP" />
-					<wxDialog wxs="wxsmith/DlgSaveChanges.wxs" src="dlg_save_changes.cpp" hdr="dlg_save_changes.h" name="DlgSaveChanges" language="CPP" />
+					<wxDialog wxs="wxsmith/DlgNewPart.wxs" src="dlg_newpart.cpp" hdr="dlg_newpart.hpp" fwddecl="0" i18n="1" name="DlgNewPart" language="CPP" />
+					<wxDialog wxs="wxsmith/DlgOpenDiskImage.wxs" src="dlg_open_diskimage.cpp" hdr="dlg_open_diskimage.h" fwddecl="0" i18n="1" name="DlgOpenDiskImage" language="CPP" />
+					<wxDialog wxs="wxsmith/DlgGuidList.wxs" src="dlg_guid_list.cpp" hdr="dlg_guid_list.h" fwddecl="0" i18n="1" name="DlgGuidList" language="CPP" />
+					<wxDialog wxs="wxsmith/DlgCreateBackup.wxs" src="dlg_create_backup.cpp" hdr="dlg_create_backup.h" fwddecl="0" i18n="1" name="DlgCreateBackup" language="CPP" />
+					<wxDialog wxs="wxsmith/DlgRestoreBackup.wxs" src="dlg_restore_backup.cpp" hdr="dlg_restore_backup.h" fwddecl="0" i18n="1" name="DlgRestoreBackup" language="CPP" />
+					<wxDialog wxs="wxsmith/DlgSaveChanges.wxs" src="dlg_save_changes.cpp" hdr="dlg_save_changes.h" fwddecl="0" i18n="1" name="DlgSaveChanges" language="CPP" />
+					<wxDialog wxs="wxsmith/DlgPartitionProperties.wxs" src="dlg_partition_properties.cpp" hdr="dlg_partition_properties.h" fwddecl="0" i18n="1" name="DlgPartitionProperties" language="CPP" />
+					<wxFrame wxs="wxsmith/MainFrame.wxs" src="main_frame.cpp" hdr="main_frame.hpp" fwddecl="0" i18n="1" name="MainFrame" language="CPP" />
+					<wxPanel wxs="wxsmith/MainPanel.wxs" src="main_panel.cpp" hdr="main_panel.h" fwddecl="0" i18n="1" name="MainPanel" language="CPP" />
 				</resources>
 			</wxsmith>
+			<DoxyBlocks>
+				<comment_style block="0" line="0" />
+				<doxyfile_project />
+				<doxyfile_build />
+				<doxyfile_warnings />
+				<doxyfile_output />
+				<doxyfile_dot />
+				<general />
+			</DoxyBlocks>
 		</Extensions>
 	</Project>
 </CodeBlocks_project_file>

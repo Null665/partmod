@@ -23,7 +23,7 @@ END_EVENT_TABLE()
 DlgRestoreBackup::DlgRestoreBackup(wxWindow* parent,wxWindowID id,const wxPoint& pos,const wxSize& size)
 {
 	//(*Initialize(DlgRestoreBackup)
-	Create(parent, id, wxEmptyString, wxDefaultPosition, wxDefaultSize, wxDEFAULT_DIALOG_STYLE, _T("id"));
+	Create(parent, id, _("Restore partition table"), wxDefaultPosition, wxDefaultSize, wxDEFAULT_DIALOG_STYLE, _T("id"));
 	SetClientSize(wxSize(328,156));
 	Move(wxDefaultPosition);
 	StaticText1 = new wxStaticText(this, ID_STATICTEXT1, _("Backup file name"), wxPoint(24,32), wxSize(128,13), 0, _T("ID_STATICTEXT1"));

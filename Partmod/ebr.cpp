@@ -7,7 +7,6 @@
 #include "disk.h"
 #include "mbr.h"
 #include <cstring>
-#include <iostream>
 using namespace std;
 
 void EBRHelper::ReadPartitionTables(GEN_PART extended)

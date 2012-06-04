@@ -15,12 +15,8 @@
 				<Option host_application="D:\C++\tvarka\Partmod\bin\partmod_gui.exe" />
 				<Option createStaticLib="1" />
 				<Compiler>
-					<Add option="-pg" />
 					<Add option="-g" />
 				</Compiler>
-				<Linker>
-					<Add option="-pg -lgmon" />
-				</Linker>
 			</Target>
 			<Target title="Release - Windows">
 				<Option platforms="Windows;" />
