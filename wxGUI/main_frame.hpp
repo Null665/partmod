@@ -17,14 +17,6 @@
 #define S_FREE_SPACE   2
 
 
-
-
-struct sel_type
-{
-  int      type;
-  uint32_t flags;
-};
-
 struct lvlist
 {
 std::string partition,
@@ -61,18 +53,18 @@ class MainFrame: public wxFrame
 		wxMenuItem* MenuSaveChanges;
 		wxMenu* menuActions;
 		wxMenuItem* MenuSetInactive;
-		wxButton* Button1;
 		wxMenuItem* MenuListGuid;
 		wxMenuItem* MenuDeletePartition;
 		wxPanel* Panel1;
 		wxMenuItem* MenuCloseDisk;
 		wxMenuItem* MenuPartitionProperties;
-		wxButton* Button2;
 		wxMenuItem* MenuSetActive;
+		wxButton* ButtonSaveChanges;
 		wxMenu* menuHelp;
 		wxMenuItem* MenuCreateBackup;
 		wxStatusBar* StatusBar1;
 		wxMenu* menuTools;
+		wxButton* ButtonQuit;
 		wxMenu* menuDisk;
 		wxMenuItem* MenuWipePartition;
 		wxMenuItem* MenuCreatePartition;
