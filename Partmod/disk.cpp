@@ -185,7 +185,7 @@ void Disk::CheckDisk(vector<DISK_ERROR> &error_list)
 {
 if(CountPartitions()==0)
     return;
-/*
+
 GEN_PART part_curr,part_next;
 DISK_ERROR de;
 
@@ -273,7 +273,7 @@ catch(...)
 
 // what else?
 
-*/
+
 }
 
 
@@ -431,106 +431,10 @@ void Disk::CreatePartitionGPT(int which_frs,uint64_t size,uint64_t sect_before,_
 }
 
 
-
-/*
-void Disk::CreatePartition(FREE_SPACE frs,int part_type,uint64_t size)
-{
-find_free_space();
-
-GEN_PART new_part;
-GEN_PART mbr_extended_part;
-
-new_part.begin_sector=frs.begin_sector;
-new_part.length=size;
-new_part.flags=0;
-new_part.fsid=FS_FAT16;
-
-MBR_SPECIFIC mspec;
-
-
-if(frs.length<size)
-    throw(DiskException(ERR_PART_TOO_BIG));
-
-switch(part_type)
-  {
-     case PART_PRIMARY:
-
-         if(frs.type==FREE_EXTENDED)
-             throw(DiskException(ERR_PRIMARY_ON_EXTENDED));
-         else if(frs.type==FREE_UNALLOCATED)
-         {
-             new_part.flags=PART_PRIMARY;
-             mspec.fsid=FSID_DEFAULT;
-             memcpy(new_part.data,&mspec,sizeof(mspec));
-         }
-         else throw(DiskException(ERR_UNKNOWN_ERROR));
-
-     break;
-     case PART_MBR_GPT:
-
-         if(frs.length<sizeof(GPT)+sizeof(GPT_ENTRY)*128+(MB/GetDiskGeometry().bps))
-             throw(DiskException(ERR_PART_TOO_SMALL));
-
-         if(frs.type==FREE_UNALLOCATED)
-           {
-              new_part.flags=PART_MBR_GPT;
-              mspec.fsid=FSID_GPT;
-              memcpy(new_part.data,&mspec,sizeof(mspec));
-           }
-          else throw(DiskException(ERR_UNKNOWN_ERROR));
-     break;
-     case PART_GPT:
-       //  mbr_extended_part=get_extended();
-         if(frs.type==FREE_GPT)
-           {
-              GPT_SPECIFIC gspec;
-              generate_guid(gspec.unique_guid);
-              gspec.type_guid=guid_man->Get(5);
-
-              new_part.flags=PART_GPT;
-              memcpy(new_part.data,&gspec,sizeof(gspec));
-           }
-         else throw(DiskException(ERR_UNKNOWN_ERROR));
-
-     break;
-     case PART_LOGICAL:
-         mbr_extended_part=part_man->GetExtendedPartition();
-         if(frs.type==FREE_EXTENDED)
-           {
-              mspec.begin_sector_rel=mbr_extended_part.begin_sector;
-              new_part.flags=PART_LOGICAL;
-              memcpy(new_part.data,&mspec,sizeof(mspec));
-           }
-         else throw(DiskException(ERR_UNKNOWN_ERROR));
-   break;
-
-    case PART_EXTENDED:    // MBR extended partition
-        if(frs.type==FREE_UNALLOCATED && frs.length>=size)
-          {
-            mspec.begin_sector_rel=mbr_extended_part.begin_sector;
-            new_part.flags=PART_EXTENDED;
-            memcpy(new_part.data,&mspec,sizeof(mspec));
-          }
-        else throw(DiskException(ERR_UNKNOWN_ERROR));
-   break;
-
-     default: throw(DiskException(ERR_UNKNOWN_ERROR));
-  }
-
-
-new_part.flags|=PART_NOT_FORMATTED;
-new_part.fsid=FS_FAT16;
-add_partition(new_part);
-
-}
-*/
-
 void Disk::find_free_space()
 {
     frs_man->FindFreeSpace(part_man,LastSector(),GetDiskGeometry().bps,GetDiskGeometry().spt);
 }
-
-
 
 
 void Disk::Split(unsigned int p,uint64_t size_of_first_part)
@@ -632,30 +536,6 @@ return true;
 }
 
 
-
-
-
-
-
-/*
-GEN_HANDLE Disk::GetPartitionHandle(unsigned int p)
-{
-
-GEN_HANDLE tmp;
-memset(&tmp,0,sizeof(tmp));
-
-tmp.hDisk=diskio;
-
-tmp.begin_sector=GetPartition(p).begin_sector;
-tmp.length=GetPartition(p).length;
-tmp.fsid=GetPartition(p).fsid;
-tmp.flags=GetPartition(p).flags;
-
-memcpy(&tmp.disk_geometry,&GetDiskGeometry(),sizeof(GEOMETRY));
-return tmp;
-}
-*/
-
 void Disk::Move(unsigned p,uint64_t new_pos)
 {
 GEN_PART gpart=GetPartition(p);
@@ -663,7 +543,6 @@ gpart.begin_sector=new_pos;
 modify_partition(p,gpart);
 
 }
-
 
 
 
@@ -676,7 +555,6 @@ if(ret!=0)
 return length;
 
 }
-
 
 
 
