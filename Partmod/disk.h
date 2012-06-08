@@ -119,8 +119,6 @@ public:
   uint64_t         LastSector()       const;      // Returns number of sectors on disk
   unsigned         GetDiskSignature();            // Returns MBR disk signature
 
-  GEN_HANDLE GetPartitionHandle(unsigned int p);  // Creates GEN_HANDLE for partition
-
 
   Disk(std::string dsk); // Constructor: takes string, eg. \\.\PhysicalDrive0
   Disk(int dsk);         // Constructor: takes disk number, eg. 0 and converts into string \\.\PhysicalDrive0
@@ -238,15 +236,11 @@ public:
  * GPT_ENTRY WriteGPTEntryToDisk(const GPT_ENTRY &e,uint32_t n);
 */
 
-//
-// I think there's no reason to call rhese functions dirtectly
-//
 protected:
   void WriteGPT(const GPT&);
   uint32_t WritePartitionEntries(GPT gpt);
   void RestoreGPTFromBackup(GEN_PART gpt_part);
   void WriteBackup(GPT gpt);
-
 
 };
 
