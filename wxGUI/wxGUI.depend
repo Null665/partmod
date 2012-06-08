@@ -1,5 +1,5 @@
 # depslib dependency file v1.0
-1338802953 source:d:\c++\tvarka\partmod\src\wxgui\main_frame.cpp
+1338920875 source:d:\c++\tvarka\partmod\src\wxgui\main_frame.cpp
 	"main_frame.hpp"
 	<sstream>
 	<algorithm>
@@ -16,7 +16,7 @@
 
 1319879345 >
 
-1338802478 d:\c++\tvarka\partmod\src\wxgui\main_frame.hpp
+1338913103 d:\c++\tvarka\partmod\src\wxgui\main_frame.hpp
 	<wx/listctrl.h>
 	<wx/menu.h>
 	<wx/panel.h>
@@ -2001,12 +2001,12 @@
 	<wx/intl.h>
 	<wx/string.h>
 
-1310284860 d:\c++\tvarka\partmod\src\wxgui\dlg_newpart.hpp
+1339149989 d:\c++\tvarka\partmod\src\wxgui\dlg_newpart.hpp
 	"../Partmod/disk.h"
+	<wx/sizer.h>
 	<wx/stattext.h>
 	<wx/spinctrl.h>
 	<wx/choice.h>
-	<wx/button.h>
 	<wx/dialog.h>
 
 1271320943 d:\wxmsw-2.8.11\include\wx\spinctrl.h
@@ -4421,7 +4421,7 @@
 	"../Partmod/disk.h"
 	"../Partmod/disk_exception.h"
 
-1329071563 source:d:\c++\tvarka\partmod\src\wxgui\dlg_save_changes.cpp
+1338803526 source:d:\c++\tvarka\partmod\src\wxgui\dlg_save_changes.cpp
 	"dlg_save_changes.h"
 	<wx/intl.h>
 	<wx/string.h>
@@ -7473,12 +7473,12 @@
 
 1271321013 d:\wxmsw-2.8.11\\lib\gcc_lib\mswd\wx\setup.h
 
-1338737202 source:d:\c++\tvarka\partmod\src\wxgui\dlg_partition_properties.cpp
+1339089601 source:d:\c++\tvarka\partmod\src\wxgui\dlg_partition_properties.cpp
 	"dlg_partition_properties.h"
 	<wx/intl.h>
 	<wx/string.h>
 
-1338737202 d:\c++\tvarka\partmod\src\wxgui\dlg_partition_properties.h
+1339089601 d:\c++\tvarka\partmod\src\wxgui\dlg_partition_properties.h
 	<wx/stattext.h>
 	<wx/textctrl.h>
 	<wx/statbox.h>
