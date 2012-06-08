@@ -15,11 +15,6 @@
 typedef uint32_t uid_t;
 
 
-#define DLLEXPORT extern "C" __declspec(dllexport)
-
-#ifndef __cdecl
-  #define __cdecl
-#endif
 
 
 #define BS_MAGIC           0xAA55 // last 2 bytes of mbr,ebr, or boot sector
@@ -129,8 +124,8 @@ typedef uint32_t uid_t;
 
 
 // For U64ToStr() and StrToU64
-#define STR_OCT                   8 // Decimal string
-#define STR_DEC                  10 // Octal string
+#define STR_OCT                   8 // Octal string
+#define STR_DEC                  10 // Decimal string
 #define STR_HEX                  16 // Hex string
 
 
@@ -196,18 +191,6 @@ uint16_t reserved_a[65];
 uint8_t  data[128];           // Data specific to partition layout
 };
 
-// generic handle
-struct GEN_HANDLE
-{
-DiskIO * hDisk;
-uint64_t begin_sector;
-uint64_t length;
-uint8_t  fsid;
-uint32_t flags;
-GEOMETRY disk_geometry;
-};
-
-
 // describes where free space blocks  on disk
 struct FREE_SPACE
   {
@@ -216,17 +199,6 @@ struct FREE_SPACE
      uint32_t type;          /* type of free space */
 
   };
-
-
-// Used when formatting a partition
-struct FORMAT_DISK
-  {
-    GEN_HANDLE gh;
-    unsigned int spc;       /* sectors per cluster */
-    unsigned int fs;        /* What file sysytem to use, also tells which DLL must be called */
-    unsigned int flags;     /* quick format,enable compression */
-  };
-
 
 
 struct BACKUP_FILE_HEADER
