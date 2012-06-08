@@ -4,10 +4,10 @@
 #include "../Partmod/disk.h"
 
 //(*Headers(DlgNewPart)
+#include <wx/sizer.h>
 #include <wx/stattext.h>
 #include <wx/spinctrl.h>
 #include <wx/choice.h>
-#include <wx/button.h>
 #include <wx/dialog.h>
 //*)
 
@@ -23,10 +23,8 @@ class DlgNewPart: public wxDialog
 		//(*Declarations(DlgNewPart)
 		wxStaticText* StaticText2;
 		wxChoice* ChoicePartitionType;
-		wxButton* ButtonOK;
 		wxStaticText* StaticText1;
 		wxChoice* ChoiceFsType;
-		wxButton* ButtonCancel;
 		wxChoice* ChoiceSizeMul;
 		wxSpinCtrl* SpinCtrlPartitionSize;
 		//*)
@@ -34,13 +32,12 @@ class DlgNewPart: public wxDialog
 	protected:
 
 		//(*Identifiers(DlgNewPart)
-		static const long IDA_HSHDGSDHUF;
-		static const long ID_SIZE_MULTIPLIER;
-		static const long ID_STATICTEXT1;
-		static const long ID_OK;
+		static const long ID_SPINCTRL1;
 		static const long ID_CHOICE1;
-		static const long ID_STATICTEXT2;
+		static const long ID_STATICTEXT1;
 		static const long ID_CHOICE2;
+		static const long ID_STATICTEXT2;
+		static const long ID_CHOICE3;
 		//*)
 
 	private:
@@ -51,6 +48,7 @@ class DlgNewPart: public wxDialog
 		void OnButtonOKClick(wxCommandEvent& event);
 		void OnButtonCancelClick(wxCommandEvent& event);
 		void OnChoicePartitionTypeSelect(wxCommandEvent& event);
+		void OnChoice2Select(wxCommandEvent& event);
 		//*)
 
 
