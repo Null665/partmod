@@ -4,41 +4,60 @@
 #include <wx/wx.h>
 //(*InternalHeaders(DlgNewPart)
 #include <wx/intl.h>
+#include <wx/button.h>
 #include <wx/string.h>
 //*)
 
 //(*IdInit(DlgNewPart)
-const long DlgNewPart::IDA_HSHDGSDHUF = wxNewId();
-const long DlgNewPart::ID_SIZE_MULTIPLIER = wxNewId();
-const long DlgNewPart::ID_STATICTEXT1 = wxNewId();
-const long DlgNewPart::ID_OK = wxNewId();
+const long DlgNewPart::ID_SPINCTRL1 = wxNewId();
 const long DlgNewPart::ID_CHOICE1 = wxNewId();
-const long DlgNewPart::ID_STATICTEXT2 = wxNewId();
+const long DlgNewPart::ID_STATICTEXT1 = wxNewId();
 const long DlgNewPart::ID_CHOICE2 = wxNewId();
+const long DlgNewPart::ID_STATICTEXT2 = wxNewId();
+const long DlgNewPart::ID_CHOICE3 = wxNewId();
 //*)
 
 BEGIN_EVENT_TABLE(DlgNewPart,wxDialog)
 	//(*EventTable(DlgNewPart)
 	//*)
+	EVT_BUTTON(wxID_OK, DlgNewPart::OnButtonOKClick)
 END_EVENT_TABLE()
 
 DlgNewPart::DlgNewPart(wxWindow* parent)
 {
 	//(*Initialize(DlgNewPart)
-	Create(parent, wxID_ANY, _("Create a new partition"), wxDefaultPosition, wxDefaultSize, wxDEFAULT_DIALOG_STYLE, _T("wxID_ANY"));
-	SetClientSize(wxSize(370,215));
-	SpinCtrlPartitionSize = new wxSpinCtrl(this, IDA_HSHDGSDHUF, _T("0"), wxPoint(48,64), wxDefaultSize, 0, 0, 10000000, 0, _T("IDA_HSHDGSDHUF"));
-	SpinCtrlPartitionSize->SetValue(_T("0"));
-	ChoiceSizeMul = new wxChoice(this, ID_SIZE_MULTIPLIER, wxPoint(184,64), wxSize(112,21), 0, 0, 0, wxDefaultValidator, _T("ID_SIZE_MULTIPLIER"));
-	StaticText1 = new wxStaticText(this, ID_STATICTEXT1, _("Enter size of partition:"), wxPoint(48,40), wxSize(112,13), 0, _T("ID_STATICTEXT1"));
-	ButtonOK = new wxButton(this, ID_OK, _("OK"), wxPoint(72,144), wxDefaultSize, 0, wxDefaultValidator, _T("ID_OK"));
-	ButtonCancel = new wxButton(this, wxID_CANCEL, _("Cancel"), wxPoint(184,144), wxDefaultSize, 0, wxDefaultValidator, _T("wxID_CANCEL"));
-	ChoicePartitionType = new wxChoice(this, ID_CHOICE1, wxPoint(48,112), wxSize(120,21), 0, 0, 0, wxDefaultValidator, _T("ID_CHOICE1"));
-	StaticText2 = new wxStaticText(this, ID_STATICTEXT2, _("Select partition type:"), wxPoint(48,96), wxSize(112,13), 0, _T("ID_STATICTEXT2"));
-	ChoiceFsType = new wxChoice(this, ID_CHOICE2, wxPoint(184,112), wxDefaultSize, 0, 0, 0, wxDefaultValidator, _T("ID_CHOICE2"));
+	wxGridSizer* GridSizer1;
+	wxBoxSizer* BoxSizer1;
+	wxStaticBoxSizer* StaticBoxSizer1;
+	wxStdDialogButtonSizer* StdDialogButtonSizer1;
 
-	Connect(ID_OK,wxEVT_COMMAND_BUTTON_CLICKED,(wxObjectEventFunction)&DlgNewPart::OnButtonOKClick);
-	Connect(ID_CHOICE1,wxEVT_COMMAND_CHOICE_SELECTED,(wxObjectEventFunction)&DlgNewPart::OnChoicePartitionTypeSelect);
+	Create(parent, wxID_ANY, _("Create a new partition"), wxDefaultPosition, wxDefaultSize, wxDEFAULT_DIALOG_STYLE, _T("wxID_ANY"));
+	BoxSizer1 = new wxBoxSizer(wxVERTICAL);
+	StaticBoxSizer1 = new wxStaticBoxSizer(wxHORIZONTAL, this, _("Partition size"));
+	SpinCtrlPartitionSize = new wxSpinCtrl(this, ID_SPINCTRL1, _T("0"), wxDefaultPosition, wxDefaultSize, 0, 0, 100, 0, _T("ID_SPINCTRL1"));
+	SpinCtrlPartitionSize->SetValue(_T("0"));
+	StaticBoxSizer1->Add(SpinCtrlPartitionSize, 1, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
+	ChoiceSizeMul = new wxChoice(this, ID_CHOICE1, wxDefaultPosition, wxDefaultSize, 0, 0, 0, wxDefaultValidator, _T("ID_CHOICE1"));
+	StaticBoxSizer1->Add(ChoiceSizeMul, 1, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
+	BoxSizer1->Add(StaticBoxSizer1, 1, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
+	GridSizer1 = new wxGridSizer(2, 2, 0, 0);
+	StaticText1 = new wxStaticText(this, ID_STATICTEXT1, _("Partition type"), wxDefaultPosition, wxDefaultSize, 0, _T("ID_STATICTEXT1"));
+	GridSizer1->Add(StaticText1, 1, wxALL|wxALIGN_RIGHT|wxALIGN_CENTER_VERTICAL, 5);
+	ChoicePartitionType = new wxChoice(this, ID_CHOICE2, wxDefaultPosition, wxDefaultSize, 0, 0, 0, wxDefaultValidator, _T("ID_CHOICE2"));
+	GridSizer1->Add(ChoicePartitionType, 1, wxALL|wxALIGN_LEFT|wxALIGN_CENTER_VERTICAL, 5);
+	StaticText2 = new wxStaticText(this, ID_STATICTEXT2, _("File system type"), wxDefaultPosition, wxDefaultSize, 0, _T("ID_STATICTEXT2"));
+	GridSizer1->Add(StaticText2, 1, wxALL|wxALIGN_RIGHT|wxALIGN_CENTER_VERTICAL, 5);
+	ChoiceFsType = new wxChoice(this, ID_CHOICE3, wxDefaultPosition, wxDefaultSize, 0, 0, 0, wxDefaultValidator, _T("ID_CHOICE3"));
+	GridSizer1->Add(ChoiceFsType, 1, wxALL|wxALIGN_LEFT|wxALIGN_CENTER_VERTICAL, 5);
+	BoxSizer1->Add(GridSizer1, 1, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
+	StdDialogButtonSizer1 = new wxStdDialogButtonSizer();
+	StdDialogButtonSizer1->AddButton(new wxButton(this, wxID_OK, _("Create")));
+	StdDialogButtonSizer1->AddButton(new wxButton(this, wxID_CANCEL, wxEmptyString));
+	StdDialogButtonSizer1->Realize();
+	BoxSizer1->Add(StdDialogButtonSizer1, 1, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
+	SetSizer(BoxSizer1);
+	BoxSizer1->Fit(this);
+	BoxSizer1->SetSizeHints(this);
 	//*)
 }
 
@@ -210,3 +229,4 @@ void DlgNewPart::OnChoicePartitionTypeSelect(wxCommandEvent& event)
        ChoiceFsType->SetSelection(5);
     }
 }
+
