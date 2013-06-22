@@ -15,7 +15,7 @@
 
 
 #include "../Partmod/definitions.h"
-
+#include "../Partmod/disk_exception.h"
 
 class DiskIO
 {
@@ -38,6 +38,8 @@ public:
   int GetDiskSize(uint64_t &length);
 
   int Seek(uint64_t pos);
+  int SeekSector(uint64_t sector);
+
   int Read(void *buff,uint32_t buffer_size);
   int Write(const void *buff,uint32_t buffer_size);
 
