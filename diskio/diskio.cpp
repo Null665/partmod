@@ -2,10 +2,6 @@
 #include <string.h>
 
 
-//
-// System-independent functions
-//
-
 DiskIO::DiskIO()
 {
     hDisk=0;
@@ -53,6 +49,7 @@ bool DiskIO::IsOpen()
 
 void DiskIO::Close()
 {
+    Sync();
     close_handle();
     is_open=false;
     disk_image=false;
@@ -65,7 +62,12 @@ const GEOMETRY &DiskIO::GetDiskGeometry()
 
 int DiskIO::Seek(uint64_t pos)
 {
-    return seek(pos);
+   return seek(pos);
+}
+
+int DiskIO::SeekSector(uint64_t sector)
+{
+   return seek(sector*disk_geometry.bps);
 }
 
 int DiskIO::Read(void *buff,uint32_t buffer_size)
