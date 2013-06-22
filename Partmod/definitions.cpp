@@ -19,79 +19,6 @@
 #include <cstdio>
 using namespace std;
 
-//
-// Error strings
-//
-const char *error_table[]=
-{
-  "", // Success
-  "Could not open disk",                             // 1
-  "Could not open a file",
-  "Could not create a file",
-  "Could not read from disk",
-  "Could not write to disk",                         // 5
-  "Colud not seek to specified position ",
-  "Partition doesn't exist",
-  "LBA Extended partition not found",
-  "Impossible to resize partition",
-  "Failed to resize a partiton",                      //10
-  "Cannot create more than 4 primary partitions",
-  "Disk is full",
-  "Unknown error",
-  "Not enough space",
-  "Partition is too small",                          // 15
-  "Impossible to create a primary partition on extended partition",
-  "File is not a valid backup file",
-  "GPT primary partition not found",
-  "Disk geometry is unknown",
-  "Can't split partition",                           // 20
-  "One or more partitions overlap each other",
-  "GPT already exists on disk",
-  "Invalid checksum",
-  "Disk size registered in backup and size of selected disk don't mach",
-  "\"Bytes per sector\" value is not a power of two", // 25
-  "Partition begins or ends outside disk",
-  "Logical volume is outside extended partition",
-  "Pending action doesn't exist (array index out of bounds)",
-  "Array (vector) index out of bounds",
-  "Failed to get disk size",                        // 30
-  "Close the current disk first",
-};
-
-
-
-unsigned short  GET_CYLINDER (MBR_CHS chs)
-{
-  return ( (chs.cylinder_bits<<8)|(chs.cylinder));
-}
-unsigned short  GET_HEAD     (MBR_CHS chs)
-{
-  return (chs.head);
-}
-unsigned short  GET_SECTOR   (MBR_CHS chs)
-{
-  return (chs.sector);
-}
-
-void SET_CYLINDER (MBR_CHS &chs, short cyl)
-{
-  chs.cylinder_bits=cyl>>8;
-  chs.cylinder=cyl&0xFF;
-}
-void SET_HEAD     (MBR_CHS &chs, unsigned char head)
-{
-  chs.head=head;
-}
-void SET_SECTOR   (MBR_CHS &chs, unsigned char sector)
-{
-  chs.sector=sector;
-}
-
-
-string GetErrorDescription(int error_code)
-{
-  return error_table[error_code];
-}
 
 bool Dump2File(const char *fn,const void *data,int size)
 {
@@ -103,37 +30,6 @@ bool Dump2File(const char *fn,const void *data,int size)
   return true;
 }
 
-
-
-// ==> reiktu sukurti 2 versijas, viena MBR CHS, o kita apskritai CHS (kad rodytu ir virs mbr limitu)
-MBR_CHS lba_to_chs(uint64_t _lba,GEOMETRY _dg)
-{
-  MBR_CHS chs= {0};
-  if(_lba>=CHS_LIMIT)
-    {
-      SET_CYLINDER(chs,1023);
-      SET_HEAD(chs,254);
-      SET_SECTOR(chs,63);
-      return chs;
-    }
-  unsigned int
-  tpc=_dg.tpc,
-      spt=_dg.spt,
-          cylinder,head,sector,
-          temp=0;
-
-  cylinder =_lba / (tpc * spt);
-  temp     = _lba % (tpc * spt);
-  head     = temp / spt;
-  sector   = temp % spt + 1;
-
-  SET_CYLINDER(chs,cylinder);
-  SET_HEAD(chs,head);
-  SET_SECTOR(chs,sector);
-
-
-  return chs;
-}
 
 uint64_t chs_to_lba(MBR_CHS _chs,GEOMETRY _dg)
 {
@@ -147,9 +43,6 @@ uint64_t chs_to_lba(MBR_CHS _chs,GEOMETRY _dg)
 
   return lba;
 }
-
-
-
 
 
 
@@ -201,7 +94,7 @@ string size_str(uint64_t num_of_sect,int bps)
       suffix=" PB";
       div=PB/bps;
     }
-  if(num_of_sect>TB/bps)
+  else if(num_of_sect>TB/bps)
     {
       suffix=" TB";
       div=TB/bps;
@@ -297,7 +190,7 @@ string get_mount_point(GEN_PART gpart,unsigned int disk_signature)
       RegCloseKey(hkey);
     }
 
-  return "Unknown";
+  return "[Unknown]";
 }
 
 uint64_t GetFileSize(std::string filename)
