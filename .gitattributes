@@ -2,7 +2,9 @@
 GUI/icon1.ico -text
 Partmod/definitions.cpp -text
 Partmod/definitions.h -text
+Partmod/disk_exception.cpp -text
 Partmod/dllcall.cpp -text
+Partmod/ebr.h -text
 Partmod/partition_manager.cpp -text
 diskio/diskio-linux.cpp -text
 diskio/diskio.cpp -text
