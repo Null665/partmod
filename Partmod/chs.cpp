@@ -1,4 +1,5 @@
 #include "chs.hpp"
+#include "definitions.h"
 
 CHS::CHS()
 {
@@ -99,7 +100,35 @@ long long CHS::ToLBA()
 }
 
 
+MBR_CHS CHS::ToMbrChs()
+{
+  MBR_CHS chs= {0};
 
+  if(ToLBA()>=CHS_LIMIT)
+  {
+    chs.cylinder_bits=1023>>8;
+    chs.cylinder=1023&0xFF;
+
+    chs.head=254;
+    chs.sector=63;
+    return chs;
+  }
+
+  unsigned cylinder,head,sector,temp=0;
+
+  cylinder =ToLBA()/ (tpc * spt);
+  temp     = ToLBA() % (tpc * spt);
+  head     = temp / spt;
+  sector   = temp % spt + 1;
+
+  chs.cylinder_bits=cylinder>>8;
+  chs.cylinder=cylinder&0xFF;
+
+  chs.head=head;
+  chs.sector=sector;
+
+  return chs;
+}
 
 
 
