@@ -1,10 +1,13 @@
+// FIXME/CHECK: read() and write() functions
+
 #include "diskio.hpp"
 #include <winioctl.h>
+#include <memory>
 using namespace std;
 
 int DiskIO::open_handle(const char* disk)
 {
-    hDisk=CreateFile(disk,GENERIC_READ|GENERIC_WRITE,FILE_SHARE_READ,0,OPEN_EXISTING,FILE_FLAG_WRITE_THROUGH,0);
+    hDisk=CreateFile(disk,GENERIC_READ|GENERIC_WRITE,7,0,OPEN_EXISTING,FILE_FLAG_WRITE_THROUGH,0);
     if(hDisk==INVALID_HANDLE_VALUE)
         return ERR_OPEN_DISK;
     return 0;
@@ -43,7 +46,8 @@ if(SetFilePointerEx(hDisk,li,0,FILE_BEGIN)==INVALID_SET_FILE_POINTER)
 return 0;
 }
 
-
+// FIXME: WriteFile() still fails sometimes.
+// It's somehow related to seek position and/or size of the data buffer
 int DiskIO::write(const void *buff,uint32_t buffer_size)
 {
 DWORD dwWritten=0;
@@ -51,7 +55,8 @@ DWORD dwWritten=0;
 if(buffer_size%disk_geometry.bps==0)
   {
     if(!WriteFile(hDisk,buff,buffer_size,&dwWritten,0) || dwWritten!=buffer_size)
-          return ERR_WRITE;
+        return ERR_WRITE;
+
   }
 else
   {
@@ -59,7 +64,7 @@ else
 
     // create a new buffer where buffer_size%bytes_per_sector==0
     unsigned size_new=disk_geometry.bps*( (buffer_size/disk_geometry.bps)+1 );
-    uint8_t *buff_new=new uint8_t[size_new];
+    unique_ptr<uint8_t[]> buff_new(new uint8_t[size_new]);
 
     LARGE_INTEGER seek_pos;
     LARGE_INTEGER tmp;
@@ -68,30 +73,18 @@ else
     memset(&tmp,0,sizeof(LARGE_INTEGER));
 
     if(!SetFilePointerEx(hDisk,tmp,&seek_pos,FILE_CURRENT))
-      {
-          delete[] buff_new;
           return ERR_INVALID_SEEK;
-      }
 
-    if(!ReadFile(hDisk,buff_new,size_new,&dwRead,0) || dwRead!=size_new)
-      {
-          delete[] buff_new;
+    if(!ReadFile(hDisk,buff_new.get(),size_new,&dwRead,0) || dwRead!=size_new)
           return ERR_READ;
-      }
-    memcpy(buff_new+seek_pos.QuadPart%disk_geometry.bps,buff,buffer_size);
+    memcpy(buff_new.get()+seek_pos.QuadPart%disk_geometry.bps,buff,buffer_size);
 
     if(!SetFilePointerEx(hDisk,seek_pos,0,FILE_BEGIN))
-      {
-          delete[] buff_new;
           return ERR_INVALID_SEEK;
-      }
 
-    if(!WriteFile(hDisk,buff_new,size_new,&dwWritten,0) || dwWritten!=size_new)
-      {
-          delete[] buff_new;
+    if(!WriteFile(hDisk,buff_new.get(),size_new,&dwWritten,0) || dwWritten!=size_new)
           return ERR_WRITE;
-      }
-    delete[] buff_new;
+
   }
 
 return 0;
@@ -101,8 +94,14 @@ int DiskIO::read(void *buff,uint32_t buffer_size)
 {
 DWORD dwRead;
 
-if(!ReadFile(hDisk,buff,buffer_size,&dwRead,0) || dwRead!=buffer_size)
+// Size of the data buffer must be divisible by bytes-per-sector
+unsigned size_new=disk_geometry.bps*( (buffer_size/disk_geometry.bps)+1 );
+unique_ptr<uint8_t[]>buff_new(new uint8_t[size_new]);
+
+if(!ReadFile(hDisk,buff_new.get(),size_new,&dwRead,0) || dwRead!=size_new)
     return ERR_READ;
+
+memcpy(buff,buff_new.get(),buffer_size);
 
 return 0;
 }
