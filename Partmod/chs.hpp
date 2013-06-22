@@ -1,9 +1,21 @@
 #ifndef CHS_HPP
 #define CHS_HPP
 
+#include <stdint.h>
+
+#pragma pack(1)
+// Cylinder-head-sector structure for MBR
+struct MBR_CHS
+{
+  uint8_t head;             // head (<255)
+  uint8_t sector:6;         // sector (<64)
+  uint8_t cylinder_bits:2;  // 2 bits of cylinder value
+  uint8_t cylinder   ;      // cylinder (<=1023)
+};
+#pragma pack()
+
 //
 // A class for CHS manipulation
-//
 //
 
 class CHS
@@ -42,6 +54,8 @@ public:
   bool operator ==(CHS &chs);
   CHS &operator ++();
   CHS &operator ++(int);
+
+  MBR_CHS ToMbrChs();
 
 
 };
