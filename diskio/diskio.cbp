@@ -13,6 +13,7 @@
 				<Option type="3" />
 				<Option compiler="gcc" />
 				<Option host_application="D:\C++\tvarka\Partmod\bin\partmod_gui.exe" />
+				<Option run_host_application_in_terminal="0" />
 				<Option createStaticLib="1" />
 				<Compiler>
 					<Add option="-g" />
@@ -25,7 +26,11 @@
 				<Option type="3" />
 				<Option compiler="gcc" />
 				<Option host_application="D:\C++\tvarka\Partmod\bin\partmod_gui.exe" />
+				<Option run_host_application_in_terminal="0" />
 				<Option createStaticLib="1" />
+				<Compiler>
+					<Add option="-std=c++0x" />
+				</Compiler>
 				<Linker>
 					<Add option="-s" />
 				</Linker>
@@ -37,13 +42,13 @@
 				<Option type="3" />
 				<Option compiler="gcc" />
 				<Option host_application="D:\C++\tvarka\Partmod\bin\partmod_gui.exe" />
+				<Option run_host_application_in_terminal="0" />
 				<Option createStaticLib="1" />
 				<Compiler>
-					<Add option="-O2" />
+					<Add option="-std=c++0x" />
+					<Add option="-Wall" />
+					<Add option="-fexceptions" />
 				</Compiler>
-				<Linker>
-					<Add option="-s" />
-				</Linker>
 			</Target>
 			<Target title="Debug - Linux">
 				<Option platforms="Unix;" />
@@ -52,6 +57,7 @@
 				<Option type="3" />
 				<Option compiler="gcc" />
 				<Option host_application="D:\C++\tvarka\Partmod\bin\partmod_gui.exe" />
+				<Option run_host_application_in_terminal="0" />
 				<Option createStaticLib="1" />
 				<Compiler>
 					<Add option="-g" />
@@ -59,6 +65,7 @@
 			</Target>
 		</Build>
 		<Compiler>
+			<Add option="-std=c++0x" />
 			<Add option="-Wall" />
 			<Add option="-fexceptions" />
 		</Compiler>
