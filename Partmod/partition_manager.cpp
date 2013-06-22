@@ -45,6 +45,24 @@ const GEN_PART &PartitionManager::GetPartition(uint32_t p)  const
 }
 
 //
+// Get nth partition with specified flag
+//
+const GEN_PART &PartitionManager::GetPartition(uint32_t p,uint32_t flag)  const
+{
+  unsigned n=0;
+  for(unsigned i=0;i<CountPartitions();i++)
+    {
+      if(GetPartition(i).flags&flag)
+        {
+          if(p==n)
+              return GetPartition(i);
+          else ++n;
+        }
+    }
+  throw(DiskException(ERR_OUT_OF_BOUNDS));
+}
+
+//
 // Get partition by its Unique IDentifier
 //
 const GEN_PART &PartitionManager::GetPartitionByUID(uint32_t uid)  const
@@ -91,7 +109,7 @@ uint32_t PartitionManager::CountPartitions(uint32_t type)  const
 //
 // Add a partition to vector
 //
-void PartitionManager::AddPartition(GEN_PART new_part)
+uint32_t PartitionManager::AddPartition(GEN_PART new_part)
 {
    if(new_part.flags&PART_PRIMARY)
      {
@@ -123,6 +141,7 @@ void PartitionManager::AddPartition(GEN_PART new_part)
    partition.push_back(make_pair(new_part,least_uid));
 
    sort_vectors();
+   return least_uid;
 }
 
 
@@ -152,17 +171,6 @@ void PartitionManager::DeleteAll()
 
 
 
-const GEN_PART &PartitionManager::GetExtendedPartition()  const
-{
-for(unsigned i=0;i<CountPartitions();i++)
-  {
-      if(GetPartition(i).flags&PART_EXTENDED)
-          return GetPartition(i);
-  }
-throw DiskException(ERR_EXTENDED_NOT_FOUND);
-}
-
-
 void PartitionManager::ModifyPartition(uint32_t p,GEN_PART data)
 {
   DeletePartition(p);
@@ -171,8 +179,10 @@ void PartitionManager::ModifyPartition(uint32_t p,GEN_PART data)
 
 void PartitionManager::SetActive(uint32_t p,bool set_active)
 {
-if(p>CountPartitions())
-    throw(DiskException(ERR_PART_NOT_EXIST));
+if( (GetPartition(p).flags&PART_ACTIVE)==false && set_active==false)
+    return;
+if((GetPartition(p).flags&(PART_PRIMARY|PART_MBR_GPT))==false)
+    throw DiskException("Only primary partition and protective GPT partition can be set as active (bootable)");
 
 for(unsigned int i=0;i<CountPartitions();i++)
     if(GetPartition(i).flags&PART_ACTIVE)
@@ -196,7 +206,7 @@ void PartitionManager::SetSpecificData(uint32_t p,void *data,uint32_t size)
 {
     if(p>=CountPartitions())
         throw DiskException(ERR_OUT_OF_BOUNDS);
-    if(size>=128) // TODO: delete this hard-coded value (must be equal to size of GEN_PART::data)
+    if(size>=sizeof(GEN_PART::data))
         throw DiskException(ERR_UNKNOWN_ERROR);
 
     memcpy(partition[p].first.data,data,size);

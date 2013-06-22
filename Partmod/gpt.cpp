@@ -4,25 +4,22 @@
 
 // TODO: Restore GPT from backup
 
-#define GPT_VERSION 0x10000
+#define GPT_VERSION        0x10000
+#define GPT_MIN_ENTRIES    128
 
 #include "disk.h"
-#include <cstring>
 #include "crc.hpp"
 #include "disk_exception.h"
+
+#include <cstring>
+#include <memory>  // for std::unique_ptr
 using namespace std;
 
 
 void GPTHelper::WriteChanges()
 {
-if(disk->CountPartitions(PART_MBR_GPT)==0 && disk->CountPartitions(PART_GPT)==0)
+if(disk->CountPartitions(PART_MBR_GPT)==0)
     return;
-
-int which_gpt=0;
-for(int i=0;i<disk->CountPartitions();i++)
-    if(disk->GetPartition(i).flags&PART_MBR_GPT)
-        which_gpt=i;
-
 
 GPT gpt;
 /*
@@ -36,11 +33,9 @@ if(IsValidGPT(gpt)==false)
       {
          gpt=CreateGPT(disk->GetPartition(which_gpt));
       }
-
-
   }*/
 
-gpt=CreateGPT(disk->GetPartition(which_gpt));
+gpt=CreateGPT(disk->GetPartition(0,PART_MBR_GPT));
 
 gpt.entries_checksum=WritePartitionEntries(gpt);
 gpt.checksum=0;
@@ -55,65 +50,55 @@ WriteBackup(gpt);
 }
 
 
-
-
-void GPTHelper::RestoreGPTFromBackup(GEN_PART gpt_part)
+GPT GPTHelper::ReadGPTFromBackup(const GEN_PART &gpt_part)
 {
+  GPT gpt;
+  uint64_t seek_pos=(gpt_part.begin_sector+gpt_part.length)*disk->GetDiskGeometry().bps;
+  disk->DiskRead( seek_pos,&gpt,sizeof(gpt));
+  return gpt;
+}
 
+
+
+GPT GPTHelper::CreateGPT(GEN_PART gpart)
+{
+  return CreateGPT(gpart,GPT_MIN_ENTRIES);
 }
 
 //
 // Create a new GPT
 // Initializes all GPT header values except checksums.
-//
-GPT GPTHelper::CreateGPT(GEN_PART gpart)
+GPT GPTHelper::CreateGPT(GEN_PART gpart,int n_gpt_entries)
 {
-GPT gpt;
-memset(&gpt,0,sizeof(GPT));
+    if(n_gpt_entries<GPT_MIN_ENTRIES)
+        throw DiskException("GUID partition table must have at least 128 entries");
 
-int bps=disk->GetDiskGeometry().bps;
+    GPT gpt;
+    memset(&gpt,0,sizeof(GPT));
 
-generate_guid(gpt.disk_guid);
-memcpy(&gpt.signature,"EFI PART",8);
-gpt.version=GPT_VERSION;
-gpt.backup_lba=gpart.begin_sector+gpart.length; // FIXME/CHECK: Is this correct?
-gpt.unknown=0;
-gpt.n_entries=128;
-gpt.entry_size=sizeof(GPT_ENTRY);
+    int bps=disk->GetDiskGeometry().bps;
+
+    generate_guid(gpt.disk_guid);
+    memcpy(&gpt.signature,"EFI PART",8);
+    gpt.version=GPT_VERSION;
+    gpt.backup_lba=gpart.begin_sector+gpart.length; // FIXME/CHECK: Is this correct?
+    gpt.unknown=0;
+    gpt.n_entries=n_gpt_entries;
+    gpt.entry_size=sizeof(GPT_ENTRY);
 
 
-gpt.header_size=sizeof(gpt)-sizeof(gpt.reserved); // == 92
-gpt.checksum=0;
+    gpt.header_size=sizeof(gpt)-sizeof(gpt.reserved); // == 92
+    gpt.checksum=0;
 
-gpt.current_lba=gpart.begin_sector;
-gpt.last_usable_lba=gpart.begin_sector+gpart.length-sizeof(GPT)-sizeof(GPT_ENTRY)*gpt.n_entries;
-gpt.first_entry_lba=gpart.begin_sector+1;
-gpt.first_usable_lba=gpart.begin_sector+ ((gpt.entry_size*gpt.n_entries)/bps); // FIXE/CHECK: is this correct?
+    gpt.current_lba=gpart.begin_sector;
+    gpt.last_usable_lba=gpart.begin_sector+gpart.length-sizeof(GPT)-sizeof(GPT_ENTRY)*gpt.n_entries;
+   // gpt.last_usable_lba=gpart.begin_sector+gpart.length- ((sizeof(GPT)-sizeof(GPT_ENTRY)*gpt.n_entries)/bps);
+    gpt.first_entry_lba=gpart.begin_sector+1;
+    gpt.first_usable_lba=gpart.begin_sector+ ((gpt.entry_size*gpt.n_entries)/bps); // FIXE/CHECK: is this correct?
 
-return gpt;
+    return gpt;
 }
 
-void Disk::ReadGPT(GPT &gpt)
-{
-int n_gpt_parts=0,which_gpt=0;
-
-memset(&gpt,0,sizeof(GPT));
-
-for(int i=0;i<CountPartitions();i++)
-    if(GetPartition(i).flags&PART_MBR_GPT)
-      {
-         ++n_gpt_parts;
-         which_gpt=i;
-      }
-
-if(n_gpt_parts==1)
-     DiskRead(GetPartition(which_gpt).begin_sector*diskio->GetDiskGeometry().bps,&gpt,sizeof(GPT));
-else if(n_gpt_parts==0)
-    throw(DiskException(ERR_GPT_NOT_FOUND));
-else // More than one GPT?
-    throw(DiskException(ERR_UNKNOWN_ERROR,"There's more than one GPT (?)"));
-
-}
 
 
 bool GPTHelper::IsValidGPT(GPT gpt)
@@ -179,14 +164,16 @@ void GPTHelper::WriteBackup(GPT gpt)
 
 }
 
-
+//
+// Write GPT entries to disk.
+//
 uint32_t GPTHelper::WritePartitionEntries(GPT gpt)
 {
 GEN_PART gpart;
 int bps=disk->GetDiskGeometry().bps;
 CRC32 crc;
 
-int n_gpt_entry=0;
+int n_gpt_entry=0; // number of gpt entries
 for(int i=0;i<disk->CountPartitions();i++)
   {
      gpart=disk->GetPartition(i);
@@ -217,14 +204,12 @@ for(int i=0;i<disk->CountPartitions();i++)
 // Clear unused entries and finish calculating checksum
 //
   uint32_t unused_bytes= ((gpt.n_entries-n_gpt_entry)*gpt.entry_size);
-  uint8_t *buff=new uint8_t[unused_bytes];
-  memset(buff,0,unused_bytes);
+  unique_ptr<uint8_t[]> buff(new uint8_t[unused_bytes]);
+  memset(buff.get(),0,unused_bytes);
 
   uint64_t write_loc=gpt.first_entry_lba*bps+(n_gpt_entry*gpt.entry_size);
-  disk->DiskWrite(write_loc,buff,unused_bytes);
-  crc.Hash(buff,unused_bytes);
-
-  delete[] buff;
+  disk->DiskWrite(write_loc,buff.get(),unused_bytes);
+  crc.Hash(buff.get(),unused_bytes);
 
   return crc.Get();
 }
@@ -233,24 +218,36 @@ for(int i=0;i<disk->CountPartitions();i++)
 
 void GPTHelper::ReadPartitionTables(GEN_PART gpt_part)
 {
-GPT gpt;
-GPT_ENTRY *entries;
-GEN_PART gpart;
-GPT_SPECIFIC gspec;
-
 int bps=disk->GetDiskGeometry().bps;
 
-disk->ReadGPT(gpt);
+GPT gpt;
+//disk->ReadGPT(gpt);
+disk->DiskRead(1*bps,&gpt,sizeof(GPT));
+
+bool use_backup=false;
 
 if(!IsValidGPT(gpt))
   {
-      throw(DiskException("Invalid GPT"));
+      use_backup=true;
+      gpt=ReadGPTFromBackup(gpt_part);
+
+      if(!IsValidGPT(gpt))
+        {
+          throw(DiskException("Invalid main GPT header and backup GPT header"));
+        }
+
   }
 
 
-entries=new GPT_ENTRY[gpt.n_entries];
-disk->DiskRead(gpt.first_entry_lba*bps,entries,sizeof(GPT_ENTRY)*gpt.n_entries);
+unique_ptr<GPT_ENTRY[]> entries(new GPT_ENTRY[gpt.n_entries]);
 
+if(use_backup) // Invalid main GPT header - assume that entries are invalid too - read entries from backup
+  {
+    uint64_t read_loc=(gpt.backup_lba*bps)-sizeof(GPT)-sizeof(GPT_ENTRY)*gpt.n_entries;
+    disk->DiskRead(read_loc ,entries.get(),sizeof(GPT_ENTRY)*gpt.n_entries);
+  }
+else
+    disk->DiskRead(gpt.first_entry_lba*bps,entries.get(),sizeof(GPT_ENTRY)*gpt.n_entries);
 
 for(unsigned i=0;i<gpt.n_entries;++i)
   {
@@ -260,12 +257,14 @@ for(unsigned i=0;i<gpt.n_entries;++i)
        {
          if(entries[i].begin_lba<entries[i].end_lba)
            {
+              GEN_PART gpart;
               gpart.begin_sector=entries[i].begin_lba;
               gpart.length=entries[i].end_lba-entries[i].begin_lba;
               gpart.flags=PART_GPT;
 
               disk->add_partition(gpart);
 
+              GPT_SPECIFIC gspec;
               gspec.flags=entries[i].flags;
               gspec.type_guid=entries[i].type_guid;
               gspec.unique_guid=entries[i].unique_guid;
@@ -276,5 +275,5 @@ for(unsigned i=0;i<gpt.n_entries;++i)
        }
      else throw DiskException("Invalid GPT entry: begin_lba<first_usable_lba or  begin_lba>last_usable_lba");
   }
- delete[] entries;
+
 }

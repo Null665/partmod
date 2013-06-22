@@ -30,7 +30,7 @@ const FSID_INFO &FsidManager::GetByFsid(int fsid) const
     for(unsigned i=0;i<this->size();i++)
         if( this->operator [](i).fsid==fsid)
             return this->operator[](i);
-    throw DiskException("Unknown File System ID");
+    throw DiskException(ERR_UNKNOWN_FSID);
     // return
 }
 

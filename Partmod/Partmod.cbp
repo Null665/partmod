@@ -13,7 +13,7 @@
 				<Option object_output="..\..\obj\windows\" />
 				<Option type="3" />
 				<Option compiler="gcc" />
-				<Option host_application="D:\C++\tvarka\Partmod\bin\partmod_gui.exe" />
+				<Option host_application="D:\C++\tvarka\Partmod\bin\wxGUI.exe" />
 				<Option run_host_application_in_terminal="0" />
 				<Option createDefFile="1" />
 				<Option createStaticLib="1" />
@@ -21,7 +21,7 @@
 					<Add option="-g" />
 				</Compiler>
 				<Linker>
-					<Add library="..\..\bin\libDiskio.dll.a" />
+					<Add library="..\..\bin\libDiskio.a" />
 				</Linker>
 			</Target>
 			<Target title="Release - Windows">
@@ -31,12 +31,12 @@
 				<Option object_output="..\..\obj\windows\" />
 				<Option type="3" />
 				<Option compiler="gcc" />
-				<Option host_application="D:\C++\tvarka\Partmod\bin\partmod_gui.exe" />
+				<Option host_application="D:\C++\tvarka\Partmod\bin\wxGUI.exe" />
 				<Option run_host_application_in_terminal="0" />
 				<Option createStaticLib="1" />
 				<Linker>
 					<Add option="-s" />
-					<Add library="..\..\bin\libDiskio.dll.a" />
+					<Add library="..\..\bin\libDiskio.a" />
 				</Linker>
 			</Target>
 			<Target title="Release - Linux">
@@ -96,6 +96,8 @@
 		<Unit filename="definitions.h" />
 		<Unit filename="disk.cpp" />
 		<Unit filename="disk.h" />
+		<Unit filename="disk_exception.cpp" />
+		<Unit filename="disk_exception.h" />
 		<Unit filename="dllcall.cpp" />
 		<Unit filename="dllcall.hpp" />
 		<Unit filename="ebr.cpp" />
@@ -113,7 +115,6 @@
 		<Unit filename="partition_manager.h" />
 		<Unit filename="pending_manager.cpp" />
 		<Unit filename="pending_manager.h" />
-		<Unit filename="version.h" />
 		<Extensions>
 			<code_completion />
 			<envvars />
@@ -121,10 +122,19 @@
 			<lib_finder disable_auto="1" />
 			<AutoVersioning>
 				<Scheme minor_max="10" build_max="0" rev_max="0" rev_rand_max="10" build_times_to_increment_minor="100" />
-				<Settings autoincrement="1" date_declarations="1" update_manifest="5" do_auto_increment="0" ask_to_increment="0" language="C++" svn="0" svn_directory="D:\Repositories\Partmod\db" header_path="version.h" />
+				<Settings autoincrement="1" date_declarations="1" update_manifest="1" do_auto_increment="0" ask_to_increment="0" language="C++" svn="0" svn_directory="D:\Repositories\Partmod\db" header_path="version.h" />
 				<Changes_Log show_changes_editor="0" app_title="released version %M.%m.%b of %p" changeslog_path="ChangesLog.txt" />
 				<Code header_guard="VERSION_H" namespace="AutoVersion" prefix="" />
 			</AutoVersioning>
+			<DoxyBlocks>
+				<comment_style block="0" line="0" />
+				<doxyfile_project />
+				<doxyfile_build />
+				<doxyfile_warnings />
+				<doxyfile_output />
+				<doxyfile_dot />
+				<general />
+			</DoxyBlocks>
 		</Extensions>
 	</Project>
 </CodeBlocks_project_file>

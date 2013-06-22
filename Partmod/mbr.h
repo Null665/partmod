@@ -21,7 +21,7 @@
 //
 // Partition record of MBR and EBR
 //
-typedef struct __PARTITION_RECORD_
+struct PARTITION_RECORD
 {
   uint8_t        status;
   MBR_CHS        begin_chs;
@@ -29,44 +29,43 @@ typedef struct __PARTITION_RECORD_
   MBR_CHS        end_chs;
   uint32_t       begin_lba;
   uint32_t       lba_blocks;
-
-} PARTITION_RECORD;
-
-//
-// Extended Boot Record
-//
-typedef struct __EBR_
-{
-  uint8_t             boot_code[446];
-  PARTITION_RECORD    partition_table[2];
-  uint8_t             unused[32];
-  uint16_t            signature;          //AA55
-} EBR;
+};
 
 //
 // Master Boot Record
 //
-typedef struct __MBR_
+struct MBR
 {
   uint8_t              boot_code[440];
   uint32_t             disk_signature;
   uint16_t             unknown;
   PARTITION_RECORD     partition_table[4];
   uint16_t             signature;          //AA55
-
-} MBR;
-
-
-#pragma pack(0)
-
-
-// Used when converting GEN_PART into EBR
-struct EBR_DATA
-{
-  uint64_t sector;  // Where to write the ebr
-  EBR ebr;          // The ebr
 };
 
 
+//
+// MBR-specific data (in GEN_PART::data )
+//
+struct MBR_SPECIFIC
+{
+   uint8_t  fsid;
+   uint32_t begin_sector_rel;
+};
+
+#pragma pack()
+
+
+class Disk;
+class MBRHelper
+{
+public:
+  MBRHelper(Disk *disk){this->disk=disk;}
+
+  void ReadPartitionTables();
+  void WriteChanges();
+protected:
+  Disk *disk;
+};
 
 #endif

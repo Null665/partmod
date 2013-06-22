@@ -10,11 +10,22 @@
 #define MIN_SIZE   100*KB
 #define MAX_LBA    ~(uint32_t)(0)
 
+
+struct FSID_INFO
+{
+	uint8_t fsid;
+    std::string description;
+    int64_t min_size;
+    int64_t max_size;
+    unsigned fsid_partmod;
+};
+
+
 /** File system ID manager class
  * Manages MBR file system IDs and asscociates them with Partmod file system IDs
  *
 */
-class FsidManager : public std::vector<FSID_INFO>
+class FsidManager : private std::vector<FSID_INFO>
 {
 protected:
   void add_fsids();
