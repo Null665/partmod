@@ -6,12 +6,6 @@
 #include <string>
 
 
-//
-// Little endian to big endian
-//
-uint64_t to_be(uint64_t val);
-
-
 struct GUID_DATA
 {
     __GUID guid;
@@ -25,13 +19,11 @@ class GuidManager
 protected:
     std::vector<std::pair<GUID_DATA,uint32_t> > guid_data;
 
-    __GUID str_to_guid(std::string);
-
     void add_default_guids();
 
 public:
     static std::string GuidToString(const __GUID &guid);
-
+    static __GUID StringToGuid(std::string);
 
     GuidManager();
 
@@ -52,8 +44,6 @@ public:
     uint32_t GetUID(uint32_t which);
 
     std::string GetGuidAsString(uint32_t which);
-
-
 };
 
 #endif

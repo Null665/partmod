@@ -24,7 +24,7 @@ GuidManager::GuidManager()
 
 void GuidManager::Add(string guid_str,uint32_t uid,string description)
 {
-    __GUID guid=str_to_guid(guid_str);
+    __GUID guid=StringToGuid(guid_str);
     Add(guid,uid,description);
 }
 
@@ -79,7 +79,7 @@ __GUID GuidManager::GetByUID(uint32_t uid)
     throw(DiskException(ERR_UNKNOWN_ERROR));
 }
 
-__GUID GuidManager::str_to_guid(std::string guid_str)
+__GUID GuidManager::StringToGuid(std::string guid_str)
 {
     __GUID guid;
     string guid_parts[4];
