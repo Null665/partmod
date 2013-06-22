@@ -5,12 +5,10 @@
 
 #include "diskio.hpp"
 #include <fcntl.h>
+#include <unistd.h>
 #include <sys/ioctl.h>
 #include <linux/hdreg.h>
 #include <linux/fs.h>
-
-#include <iostream>
-using std::cout;
 
 
 int DiskIO::open_handle(const char* disk)
