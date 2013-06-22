@@ -5,7 +5,7 @@
 using namespace std;
 
 
- bool cmp_frs(FREE_SPACE a,FREE_SPACE b)
+bool cmp_frs(FREE_SPACE a,FREE_SPACE b)
 {
     return a.begin_sector < b.begin_sector;
 }
@@ -77,7 +77,7 @@ void FreeSpaceManager::find_in(PartitionManager *partman,
                                uint32_t parent_flag,       // Parent flag: (optional)PART_EXTENDED, PART_MBR_GPT
                                uint32_t child_flag,        // Child flag: PART_LOGICAL, PART_GPT
                                uint32_t sect_between,      // Number of sectors between partition and the free space
-                               uint32_t free_space_type,   // FREE_EXTENDED, FREE_GPT
+                               uint32_t free_space_type,   // FREE_EXTENDED, FREE_GPT, FREE_UNALLOCATED
                                uint32_t resolution,        // Min size of the free space
                                uint32_t reserved_space     // Number of reseved sectors at the beginning of disk
                                )
