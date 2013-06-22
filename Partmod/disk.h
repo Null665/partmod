@@ -1,26 +1,8 @@
-/* Disk class
- *
- * Curerently:
- *  Creates, deletes, sets active partition, can create and restore partition tables
- *
- *
- *  TODO:
- *   -> Resize partition
- *   -> Store EBR boot codes somewhere (are they used at all?)
- *   -> Split partition
- *   -> ...
- *
- *
- *  NOTES:
- *    -> Tested only with 512-byte sectors
- *
-*/
-
-
 #ifndef DISK_H
 #define DISK_H
 
 #include "mbr.h"
+#include "ebr.h"
 #include "gpt.h"
 
 
@@ -64,50 +46,46 @@ struct CALLBACK_DATA
 };
 
 
-class GPTHelper;
-class EBRHelper;
-
-
 class Disk
 {
 private:
 
   DiskIO *diskio;
-  std::string pd_str;          // Physical drive string, eg. \\.\PhysicalDrive0
-
-  bool is_open;
+  std::string pd_str;          // Physical drive string, eg. \\.\PhysicalDrive0 or /dev/sda
 
   PartitionManager *part_man;
   FreeSpaceManager *frs_man;
   PendingActionManager *pending_man;
+
+  bool error_on_load; // Were there any errors while loading partition tables?
 
   void init();
 
 protected:
 
   friend class EBRHelper;
+  friend class MBRHelper;
   friend class GPTHelper;
 
   EBRHelper *ebr_helper;
+  MBRHelper *mbr_helper;
   GPTHelper *gpt_helper;
 
   bool load();                // find partitoons on disk
   void find_free_space();     // find free space on disk
 
-  void save_mbr();  // write MBR to disk
-
-  void modify_partition(unsigned int _p,GEN_PART new_data);
-  void add_partition(GEN_PART new_part);
+  void modify_partition(unsigned int p,GEN_PART new_data);
+  uint32_t add_partition(GEN_PART new_part);
 
   void set_gpt_specific(unsigned p,GPT_SPECIFIC spec);
   void set_mbr_specific(unsigned p,MBR_SPECIFIC spec);
 
   void do_pending();
-
-  void wipe(unsigned p,uint64_t begin_sect,uint64_t length,int method);
+  void do_wipe(uint64_t begin_sect,uint64_t length,int method);
 
   void verify_geometry();
 
+  uint32_t get_partition_uid(unsigned p);
 
 public:
   GuidManager *guid_man;
@@ -121,24 +99,23 @@ public:
 
 
   Disk(std::string dsk); // Constructor: takes string, eg. \\.\PhysicalDrive0
-  Disk(int dsk);         // Constructor: takes disk number, eg. 0 and converts into string \\.\PhysicalDrive0
   Disk();
   ~Disk();
 
-  void Open(std::string dsk);                 // Open disk
-  void Open(std::string dsk,GEOMETRY geom);   // Open a disk image
+  void Open(std::string dsk);
+  void OpenDiskImage(std::string dsk,GEOMETRY geom);
   bool IsOpen();
 
   void Close(); // Close disk/disk image
-  int  Save();  // Save changes to disk
+  int Save();  // Save changes to disk
 
-  int  CountPartitions(unsigned int type) const;          // Returns number of partitions by type
-  int  CountPartitions() const;                            // Returns number of all partitions
-  int  CountFreeSpaces();                            // Returns number of free spaces found on disk
+  unsigned  CountPartitions(unsigned flags) const;       // Returns number of partitions of specified type
+  unsigned  CountPartitions() const;                     // nnumber of all partitions
+  unsigned  CountFreeSpaces();                           // Returns number of free space slices found on disk
 
-  const GEN_PART   &GetPartitionByUID(unsigned uid);
+  const GEN_PART   &GetPartition(unsigned int p);
+  const GEN_PART   &GetPartition(unsigned int p,uint32_t flag);
 
-  const GEN_PART   &GetPartition(unsigned int _p);
   const FREE_SPACE &GetFreeSpace(unsigned int s);
 
 
@@ -147,27 +124,22 @@ public:
 
   void DeletePartition(unsigned p);
 
-  void CreatePartition(FREE_SPACE _frs,int _part_type,uint64_t _size);
-
-
-  void CreatePartitionPrimary(int which_frs,uint64_t size,uint64_t sect_before,uint8_t fsid);
-  void CreatePartitionExtended(int which_frs,uint64_t size,uint64_t sect_before,uint8_t fsid);
-  void CreatePartitionLogical(int which_frs,uint64_t size,uint64_t sect_before,uint8_t fsid);
-  void CreatePartitionGPT(int which_frs,uint64_t size,uint64_t sect_before,__GUID type_guid);
-  void CreatePartitionPrimaryGPT(int which_frs,uint64_t size,uint64_t sect_before);
-
+  void CreatePartitionPrimary(int which_frs,uint64_t size,uint64_t sect_before,uint8_t fsid,unsigned alignment);
+  void CreatePartitionExtended(int which_frs,uint64_t size,uint64_t sect_before,uint8_t fsid,unsigned alignment);
+  void CreatePartitionLogical(int which_frs,uint64_t size,uint64_t sect_before,uint8_t fsid,unsigned alignment);
+  void CreatePartitionGPT(int which_frs,uint64_t size,uint64_t sect_before,__GUID type_guid,unsigned alignment);
+  void CreatePartitionPrimaryGPT(int which_frs,uint64_t size=0); // Create a new GPT partition table
 
   void SetActive(unsigned  p,bool set_active);
 
-  void Wipe(unsigned int _p,int method);
 
-// These  functions aren't finished yet
-  void Split(unsigned int _p,uint64_t size_of_first_part);
-  void Move(unsigned p,uint64_t new_pos);
+
+  void Wipe(unsigned p,int method);
+  void Move(unsigned p,uint64_t sect_new_pos);  // not finished yet
 
 // Create and Restore partition table backup
-  void CreateBackup(std::string filename);
-  void LoadBackup(std::string filename);
+  void CreateBackup(std::string filename, std::string description="");
+  void LoadBackup(std::string filename,bool ignore_size_mismatch=false);
 
 // Read disk structures
   void ReadGPT(GPT &gpt); // Reads GPT only if it exists, otherwise throws an exception
@@ -182,68 +154,19 @@ public:
   MBR_SPECIFIC GetMBRSpecific(unsigned p);
   GPT_SPECIFIC GetGPTSpecific(unsigned p);
 
-  uint32_t GetPartitionUID(unsigned p);
+// Pending actions
+  void Undo();
+  void UndoAll();
 
   unsigned CountPendingActions();
   const PENDING &GetPending(unsigned p);
-  uint32_t GetPendingUID(unsigned p);
 
  // void ChangeFSID();
 
+ bool ErrorOnLoad();
+
 
 };
-
-
-
-
-class PartitionHelper
-{
-protected:
-    Disk *disk;
-
-public:
-    PartitionHelper(Disk *disk) {this->disk=disk;}
-    virtual void ReadPartitionTables(GEN_PART)=0;
-    virtual void WriteChanges()=0;
-
-};
-
-
-class EBRHelper:public PartitionHelper
-{
-public:
-  EBRHelper(Disk *disk) : PartitionHelper(disk)
-  {}
-  void ReadPartitionTables(GEN_PART);
-  void WriteChanges();
-
-};
-
-
-
-class GPTHelper:public PartitionHelper
-{
-public:
-  GPTHelper(Disk *disk) : PartitionHelper(disk)
-  {}
-  void ReadPartitionTables(GEN_PART);
-  void WriteChanges();
-  bool IsValidGPT(GPT gpt);
-  GPT CreateGPT(GEN_PART gpt_part);
-
-/* TODO:
- * GPT_ENTRY ReadGPTEntryFromDisk(uint32_t n);
- * GPT_ENTRY WriteGPTEntryToDisk(const GPT_ENTRY &e,uint32_t n);
-*/
-
-protected:
-  void WriteGPT(const GPT&);
-  uint32_t WritePartitionEntries(GPT gpt);
-  void RestoreGPTFromBackup(GEN_PART gpt_part);
-  void WriteBackup(GPT gpt);
-
-};
-
 
 
 
