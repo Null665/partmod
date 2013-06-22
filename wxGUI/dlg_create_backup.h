@@ -2,6 +2,7 @@
 #define DLG_CREATE_BACKUP_H
 
 //(*Headers(DlgCreateBackup)
+#include <wx/sizer.h>
 #include <wx/stattext.h>
 #include <wx/textctrl.h>
 #include <wx/filedlg.h>
@@ -20,23 +21,21 @@ class DlgCreateBackup: public wxDialog
 		virtual ~DlgCreateBackup();
 
 		//(*Declarations(DlgCreateBackup)
-		wxButton* ButtonClose;
 		wxTextCtrl* TextBackupFileName;
 		wxButton* ButtonBrowse;
 		wxStaticText* StaticText1;
 		wxFileDialog* FileDialog1;
-		wxButton* ButtonCreateBackup;
+		wxTextCtrl* TextDescription;
 		//*)
 
         int ShowModal(Disk *disk);
 	protected:
 
 		//(*Identifiers(DlgCreateBackup)
-		static const long ID_STATICTEXT1;
 		static const long ID_TEXTCTRL1;
-		static const long ID_BROWSE;
-		static const long ID_CREATE_BACKUP;
-		static const long ID_CANCEL;
+		static const long ID_BUTTON1;
+		static const long ID_STATICTEXT1;
+		static const long ID_TEXTCTRL2;
 		//*)
         Disk *disk;
 	private:

@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<wxsmith>
+	<object class="wxDialog" name="DlgPartitionProperties">
+		<title>Partition properties</title>
+		<size>538,500</size>
+		<id_arg>0</id_arg>
+		<object class="wxStaticBox" name="ID_STATICBOX1" variable="StaticBox1" member="yes">
+			<label>Label</label>
+			<pos>112,104</pos>
+			<size>1,1</size>
+		</object>
+		<object class="wxStaticBox" name="ID_STATICBOX2" variable="StaticBox2" member="yes">
+			<label>Basic properties</label>
+			<pos>16,24</pos>
+			<size>504,144</size>
+		</object>
+		<object class="wxStaticText" name="ID_STATICTEXT1" variable="StaticText1" member="yes">
+			<label>Begins at</label>
+			<pos>24,56</pos>
+		</object>
+		<object class="wxTextCtrl" name="ID_TEXTCTRL1" variable="TextBeginSector" member="yes">
+			<value>#undefined</value>
+			<pos>24,72</pos>
+			<enabled>0</enabled>
+		</object>
+		<object class="wxStaticText" name="ID_STATICTEXT2" variable="StaticText2" member="yes">
+			<label>Ends at</label>
+			<pos>152,56</pos>
+		</object>
+		<object class="wxTextCtrl" name="ID_TEXTCTRL2" variable="TextEndSector" member="yes">
+			<value>#undefined</value>
+			<pos>152,72</pos>
+			<enabled>0</enabled>
+		</object>
+		<object class="wxStaticText" name="ID_STATICTEXT3" variable="StaticText3" member="yes">
+			<label>Length</label>
+			<pos>280,56</pos>
+		</object>
+		<object class="wxTextCtrl" name="ID_TEXTCTRL3" variable="TextLength" member="yes">
+			<value>#undefined</value>
+			<pos>280,72</pos>
+			<enabled>0</enabled>
+		</object>
+		<object class="wxStaticText" name="ID_STATICTEXT4" variable="StaticText4" member="yes">
+			<label>Partition type</label>
+			<pos>24,112</pos>
+		</object>
+		<object class="wxTextCtrl" name="ID_TEXTCTRL4" variable="TextPartitionType" member="yes">
+			<value>#undefined</value>
+			<pos>24,128</pos>
+			<size>104,21</size>
+			<enabled>0</enabled>
+		</object>
+		<object class="wxStaticBox" name="ID_STATICBOX3" variable="StaticBox3" member="yes">
+			<label>MBR partition data</label>
+			<pos>16,184</pos>
+			<size>504,88</size>
+		</object>
+		<object class="wxStaticText" name="ID_STATICTEXT5" variable="StaticText5" member="yes">
+			<label>File system ID</label>
+			<pos>24,216</pos>
+		</object>
+		<object class="wxTextCtrl" name="ID_TEXTCTRL5" variable="TextFsId" member="yes">
+			<value>#n/a</value>
+			<pos>24,232</pos>
+			<enabled>0</enabled>
+		</object>
+		<object class="wxTextCtrl" name="ID_TEXTCTRL6" variable="TextFsIdString" member="yes">
+			<value>#n/a</value>
+			<pos>128,232</pos>
+			<size>224,21</size>
+			<enabled>0</enabled>
+		</object>
+		<object class="wxStaticText" name="ID_STATICTEXT6" variable="StaticText6" member="yes">
+			<label>Bootable flag</label>
+			<pos>376,216</pos>
+		</object>
+		<object class="wxTextCtrl" name="ID_TEXTCTRL7" variable="TextBootableFlag" member="yes">
+			<value>#n/a</value>
+			<pos>376,232</pos>
+			<enabled>0</enabled>
+		</object>
+		<object class="wxStaticBox" name="ID_STATICBOX4" variable="StaticBox4" member="yes">
+			<label>GPT partition data</label>
+			<pos>16,288</pos>
+			<size>504,168</size>
+		</object>
+		<object class="wxStaticText" name="ID_STATICTEXT7" variable="StaticText7" member="yes">
+			<label>Type GUID</label>
+			<pos>24,312</pos>
+		</object>
+		<object class="wxTextCtrl" name="ID_TEXTCTRL8" variable="TextTypeGuid" member="yes">
+			<value>#n/a</value>
+			<pos>24,328</pos>
+			<size>208,21</size>
+			<enabled>0</enabled>
+		</object>
+		<object class="wxTextCtrl" name="ID_TEXTCTRL9" variable="TextTypeGuidString" member="yes">
+			<value>#n/a</value>
+			<pos>240,328</pos>
+			<size>256,21</size>
+			<enabled>0</enabled>
+		</object>
+		<object class="wxStaticText" name="ID_STATICTEXT8" variable="StaticText8" member="yes">
+			<label>Unique GUID</label>
+			<pos>24,360</pos>
+		</object>
+		<object class="wxTextCtrl" name="ID_TEXTCTRL10" variable="TextUniqueGuid" member="yes">
+			<value>#n/a</value>
+			<pos>24,376</pos>
+			<size>208,21</size>
+			<enabled>0</enabled>
+		</object>
+		<object class="wxStaticText" name="ID_STATICTEXT9" variable="StaticText9" member="yes">
+			<label>Partition name</label>
+			<pos>24,408</pos>
+		</object>
+		<object class="wxTextCtrl" name="ID_TEXTCTRL11" variable="TextPartitionName" member="yes">
+			<value>#n/a</value>
+			<pos>24,424</pos>
+			<size>208,21</size>
+			<enabled>0</enabled>
+		</object>
+		<object class="wxButton" name="wxID_CANCEL" variable="Button1" member="yes">
+			<label>Cancel</label>
+			<pos>216,464</pos>
+		</object>
+	</object>
+</wxsmith>

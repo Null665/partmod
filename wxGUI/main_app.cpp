@@ -14,6 +14,4 @@ bool MyApp::OnInit()
     return true;
 }
 
-
-
 IMPLEMENT_APP(MyApp);

@@ -9,32 +9,13 @@
 #include <wx/frame.h>
 #include <wx/statusbr.h>
 //*)
+#include "ctrl_partition_list.h"
+
 
 #include "../Partmod/disk.h"
 #include "../Partmod/disk_exception.h"
 
-#define S_PARTITION    1
-#define S_FREE_SPACE   2
 
-
-struct lvlist
-{
-std::string partition,
-            type,
-            fs_type,
-            size,
-            free,
-            begin_sect,
-            last_sect,
-            mountpoint;
-
-int num;
-
-int      selection_type;
-uint32_t flags;
-
-
-};
 
 class MainFrame: public wxFrame
 {
@@ -45,8 +26,8 @@ class MainFrame: public wxFrame
 
 		//(*Declarations(MainFrame)
 		wxMenuItem* MenuOpenDiskImage;
+		wxMenuItem* MenuListFsid;
 		wxMenuItem* MenuAbout;
-		wxListView* partitionList;
 		wxListView* diskList;
 		wxMenu* menuPartition;
 		wxMenuItem* MenuRestoreBackup;
@@ -56,19 +37,26 @@ class MainFrame: public wxFrame
 		wxMenuItem* MenuListGuid;
 		wxMenuItem* MenuDeletePartition;
 		wxPanel* Panel1;
+		wxMenuItem* MenuUndoLastPending;
+		wxPartitionList* partitionList;
 		wxMenuItem* MenuCloseDisk;
+		wxMenu* Menu1;
 		wxMenuItem* MenuPartitionProperties;
 		wxMenuItem* MenuSetActive;
 		wxButton* ButtonSaveChanges;
+		wxMenuItem* MenuShowPending;
 		wxMenu* menuHelp;
 		wxMenuItem* MenuCreateBackup;
 		wxStatusBar* StatusBar1;
 		wxMenu* menuTools;
 		wxButton* ButtonQuit;
+		wxMenu* menuBackup;
 		wxMenu* menuDisk;
 		wxMenuItem* MenuWipePartition;
+		wxMenuItem* MenuUndoAllPending;
 		wxMenuItem* MenuCreatePartition;
 		wxMenuItem* MenuQuit;
+		wxMenuItem* MenuRefreshDiskList;
 		wxMenuBar* menuBar;
 		//*)
 
@@ -81,26 +69,29 @@ class MainFrame: public wxFrame
 		static const long ID_BUTTON2;
 		static const long ID_PANEL1;
 		static const long ID_SAVE_CHANGES;
+		static const long ID_REFRESH_DISK_LIST;
 		static const long ID_QUIT;
 		static const long ID_CLOSE_DISK;
 		static const long ID_OPEN_DISK_IMAGE;
-		static const long ID_CREATE_BACKUP;
-		static const long ID_RESTORE_BACKUP;
 		static const long ID_CREATE_PARTITION;
 		static const long ID_DELETE_PARTITION;
 		static const long ID_SET_ACTIVE;
 		static const long ID_SET_INACTIVE;
 		static const long ID_PARTITION_PROPERTIES;
 		static const long ID_WIPE_PARTITION;
+		static const long ID_MENUITEM3;
+		static const long ID_MENUITEM4;
+		static const long ID_MENUITEM5;
+		static const long ID_CREATE_BACKUP;
+		static const long ID_RESTORE_BACKUP;
 		static const long ID_LIST_GUID;
+		static const long ID_MENUITEM1;
 		static const long ID_ABOUT;
 		static const long ID_STATUSBAR1;
 		//*)
 
 	private:
 	    Disk *disk;
-        std::vector<lvlist> disk_structure; // list of partition and free space slices
-        int selected_partition,selected_frs;
 
 		//(*Handlers(MainFrame)
 		void OndiskListItemActivated(wxListEvent& event);
@@ -121,12 +112,16 @@ class MainFrame: public wxFrame
 		void OnPartitionListItemRClick(wxListEvent& event);
 		void OnMenuPartitionPropertiesSelected(wxCommandEvent& event);
 		void OnPartitionListItemDeselect(wxListEvent& event);
+		void OnMenuRefreshDiskListSelected(wxCommandEvent& event);
+		void OnMenuListFsidSelected(wxCommandEvent& event);
+		void OnMenuUndoPendingSelected(wxCommandEvent& event);
+		void OnMenuShowPendingSelected(wxCommandEvent& event);
+		void OnMenuUndoLastPendingSelected(wxCommandEvent& event);
+		void OnMenuUndoAllPendingSelected(wxCommandEvent& event);
 		//*)
         void OnPartitionListPopupClick(wxListEvent& event);
 
-
         void refresh_disk_list();
-        void refresh_partition_list();
 
 		DECLARE_EVENT_TABLE()
 };

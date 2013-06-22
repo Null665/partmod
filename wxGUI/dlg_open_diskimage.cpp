@@ -15,46 +15,71 @@ using namespace std;
 const long DlgOpenDiskImage::ID_TEXTCTRL1 = wxNewId();
 const long DlgOpenDiskImage::ID_BUTTON1 = wxNewId();
 const long DlgOpenDiskImage::ID_STATICTEXT1 = wxNewId();
-const long DlgOpenDiskImage::ID_BUTTON2 = wxNewId();
-const long DlgOpenDiskImage::ID_STATICBOX1 = wxNewId();
 const long DlgOpenDiskImage::ID_TEXTCTRL2 = wxNewId();
-const long DlgOpenDiskImage::ID_TEXTCTRL3 = wxNewId();
-const long DlgOpenDiskImage::ID_TEXTCTRL4 = wxNewId();
-const long DlgOpenDiskImage::ID_TEXTCTRL5 = wxNewId();
 const long DlgOpenDiskImage::ID_STATICTEXT2 = wxNewId();
+const long DlgOpenDiskImage::ID_TEXTCTRL3 = wxNewId();
 const long DlgOpenDiskImage::ID_STATICTEXT3 = wxNewId();
+const long DlgOpenDiskImage::ID_TEXTCTRL4 = wxNewId();
 const long DlgOpenDiskImage::ID_STATICTEXT4 = wxNewId();
-const long DlgOpenDiskImage::ID_STATICTEXT5 = wxNewId();
+const long DlgOpenDiskImage::ID_TEXTCTRL5 = wxNewId();
 //*)
 
 BEGIN_EVENT_TABLE(DlgOpenDiskImage,wxDialog)
     //(*EventTable(DlgOpenDiskImage)
     //*)
+    EVT_BUTTON(wxID_OK,DlgOpenDiskImage::OnButtonOKClick)
 END_EVENT_TABLE()
 
 DlgOpenDiskImage::DlgOpenDiskImage(wxWindow* parent,wxWindowID id,const wxPoint& pos,const wxSize& size)
 {
     //(*Initialize(DlgOpenDiskImage)
-    Create(parent, id, _("Open a disk image"), wxDefaultPosition, wxDefaultSize, wxDEFAULT_DIALOG_STYLE, _T("id"));
-    SetClientSize(wxSize(345,267));
-    Move(wxDefaultPosition);
-    TextImagePath = new wxTextCtrl(this, ID_TEXTCTRL1, wxEmptyString, wxPoint(24,48), wxSize(192,21), 0, wxDefaultValidator, _T("ID_TEXTCTRL1"));
-    ButtonBrowse = new wxButton(this, ID_BUTTON1, _("Browse..."), wxPoint(240,48), wxDefaultSize, 0, wxDefaultValidator, _T("ID_BUTTON1"));
-    StaticText1 = new wxStaticText(this, ID_STATICTEXT1, _("Disk image file path:"), wxPoint(24,32), wxSize(144,13), 0, _T("ID_STATICTEXT1"));
-    ButtonOK = new wxButton(this, ID_BUTTON2, _("Open"), wxPoint(72,216), wxDefaultSize, 0, wxDefaultValidator, _T("ID_BUTTON2"));
-    Button3 = new wxButton(this, wxID_CANCEL, _("Cancel"), wxPoint(176,216), wxDefaultSize, 0, wxDefaultValidator, _T("wxID_CANCEL"));
-    StaticBox1 = new wxStaticBox(this, ID_STATICBOX1, _("Disk image properties"), wxPoint(24,80), wxSize(288,128), 0, _T("ID_STATICBOX1"));
-    TextBPS = new wxTextCtrl(this, ID_TEXTCTRL2, wxEmptyString, wxPoint(40,120), wxSize(88,21), 0, wxDefaultValidator, _T("ID_TEXTCTRL2"));
-    TextTPC = new wxTextCtrl(this, ID_TEXTCTRL3, wxEmptyString, wxPoint(168,120), wxSize(88,21), 0, wxDefaultValidator, _T("ID_TEXTCTRL3"));
-    TextSPT = new wxTextCtrl(this, ID_TEXTCTRL4, wxEmptyString, wxPoint(40,176), wxSize(88,21), 0, wxDefaultValidator, _T("ID_TEXTCTRL4"));
-    TextCylinders = new wxTextCtrl(this, ID_TEXTCTRL5, wxEmptyString, wxPoint(168,176), wxSize(88,21), 0, wxDefaultValidator, _T("ID_TEXTCTRL5"));
-    StaticText2 = new wxStaticText(this, ID_STATICTEXT2, _("Bytes per sector"), wxPoint(40,104), wxSize(88,13), 0, _T("ID_STATICTEXT2"));
-    StaticText3 = new wxStaticText(this, ID_STATICTEXT3, _("Sectors per track"), wxPoint(40,160), wxSize(96,13), 0, _T("ID_STATICTEXT3"));
-    StaticText4 = new wxStaticText(this, ID_STATICTEXT4, _("Tracks per cylinder"), wxPoint(168,104), wxSize(96,13), 0, _T("ID_STATICTEXT4"));
-    StaticText5 = new wxStaticText(this, ID_STATICTEXT5, _("Cylinders"), wxPoint(168,160), wxSize(80,13), 0, _T("ID_STATICTEXT5"));
+    wxStaticBoxSizer* StaticBoxSizer2;
+    wxGridSizer* GridSizer1;
+    wxStaticBoxSizer* StaticBoxSizer1;
+    wxFlexGridSizer* FlexGridSizer1;
+    wxStdDialogButtonSizer* StdDialogButtonSizer1;
 
+    Create(parent, id, _("Open a disk image"), wxDefaultPosition, wxDefaultSize, wxDEFAULT_DIALOG_STYLE, _T("id"));
+    SetClientSize(wxDefaultSize);
+    Move(wxDefaultPosition);
+    FlexGridSizer1 = new wxFlexGridSizer(3, 1, 0, 0);
+    StaticBoxSizer1 = new wxStaticBoxSizer(wxHORIZONTAL, this, _("Disk image file"));
+    TextImagePath = new wxTextCtrl(this, ID_TEXTCTRL1, wxEmptyString, wxDefaultPosition, wxDefaultSize, wxTE_PROCESS_ENTER, wxDefaultValidator, _T("ID_TEXTCTRL1"));
+    StaticBoxSizer1->Add(TextImagePath, 1, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
+    ButtonBrowse = new wxButton(this, ID_BUTTON1, _("Browse..."), wxDefaultPosition, wxDefaultSize, 0, wxDefaultValidator, _T("ID_BUTTON1"));
+    StaticBoxSizer1->Add(ButtonBrowse, 1, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
+    FlexGridSizer1->Add(StaticBoxSizer1, 1, wxALL|wxEXPAND|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
+    StaticBoxSizer2 = new wxStaticBoxSizer(wxHORIZONTAL, this, _("Geometry"));
+    GridSizer1 = new wxGridSizer(4, 2, 0, 0);
+    StaticText1 = new wxStaticText(this, ID_STATICTEXT1, _("Bytes per sector"), wxDefaultPosition, wxDefaultSize, 0, _T("ID_STATICTEXT1"));
+    GridSizer1->Add(StaticText1, 1, wxALL|wxALIGN_RIGHT|wxALIGN_CENTER_VERTICAL, 5);
+    TextBPS = new wxTextCtrl(this, ID_TEXTCTRL2, wxEmptyString, wxDefaultPosition, wxDefaultSize, 0, wxDefaultValidator, _T("ID_TEXTCTRL2"));
+    GridSizer1->Add(TextBPS, 1, wxALL|wxALIGN_LEFT|wxALIGN_CENTER_VERTICAL, 5);
+    StaticText2 = new wxStaticText(this, ID_STATICTEXT2, _("Sectors per track"), wxDefaultPosition, wxDefaultSize, 0, _T("ID_STATICTEXT2"));
+    GridSizer1->Add(StaticText2, 1, wxALL|wxALIGN_RIGHT|wxALIGN_CENTER_VERTICAL, 5);
+    TextSPT = new wxTextCtrl(this, ID_TEXTCTRL3, wxEmptyString, wxDefaultPosition, wxDefaultSize, 0, wxDefaultValidator, _T("ID_TEXTCTRL3"));
+    GridSizer1->Add(TextSPT, 1, wxALL|wxALIGN_LEFT|wxALIGN_CENTER_VERTICAL, 5);
+    StaticText3 = new wxStaticText(this, ID_STATICTEXT3, _("Tracks per cylinder"), wxDefaultPosition, wxDefaultSize, 0, _T("ID_STATICTEXT3"));
+    GridSizer1->Add(StaticText3, 1, wxALL|wxALIGN_RIGHT|wxALIGN_CENTER_VERTICAL, 5);
+    TextTPC = new wxTextCtrl(this, ID_TEXTCTRL4, wxEmptyString, wxDefaultPosition, wxDefaultSize, 0, wxDefaultValidator, _T("ID_TEXTCTRL4"));
+    GridSizer1->Add(TextTPC, 1, wxALL|wxALIGN_LEFT|wxALIGN_CENTER_VERTICAL, 5);
+    StaticText4 = new wxStaticText(this, ID_STATICTEXT4, _("Cylinders"), wxDefaultPosition, wxDefaultSize, 0, _T("ID_STATICTEXT4"));
+    GridSizer1->Add(StaticText4, 1, wxALL|wxALIGN_RIGHT|wxALIGN_CENTER_VERTICAL, 5);
+    TextCylinders = new wxTextCtrl(this, ID_TEXTCTRL5, wxEmptyString, wxDefaultPosition, wxDefaultSize, 0, wxDefaultValidator, _T("ID_TEXTCTRL5"));
+    GridSizer1->Add(TextCylinders, 1, wxALL|wxALIGN_LEFT|wxALIGN_CENTER_VERTICAL, 5);
+    StaticBoxSizer2->Add(GridSizer1, 1, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
+    FlexGridSizer1->Add(StaticBoxSizer2, 1, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
+    StdDialogButtonSizer1 = new wxStdDialogButtonSizer();
+    StdDialogButtonSizer1->AddButton(new wxButton(this, wxID_OK, wxEmptyString));
+    StdDialogButtonSizer1->AddButton(new wxButton(this, wxID_CANCEL, wxEmptyString));
+    StdDialogButtonSizer1->Realize();
+    FlexGridSizer1->Add(StdDialogButtonSizer1, 1, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
+    SetSizer(FlexGridSizer1);
+    FlexGridSizer1->Fit(this);
+    FlexGridSizer1->SetSizeHints(this);
+
+    Connect(ID_TEXTCTRL1,wxEVT_COMMAND_TEXT_ENTER,(wxObjectEventFunction)&DlgOpenDiskImage::OnTextImagePathTextEnter);
     Connect(ID_BUTTON1,wxEVT_COMMAND_BUTTON_CLICKED,(wxObjectEventFunction)&DlgOpenDiskImage::OnButtonBrowseClick);
-    Connect(ID_BUTTON2,wxEVT_COMMAND_BUTTON_CLICKED,(wxObjectEventFunction)&DlgOpenDiskImage::OnButtonOKClick);
     //*)
 }
 
@@ -93,11 +118,11 @@ void DlgOpenDiskImage::OnButtonOKClick(wxCommandEvent& event)
         if(disk->IsOpen())
             disk->Close();
 
-        disk->Open(img_path,geom);
+        disk->OpenDiskImage(img_path,geom);
     }
     catch(DiskException &de)
     {
-        wxMessageBox( _(de.what()),_("Error"),wxOK | wxICON_ERROR, this );
+        wxMessageBox( de.what(),_("Error"),wxOK | wxICON_ERROR, this );
         return;
     }
     catch(...)
@@ -120,7 +145,12 @@ void DlgOpenDiskImage::OnButtonBrowseClick(wxCommandEvent& event)
 
     TextImagePath->SetValue(openFileDialog.GetPath());
 
-    uint64_t file_size=GetFileSize(openFileDialog.GetPath().ToAscii());
+    set_values();
+}
+
+void DlgOpenDiskImage::set_values()
+{
+    uint64_t file_size=GetFileSize(TextImagePath->GetLineText(0).ToAscii());
     if(file_size==0)
       {
           wxMessageBox("File is empty or you don\'t have rights to access it","Error",wxOK | wxICON_ERROR,this);
@@ -130,22 +160,27 @@ void DlgOpenDiskImage::OnButtonBrowseClick(wxCommandEvent& event)
     int bps=512;
     CHS chs=file_size/bps;
 
-
     if(file_size/bps<10485760)
         chs.SetTPC(16);
     else if(file_size/bps<(uint64_t)68719476736)
         chs.SetTPC(255);
 
 
-    TextBPS->SetValue(_(U64ToStr(bps).c_str()));
-    TextSPT->SetValue(_(U64ToStr(chs.GetSPT()).c_str()));
-    TextTPC->SetValue(_(U64ToStr(chs.GetTPC()).c_str()));
-    TextCylinders->SetValue(_(U64ToStr(chs.GetCylinder()).c_str()));
+    TextBPS->SetValue(U64ToStr(bps).c_str());
+    TextSPT->SetValue(U64ToStr(chs.GetSPT()).c_str());
+    TextTPC->SetValue(U64ToStr(chs.GetTPC()).c_str());
+    TextCylinders->SetValue(U64ToStr(chs.GetCylinder()).c_str());
 }
+
 
 int DlgOpenDiskImage::ShowModal(Disk *disk)
 {
     this->disk=disk;
 
     return wxDialog::ShowModal();
+}
+
+void DlgOpenDiskImage::OnTextImagePathTextEnter(wxCommandEvent& event)
+{
+  set_values();
 }

@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<wxsmith>
+	<object class="wxDialog" name="DlgSaveChanges">
+		<title>Writing changes to disk</title>
+		<size>512,373</size>
+		<id_arg>0</id_arg>
+		<object class="wxGauge" name="ID_GAUGE1" variable="GaugeProgress" member="yes">
+			<pos>16,272</pos>
+			<size>480,28</size>
+		</object>
+		<object class="wxTextCtrl" name="ID_TEXTCTRL1" variable="TextLog" member="yes">
+			<pos>104,312</pos>
+			<size>392,24</size>
+			<style>wxTE_READONLY</style>
+		</object>
+		<object class="wxStaticText" name="ID_STATICTEXT1" variable="StaticText1" member="yes">
+			<label>Progress</label>
+			<pos>16,256</pos>
+		</object>
+		<object class="wxStaticText" name="ID_STATICTEXT2" variable="StaticText2" member="yes">
+			<label>Current action: </label>
+			<pos>16,320</pos>
+		</object>
+		<object class="wxButton" name="ID_OK" variable="ButtonCancel" member="yes">
+			<label>Cancel</label>
+			<pos>200,344</pos>
+			<handler function="OnButtonCancelClick" entry="EVT_BUTTON" />
+		</object>
+		<object class="wxListView" name="ID_LISTVIEW1" subclass="wxPendingList" variable="pendingList" member="yes">
+			<pos>16,32</pos>
+			<size>480,192</size>
+			<style>wxLC_REPORT</style>
+		</object>
+		<object class="wxStaticText" name="ID_STATICTEXT3" variable="StaticText3" member="yes">
+			<label>The following actions will be applied to disk</label>
+			<pos>16,16</pos>
+			<size>240,13</size>
+		</object>
+		<object class="wxButton" name="ID_BUTTON1" variable="ButtonConfirm" member="yes">
+			<label>Confirm</label>
+			<pos>200,232</pos>
+			<handler function="OnButtonConfirmClick" entry="EVT_BUTTON" />
+		</object>
+	</object>
+</wxsmith>

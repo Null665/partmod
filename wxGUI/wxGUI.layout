@@ -1,55 +1,79 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
 <CodeBlocks_layout_file>
-	<ActiveTarget name="Debug - Windows" />
-	<File name="main_frame.hpp" open="1" top="0" tabpos="3" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor1 position="348" topLine="11" />
+	<ActiveTarget name="Release - Windows" />
+	<File name="dlg_partition_properties.cpp" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor1 position="1965" topLine="27" />
 	</File>
-	<File name="main_frame.cpp" open="1" top="1" tabpos="2" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor1 position="16848" topLine="390" />
+	<File name="dlg_open_diskimage.h" open="0" top="0" tabpos="7" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor1 position="1313" topLine="33" />
+	</File>
+	<File name="dlg_open_diskimage.cpp" open="0" top="0" tabpos="6" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor1 position="5899" topLine="91" />
+	</File>
+	<File name="main_frame.hpp" open="0" top="0" tabpos="6" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor1 position="3445" topLine="84" />
+	</File>
+	<File name="dlg_newpart.hpp" open="0" top="0" tabpos="2" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor1 position="359" topLine="49" />
+	</File>
+	<File name="main_frame.cpp" open="0" top="0" tabpos="2" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor1 position="13526" topLine="255" />
+	</File>
+	<File name="dlg_newpart.cpp" open="0" top="0" tabpos="3" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor1 position="1778" topLine="32" />
 	</File>
 	<File name="main_app.hpp" open="0" top="0" tabpos="2" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
 		<Cursor1 position="63" topLine="0" />
 	</File>
-	<File name="dlg_create_backup.cpp" open="0" top="0" tabpos="4" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor1 position="2737" topLine="40" />
+	<File name="dlg_guid_list.h" open="0" top="0" tabpos="3" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor1 position="179" topLine="0" />
 	</File>
-	<File name="main_app.cpp" open="1" top="0" tabpos="1" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor1 position="375" topLine="0" />
+	<File name="dlg_guid_list.cpp" open="0" top="0" tabpos="3" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor1 position="1248" topLine="0" />
+	</File>
+	<File name="dlg_fsid_list.h" open="0" top="0" tabpos="2" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor1 position="48" topLine="0" />
+	</File>
+	<File name="dlg_fsid_list.cpp" open="0" top="0" tabpos="4" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor1 position="566" topLine="10" />
 	</File>
 	<File name="dlg_create_backup.h" open="0" top="0" tabpos="5" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
 		<Cursor1 position="86" topLine="0" />
 	</File>
-	<File name="dlg_guid_list.cpp" open="0" top="0" tabpos="1" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor1 position="1065" topLine="0" />
+	<File name="dlg_create_backup.cpp" open="0" top="0" tabpos="4" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor1 position="4020" topLine="0" />
 	</File>
-	<File name="dlg_save_changes.cpp" open="0" top="0" tabpos="3" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor1 position="3641" topLine="114" />
+	<File name="ctrl_pending_list.h" open="0" top="0" tabpos="1" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor1 position="598" topLine="0" />
 	</File>
-	<File name="dlg_restore_backup.h" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor1 position="783" topLine="16" />
+	<File name="ctrl_pending_list.cpp" open="0" top="0" tabpos="2" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor1 position="1168" topLine="39" />
 	</File>
-	<File name="dlg_restore_backup.cpp" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor1 position="2933" topLine="16" />
+	<File name="ctrl_partition_list.h" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor1 position="98" topLine="0" />
+	</File>
+	<File name="main_app.cpp" open="0" top="0" tabpos="1" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor1 position="362" topLine="0" />
+	</File>
+	<File name="ctrl_partition_list.cpp" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor1 position="5172" topLine="138" />
+	</File>
+	<File name="dlg_save_changes.h" open="0" top="0" tabpos="2" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor1 position="667" topLine="63" />
+	</File>
+	<File name="ctrl_partition.h" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor1 position="0" topLine="36" />
+	</File>
+	<File name="dlg_save_changes.cpp" open="0" top="0" tabpos="1" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor1 position="4331" topLine="140" />
+	</File>
+	<File name="dlg_restore_backup.h" open="0" top="0" tabpos="2" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor1 position="308" topLine="0" />
+	</File>
+	<File name="dlg_restore_backup.cpp" open="0" top="0" tabpos="3" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor1 position="6126" topLine="85" />
 	</File>
 	<File name="dlg_partition_properties.h" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
 		<Cursor1 position="333" topLine="0" />
-	</File>
-	<File name="dlg_partition_properties.cpp" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor1 position="7437" topLine="98" />
-	</File>
-	<File name="dlg_open_diskimage.h" open="0" top="0" tabpos="3" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor1 position="186" topLine="5" />
-	</File>
-	<File name="dlg_open_diskimage.cpp" open="0" top="0" tabpos="2" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor1 position="5120" topLine="120" />
-	</File>
-	<File name="dlg_newpart.hpp" open="0" top="0" tabpos="2" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor1 position="398" topLine="27" />
-	</File>
-	<File name="dlg_newpart.cpp" open="0" top="0" tabpos="1" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor1 position="634" topLine="0" />
-	</File>
-	<File name="dlg_guid_list.h" open="0" top="0" tabpos="3" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor1 position="179" topLine="0" />
 	</File>
 </CodeBlocks_layout_file>

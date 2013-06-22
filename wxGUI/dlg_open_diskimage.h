@@ -2,9 +2,9 @@
 #define DLG_OPEN_DISKIMAGE_H
 
 //(*Headers(DlgOpenDiskImage)
+#include <wx/sizer.h>
 #include <wx/stattext.h>
 #include <wx/textctrl.h>
-#include <wx/statbox.h>
 #include <wx/button.h>
 #include <wx/dialog.h>
 //*)
@@ -26,14 +26,10 @@ class DlgOpenDiskImage: public wxDialog
 		//(*Declarations(DlgOpenDiskImage)
 		wxStaticText* StaticText2;
 		wxTextCtrl* TextTPC;
-		wxButton* ButtonOK;
 		wxButton* ButtonBrowse;
 		wxTextCtrl* TextImagePath;
 		wxStaticText* StaticText1;
 		wxStaticText* StaticText3;
-		wxStaticBox* StaticBox1;
-		wxButton* Button3;
-		wxStaticText* StaticText5;
 		wxTextCtrl* TextBPS;
 		wxStaticText* StaticText4;
 		wxTextCtrl* TextSPT;
@@ -46,16 +42,13 @@ class DlgOpenDiskImage: public wxDialog
 		static const long ID_TEXTCTRL1;
 		static const long ID_BUTTON1;
 		static const long ID_STATICTEXT1;
-		static const long ID_BUTTON2;
-		static const long ID_STATICBOX1;
 		static const long ID_TEXTCTRL2;
-		static const long ID_TEXTCTRL3;
-		static const long ID_TEXTCTRL4;
-		static const long ID_TEXTCTRL5;
 		static const long ID_STATICTEXT2;
+		static const long ID_TEXTCTRL3;
 		static const long ID_STATICTEXT3;
+		static const long ID_TEXTCTRL4;
 		static const long ID_STATICTEXT4;
-		static const long ID_STATICTEXT5;
+		static const long ID_TEXTCTRL5;
 		//*)
 
 	private:
@@ -63,7 +56,9 @@ class DlgOpenDiskImage: public wxDialog
 		//(*Handlers(DlgOpenDiskImage)
 		void OnButtonOKClick(wxCommandEvent& event);
 		void OnButtonBrowseClick(wxCommandEvent& event);
+		void OnTextImagePathTextEnter(wxCommandEvent& event);
 		//*)
+		void set_values();
 
 
 

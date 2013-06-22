@@ -1,0 +1,155 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<wxsmith>
+	<object class="wxFrame" name="MainFrame">
+		<title>Partmod</title>
+		<size>860,500</size>
+		<id_arg>0</id_arg>
+		<object class="wxPanel" name="ID_PANEL1" variable="Panel1" member="yes">
+			<pos>160,144</pos>
+			<object class="wxListView" name="ID_LISTVIEW1" variable="diskList" member="yes">
+				<pos>16,24</pos>
+				<size>800,120</size>
+				<style>wxLC_REPORT</style>
+				<handler function="OndiskListItemActivated" entry="EVT_LIST_ITEM_ACTIVATED" />
+			</object>
+			<object class="wxListView" name="ID_LISTVIEW2" subclass="wxPartitionList" variable="partitionList" member="yes">
+				<pos>16,168</pos>
+				<size>800,200</size>
+				<style>wxLC_REPORT</style>
+				<handler function="OnPartitionListItemActivated" entry="EVT_LIST_ITEM_SELECTED" />
+				<handler function="OnPartitionListItemDeselect" entry="EVT_LIST_ITEM_DESELECTED" />
+				<handler function="OnPartitionListItemRClick" entry="EVT_LIST_ITEM_RIGHT_CLICK" />
+			</object>
+			<object class="wxButton" name="ID_BUTTON1" variable="ButtonSaveChanges" member="yes">
+				<label> Save changes </label>
+				<pos>344,392</pos>
+				<handler function="OnMenuSaveChangesSelected" entry="EVT_BUTTON" />
+			</object>
+			<object class="wxButton" name="ID_BUTTON2" variable="ButtonQuit" member="yes">
+				<label>Quit</label>
+				<pos>352,424</pos>
+				<handler function="OnMenuQuitSelected" entry="EVT_BUTTON" />
+			</object>
+		</object>
+		<object class="wxMenuBar" variable="menuBar" member="yes">
+			<object class="wxMenu" variable="menuActions" member="yes">
+				<label>Actions</label>
+				<object class="wxMenuItem" name="ID_SAVE_CHANGES" variable="MenuSaveChanges" member="yes">
+					<label>Save changes</label>
+					<help>Write partition table to disk</help>
+					<handler function="OnMenuSaveChangesSelected" entry="EVT_MENU" />
+				</object>
+				<object class="wxMenuItem" name="ID_REFRESH_DISK_LIST" variable="MenuRefreshDiskList" member="yes">
+					<label>Refresh disk list</label>
+					<help>Note: all changes will be discarded</help>
+					<handler function="OnMenuRefreshDiskListSelected" entry="EVT_MENU" />
+				</object>
+				<object class="separator" />
+				<object class="wxMenuItem" name="ID_QUIT" variable="MenuQuit" member="yes">
+					<label>Exit</label>
+					<help>Exit this program without saving any changes</help>
+					<handler function="OnMenuQuitSelected" entry="EVT_MENU" />
+				</object>
+			</object>
+			<object class="wxMenu" variable="menuDisk" member="yes">
+				<label>Disk</label>
+				<object class="wxMenuItem" name="ID_CLOSE_DISK" variable="MenuCloseDisk" member="yes">
+					<label>Close disk</label>
+					<help>Close disk or a disk image without saving any changes</help>
+					<handler function="OnMenuCloseDiskSelected" entry="EVT_MENU" />
+				</object>
+				<object class="wxMenuItem" name="ID_OPEN_DISK_IMAGE" variable="MenuOpenDiskImage" member="yes">
+					<label>Open a disk image...</label>
+					<help>Open a disk image and modify partitions on it as on a physical disk</help>
+					<handler function="OnMenuOpenDiskImageSelected" entry="EVT_MENU" />
+				</object>
+			</object>
+			<object class="wxMenu" variable="menuPartition" member="yes">
+				<label>Partition</label>
+				<object class="wxMenuItem" name="ID_CREATE_PARTITION" variable="MenuCreatePartition" member="yes">
+					<label>Create partition...</label>
+					<handler function="OnMenuCreatePartitionSelected" entry="EVT_MENU" />
+				</object>
+				<object class="wxMenuItem" name="ID_DELETE_PARTITION" variable="MenuDeletePartition" member="yes">
+					<label>Delete partition</label>
+					<handler function="OnMenuDeletePartitionSelected" entry="EVT_MENU" />
+				</object>
+				<object class="separator" />
+				<object class="wxMenuItem" name="ID_SET_ACTIVE" variable="MenuSetActive" member="yes">
+					<label>Set active (bootable)</label>
+					<handler function="OnMenuSetActiveSelected" entry="EVT_MENU" />
+				</object>
+				<object class="wxMenuItem" name="ID_SET_INACTIVE" variable="MenuSetInactive" member="yes">
+					<label>Set inactive</label>
+					<handler function="OnMenuSetInactiveSelected" entry="EVT_MENU" />
+				</object>
+				<object class="separator" />
+				<object class="wxMenuItem" name="ID_PARTITION_PROPERTIES" variable="MenuPartitionProperties" member="yes">
+					<label>Properties...</label>
+					<help>More information about the partition</help>
+					<handler function="OnMenuPartitionPropertiesSelected" entry="EVT_MENU" />
+				</object>
+				<object class="separator" />
+				<object class="wxMenuItem" name="ID_WIPE_PARTITION" variable="MenuWipePartition" member="yes">
+					<label>Wipe partition</label>
+					<enabled>0</enabled>
+					<handler function="OnMenuWipePartitionSelected" entry="EVT_MENU" />
+				</object>
+			</object>
+			<object class="wxMenu" variable="Menu1" member="yes">
+				<label>Pending</label>
+				<object class="wxMenuItem" name="ID_MENUITEM3" variable="MenuShowPending" member="yes">
+					<label>Show pending operations...</label>
+					<handler function="OnMenuShowPendingSelected" entry="EVT_MENU" />
+				</object>
+				<object class="wxMenuItem" name="ID_MENUITEM4" variable="MenuUndoLastPending" member="yes">
+					<label>Undo last</label>
+					<help>Undo last pending operation</help>
+					<handler function="OnMenuUndoPendingSelected" entry="EVT_MENU" />
+				</object>
+				<object class="wxMenuItem" name="ID_MENUITEM5" variable="MenuUndoAllPending" member="yes">
+					<label>Undo all</label>
+					<help>Undo all pending operations</help>
+					<handler function="OnMenuUndoAllPendingSelected" entry="EVT_MENU" />
+				</object>
+			</object>
+			<object class="wxMenu" variable="menuBackup" member="yes">
+				<label>Backup</label>
+				<object class="wxMenuItem" name="ID_CREATE_BACKUP" variable="MenuCreateBackup" member="yes">
+					<label>Create partition table backup...</label>
+					<help>Create a backup of the partition table structure</help>
+					<handler function="OnMenuCreateBackupSelected" entry="EVT_MENU" />
+				</object>
+				<object class="wxMenuItem" name="ID_RESTORE_BACKUP" variable="MenuRestoreBackup" member="yes">
+					<label>Restore partition table...</label>
+					<help>Restore partition table from backup</help>
+					<handler function="OnMenuRestoreBackupSelected" entry="EVT_MENU" />
+				</object>
+			</object>
+			<object class="wxMenu" variable="menuTools" member="yes">
+				<label>Tools</label>
+				<object class="wxMenuItem" name="ID_LIST_GUID" variable="MenuListGuid" member="yes">
+					<label>List known GUIDs...</label>
+					<handler function="OnMenuListGuidSelected" entry="EVT_MENU" />
+				</object>
+				<object class="wxMenuItem" name="ID_MENUITEM1" variable="MenuListFsid" member="yes">
+					<label>List known FSIDs...</label>
+					<handler function="OnMenuListFsidSelected" entry="EVT_MENU" />
+				</object>
+			</object>
+			<object class="wxMenu" variable="menuHelp" member="yes">
+				<label>Help</label>
+				<object class="wxMenuItem" name="ID_ABOUT" variable="MenuAbout" member="yes">
+					<label>About...</label>
+					<help>About this program</help>
+					<handler function="OnMenuAboutSelected" entry="EVT_MENU" />
+				</object>
+			</object>
+		</object>
+		<object class="wxStatusBar" name="ID_STATUSBAR1" variable="StatusBar1" member="yes">
+			<fields>1</fields>
+			<widths>-10</widths>
+			<styles>wxSB_NORMAL</styles>
+		</object>
+	</object>
+</wxsmith>
