@@ -6,6 +6,7 @@
 
 #include "disk.h"
 #include "mbr.h"
+#include "chs.hpp"
 #include <cstring>
 using namespace std;
 
@@ -59,40 +60,33 @@ void EBRHelper::WriteChanges()
 int spt=disk->GetDiskGeometry().spt;
 
 //
-// Find out which partition is the extended partition
+// Check whether extended partition exists
 //
-int extended_part=-1;
-for(int i=0;i<disk->CountPartitions();i++)
-    if(disk->GetPartition(i).flags&PART_EXTENDED)
-      {
-         extended_part=i;
-         break;
-      }
-if(extended_part==-1) // If extended partition doesn't exist
+if(disk->CountPartitions(PART_EXTENDED)==0)
     return;
 
 
-// Find out how many logical partitions exist
-unsigned n_logical=disk->CountPartitions(PART_LOGICAL);
-
 //
-// If there are no logical volumes, clear the ext. part. boot sector
+// If there are no logical volumes, clear the ext. part. boot sector and exit
 //
-if(n_logical==0)
+if(disk->CountPartitions(PART_LOGICAL)==0)
   {
       EBR ebr;
       memset(&ebr,0,sizeof(EBR));
       ebr.signature=BS_MAGIC;
-      disk->DiskWrite(disk->GetPartition(extended_part).begin_sector*disk->GetDiskGeometry().bps,&ebr,sizeof(EBR));
+      disk->DiskWrite(disk->GetPartition(0,PART_EXTENDED).begin_sector*disk->GetDiskGeometry().bps,&ebr,sizeof(EBR));
       return;
   }
 
 //
 // NOW LET'S FUCK UP THE PARTITION TABLE!!!1
-// Well, finally ths peace of code works
+// Well, finally this peace of code works
 
-uint64_t begin_sector_extd=disk->GetPartition(extended_part).begin_sector;
+uint64_t begin_sector_extd=disk->GetPartition(0,PART_EXTENDED).begin_sector;
 uint64_t ebr_sector=begin_sector_extd;
+
+CHS chs;
+chs.SetGeometry(disk->GetDiskGeometry().spt,disk->GetDiskGeometry().tpc);
 
 for(unsigned i=0;i<disk->CountPartitions();)
   {
@@ -117,10 +111,11 @@ for(unsigned i=0;i<disk->CountPartitions();)
         ebr.partition_table[0].status=0x80:
         ebr.partition_table[0].status=0x00;
 
-    MBR_CHS chs=lba_to_chs(curr_part.begin_sector,disk->GetDiskGeometry());
-    memcpy(&ebr.partition_table[0].begin_chs,&chs,sizeof(MBR_CHS));
-    chs=lba_to_chs(curr_part.begin_sector+curr_part.length,disk->GetDiskGeometry());
-    memcpy(&ebr.partition_table[0].end_chs,&chs,sizeof(MBR_CHS));
+
+    chs=curr_part.begin_sector;
+    ebr.partition_table[0].begin_chs=chs.ToMbrChs();
+    chs=curr_part.begin_sector+curr_part.length;
+    ebr.partition_table[0].end_chs=chs.ToMbrChs();
 
     unsigned which_curr=i;
     ++i;
@@ -145,10 +140,10 @@ for(unsigned i=0;i<disk->CountPartitions();)
     ebr.partition_table[1].lba_blocks=next_part.length+spt;
     ebr.partition_table[1].partition_type=0x05;
 
-    chs=lba_to_chs(next_part.begin_sector,disk->GetDiskGeometry());
-    memcpy(&ebr.partition_table[1].begin_chs,&chs,sizeof(MBR_CHS));
-    chs=lba_to_chs(next_part.begin_sector+curr_part.length,disk->GetDiskGeometry());
-    memcpy(&ebr.partition_table[1].end_chs,&chs,sizeof(MBR_CHS));
+    chs=next_part.begin_sector;
+    ebr.partition_table[1].begin_chs=chs.ToMbrChs();
+    chs=next_part.begin_sector+curr_part.length;
+    ebr.partition_table[1].end_chs=chs.ToMbrChs();
 
     ebr.signature=BS_MAGIC;
     disk->DiskWrite(ebr_sector*disk->GetDiskGeometry().bps,&ebr,sizeof(EBR));
