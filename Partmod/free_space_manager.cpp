@@ -61,8 +61,10 @@ void FreeSpaceManager::FindFreeSpace(PartitionManager *partman,uint64_t num_sect
   else
       find_in(partman,num_sect,0,PART_PRIMARY | PART_EXTENDED | PART_MBR_GPT,0,FREE_UNALLOCATED,NSECT_MB,1); //spt
 
-  find_in(partman,num_sect,PART_EXTENDED,PART_LOGICAL,spt,FREE_EXTENDED,NSECT_MB);
-  find_in(partman,num_sect,PART_MBR_GPT,PART_GPT,spt,FREE_GPT,NSECT_MB);
+  if(partman->CountPartitions(PART_EXTENDED)!=0)
+      find_in(partman,num_sect,PART_EXTENDED,PART_LOGICAL,spt,FREE_EXTENDED,NSECT_MB);
+  if(partman->CountPartitions(PART_MBR_GPT)!=0)
+      find_in(partman,num_sect,PART_MBR_GPT,PART_GPT,spt,FREE_GPT,NSECT_MB);
 
   this->sort_vectors();
   return;
@@ -85,6 +87,23 @@ void FreeSpaceManager::find_in(PartitionManager *partman,
 
 GEN_PART part_curr,part_next;
 FREE_SPACE tmp;
+
+// Special  case:
+// there are no partitions and we need to find unallocated space
+if(partman->CountPartitions()==0 && parent_flag==0)
+  {
+    tmp.begin_sector=reserved_space;
+    tmp.length=num_sect-tmp.begin_sector;
+    tmp.type=FREE_UNALLOCATED;
+    free_space.push_back(tmp);
+    return;
+  }
+// there are no partitions but we are trying to find free space on something else (PART_EXTENDED or PART_MBR_GPT)
+else if(partman->CountPartitions()==0 && parent_flag!=0)
+{
+    return;
+}
+
 
 for(unsigned i=0,j=1;i<partman->CountPartitions()-1,j<partman->CountPartitions(); i++,j++)
   {
