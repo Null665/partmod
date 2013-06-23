@@ -116,13 +116,13 @@ if(!diskio->IsOpen())
 verify_geometry();
 try{
     load();
-}catch(DiskException &de)
-{
+ }catch(DiskException &de)
+ {
    error_on_load=true;
    find_free_space(); // even though partition search fails, try to find free space
    throw de; // let soemone else handle this
-}
-
+ }
+find_free_space();
 }
 
 ///
@@ -149,9 +149,10 @@ try{
 catch(...)
 {
     error_on_load=true;
+    find_free_space();
     throw;
 }
-
+find_free_space();
 }
 
 ///
@@ -604,7 +605,7 @@ unsigned Disk::CountPartitions() const
 
 
 ///
-/// \brief Get number of partitions on diskthat have specified flag
+/// \brief Get number of partitions on disk that have specified flag
 /// \param flag partition flag (GEN_PART::flags)
 unsigned Disk::CountPartitions(unsigned int part_flags) const
 {
@@ -669,7 +670,9 @@ int Disk::GetDiskType() const
       return DISK_GPT;
   else if(part_gpt!=0 && part_mbr!=0)
       return DISK_HYBRID;
-  else return DISK_MBR;
+  else if(part_gpt==0 && part_mbr>0)
+      return DISK_MBR;
+  else return DISK_UNKNOWN;
 
 }
 
@@ -727,7 +730,7 @@ void Disk::CreateBackup(std::string filename, std::string description)
     file.close();
 }
 
-/** \brief Restore partition table from the bacup file
+/** \brief Restore partition table from the backup file
  *
  * \param filename Path to the backup file
  * \param ignore_size_mismatch Continue if cureent disk size and size registered in backup don't match
