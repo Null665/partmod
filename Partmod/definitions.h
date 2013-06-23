@@ -46,6 +46,7 @@ typedef uint32_t uid_t;
 
 
 // Disk types
+#define DISK_UNKNOWN           0
 #define DISK_MBR               1
 #define DISK_GPT               2
 #define DISK_DYNAMIC           3
