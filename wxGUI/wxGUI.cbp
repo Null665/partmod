@@ -16,20 +16,20 @@
 				<Compiler>
 					<Add option="-g" />
 					<Add option="-D__WXDEBUG__" />
-					<Add directory="$(#wx)/lib/gcc_lib/mswd" />
+					<Add directory="$(#wx)/lib/gcc_lib/mswud" />
 					<Add directory="$(#wx)/include" />
 				</Compiler>
 				<ResourceCompiler>
 					<Add directory="$(#wx)/lib/gcc_lib/mswd" />
 				</ResourceCompiler>
 				<Linker>
-					<Add library="libwxmsw28d_core.a" />
-					<Add library="libwxbase28d.a" />
-					<Add library="libwxpngd.a" />
-					<Add library="libwxjpegd.a" />
-					<Add library="libwxtiffd.a" />
-					<Add library="libwxzlibd.a" />
-					<Add library="..\..\bin\libpartmod.a" />
+					<Add library="libwxmsw30ud_core.a" />
+					<Add library="libwxbase30ud.a" />
+					<Add library="libwxpngud.a" />
+					<Add library="libwxjpegud.a" />
+					<Add library="libwxtiffud.a" />
+					<Add library="libwxzlibud.a" />
+					<Add library="..\..\bin\x32\windows\debug\libPartmod.a" />
 					<Add library="ole32" />
 					<Add library="comctl32" />
 					<Add library="winspool" />
@@ -152,7 +152,9 @@
 			</Target>
 		</Build>
 		<Compiler>
+			<Add option="-std=c++11" />
 			<Add option="-Wall" />
+			<Add option="-fexceptions" />
 		</Compiler>
 		<Unit filename="ctrl_partition.cpp" />
 		<Unit filename="ctrl_partition.h" />
@@ -182,6 +184,9 @@
 		<Unit filename="main_app.hpp" />
 		<Unit filename="main_frame.cpp" />
 		<Unit filename="main_frame.hpp" />
+		<Unit filename="resource.rc">
+			<Option compilerVar="WINDRES" />
+		</Unit>
 		<Extensions>
 			<code_completion />
 			<envvars />

@@ -21,7 +21,7 @@
 					<Add option="-g" />
 				</Compiler>
 				<Linker>
-					<Add library="..\..\bin\libDiskio.a" />
+					<Add library="..\..\bin\x32\windows\debug\libDiskio.a" />
 				</Linker>
 			</Target>
 			<Target title="Release - Windows">
