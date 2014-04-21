@@ -1,7 +1,7 @@
 #ifndef DLG_NEWPART_H
 #define DLG_NEWPART_H
 
-#include "../Partmod/disk.h"
+
 
 //(*Headers(DlgNewPart)
 #include <wx/sizer.h>
@@ -11,7 +11,7 @@
 #include <wx/choice.h>
 #include <wx/dialog.h>
 //*)
-
+#include "../Partmod/disk.h"
 class DlgNewPart: public wxDialog
 {
 	public:
@@ -71,6 +71,7 @@ class DlgNewPart: public wxDialog
 		void OnChoiceSizeMulSelect(wxCommandEvent& event);
 		void OnSpinCtrlFreeFollowingChange(wxSpinEvent& event);
 		void OnSpinCtrlPartitionSizeChange(wxSpinEvent& event);
+		void OnPartitionViewLeftDClick(wxMouseEvent& event);
 		//*)
 
 

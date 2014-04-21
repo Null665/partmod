@@ -150,7 +150,7 @@ void DlgOpenDiskImage::OnButtonBrowseClick(wxCommandEvent& event)
 
 void DlgOpenDiskImage::set_values()
 {
-    uint64_t file_size=GetFileSize(TextImagePath->GetLineText(0).ToAscii());
+    uint64_t file_size=GetFileSize(TextImagePath->GetLineText(0).ToStdString());
     if(file_size==0)
       {
           wxMessageBox("File is empty or you don\'t have rights to access it","Error",wxOK | wxICON_ERROR,this);

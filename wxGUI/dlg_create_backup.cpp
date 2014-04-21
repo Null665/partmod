@@ -1,10 +1,12 @@
+#include <wx/msgdlg.h>
 #include "dlg_create_backup.h"
+
 
 //(*InternalHeaders(DlgCreateBackup)
 #include <wx/intl.h>
 #include <wx/string.h>
 //*)
-#include <wx/msgdlg.h>
+
 
 //(*IdInit(DlgCreateBackup)
 const long DlgCreateBackup::ID_TEXTCTRL1 = wxNewId();
@@ -26,7 +28,6 @@ DlgCreateBackup::DlgCreateBackup(wxWindow* parent,wxWindowID id)
 	wxBoxSizer* BoxSizer2;
 	wxBoxSizer* BoxSizer1;
 	wxStaticBoxSizer* StaticBoxSizer1;
-	wxStdDialogButtonSizer* StdDialogButtonSizer1;
 
 	Create(parent, id, _("Create a partition table backup"), wxDefaultPosition, wxDefaultSize, wxDEFAULT_DIALOG_STYLE, _T("id"));
 	BoxSizer1 = new wxBoxSizer(wxVERTICAL);
@@ -85,13 +86,13 @@ int DlgCreateBackup::ShowModal(Disk *disk)
 
 void DlgCreateBackup::OnButtonCloseClick(wxCommandEvent& event)
 {
-  Destroy();
+  wxDialog::Destroy();
 }
 
 void DlgCreateBackup::OnButtonCreateBackupClick(wxCommandEvent& event)
 {
   try{
-    disk->CreateBackup(TextBackupFileName->GetLineText(0).ToAscii(),TextDescription->GetLabelText().ToAscii());
+    disk->CreateBackup(TextBackupFileName->GetLineText(0).ToStdString(),TextDescription->GetLabelText().ToStdString());
   }
   catch(DiskException &de)
   {
@@ -104,5 +105,5 @@ void DlgCreateBackup::OnButtonCreateBackupClick(wxCommandEvent& event)
       return;
   }
   wxMessageBox(_("Backup created successfuly"),_("Information"),wxOK | wxICON_INFORMATION,this);
-  Destroy();
+  wxDialog::Destroy();
 }

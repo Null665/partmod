@@ -123,7 +123,7 @@ void DlgRestoreBackup::OnButtonCancelClick(wxCommandEvent& event)
 void DlgRestoreBackup::OnButtonRestoreClick(wxCommandEvent& event)
 {
   try{
-    disk->LoadBackup(TextBackupFileName->GetLineText(0).ToAscii());
+    disk->LoadBackup(TextBackupFileName->GetLineText(0).ToStdString());
   }
   catch(DiskException &de)
   {
@@ -137,7 +137,7 @@ void DlgRestoreBackup::OnButtonRestoreClick(wxCommandEvent& event)
                 if(ans==wxOK)
                 {
                     try{
-                       disk->LoadBackup(TextBackupFileName->GetLineText(0).ToAscii(),true);
+                       disk->LoadBackup(TextBackupFileName->GetLineText(0).ToStdString(),true);
                     }
                     catch(DiskException &de)
                     {

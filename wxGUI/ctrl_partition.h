@@ -57,7 +57,7 @@ public:
     void mouseDown(wxMouseEvent& event);
     void mouseReleased(wxMouseEvent& event);
     void mouseLeftWindow(wxMouseEvent& event);
-
+    void mouseLeftDoubleClick(wxMouseEvent& event);
     DECLARE_EVENT_TABLE()
 };
 

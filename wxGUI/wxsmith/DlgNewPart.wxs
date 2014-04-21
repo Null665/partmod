@@ -17,6 +17,7 @@
 							<include_file>ctrl__partition.h</include_file>
 							<local_include>1</local_include>
 							<size>400,74</size>
+							<handler function="OnPartitionViewLeftDClick" entry="EVT_LEFT_DCLICK" />
 							<handler function="OnPartitionViewMouseMove" entry="EVT_MOTION" />
 						</object>
 						<flag>wxALL|wxEXPAND|wxSHAPED|wxALIGN_LEFT|wxALIGN_CENTER_VERTICAL</flag>

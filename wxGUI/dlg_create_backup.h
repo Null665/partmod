@@ -26,6 +26,7 @@ class DlgCreateBackup: public wxDialog
 		wxStaticText* StaticText1;
 		wxFileDialog* FileDialog1;
 		wxTextCtrl* TextDescription;
+		wxStdDialogButtonSizer* StdDialogButtonSizer1;
 		//*)
 
         int ShowModal(Disk *disk);

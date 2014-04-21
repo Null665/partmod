@@ -237,8 +237,8 @@ for(char i='a',j=0;i<='z';i++)
               disk->Close();
               continue;
           }
-     }
 
+    }
     diskList->InsertItem(item_index,ss.str().c_str());
 
     if( disk->GetDiskType()==DISK_MBR)
@@ -246,7 +246,7 @@ for(char i='a',j=0;i<='z';i++)
     else if( disk->GetDiskType()==DISK_GPT)
         diskList->SetItem(item_index,1,_("GPT"),-1);
     else
-        diskList->SetItem(item_index,1,_("empty?"),-1);
+        diskList->SetItem(item_index,1,_("unknown/empty"),-1);
 
     diskList->SetItem(item_index,2,size_str(disk->LastSector(),disk->GetDiskGeometry().bps).c_str(),-1);
 
@@ -279,7 +279,7 @@ void MainFrame::OndiskListItemActivated(wxListEvent& event)
    if(disk->IsOpen())
         disk->Close();
 
-   disk->Open(diskname.ToAscii());
+   disk->Open(diskname.ToStdString());
    }
    catch(DiskException &de)
    {

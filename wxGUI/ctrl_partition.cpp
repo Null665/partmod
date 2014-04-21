@@ -8,6 +8,7 @@ BEGIN_EVENT_TABLE(wxPartition, wxPanel)
     EVT_LEFT_DOWN(wxPartition::mouseDown)
     EVT_LEFT_UP(wxPartition::mouseReleased)
     EVT_LEAVE_WINDOW(wxPartition::mouseLeftWindow)
+    EVT_LEFT_DCLICK(wxPartition::mouseLeftDoubleClick)
 
     // catch paint events
     EVT_PAINT(wxPartition::paintEvent)
@@ -90,6 +91,11 @@ void wxPartition::mouseLeftWindow(wxMouseEvent& event)
     state=S_IDLE;
 }
 
+void wxPartition::mouseLeftDoubleClick(wxMouseEvent& event)
+{
+    slider_left_pos=0;
+    SetRightSliderPos(n_steps-1);
+}
 
 void wxPartition::mouseMoved(wxMouseEvent& event)
 {

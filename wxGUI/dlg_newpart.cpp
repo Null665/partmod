@@ -97,6 +97,7 @@ DlgNewPart::DlgNewPart(wxWindow* parent)
 	FlexGridSizer1->Fit(this);
 	FlexGridSizer1->SetSizeHints(this);
 
+	partitionView->Connect(wxEVT_LEFT_DCLICK,(wxObjectEventFunction)&DlgNewPart::OnPartitionViewLeftDClick,0,this);
 	partitionView->Connect(wxEVT_MOTION,(wxObjectEventFunction)&DlgNewPart::OnPartitionViewMouseMove,0,this);
 	Connect(ID_PARTITION_SIZE,wxEVT_COMMAND_SPINCTRL_UPDATED,(wxObjectEventFunction)&DlgNewPart::OnSpinCtrlPartitionSizeChange);
 	Connect(ID_CHOICE1,wxEVT_COMMAND_CHOICE_SELECTED,(wxObjectEventFunction)&DlgNewPart::OnChoiceSizeMulSelect);
@@ -182,10 +183,10 @@ int DlgNewPart::ShowModal(Disk *disk, int selected_frs)
 void DlgNewPart::OnButtonOKClick(wxCommandEvent& event)
 {
   uint64_t size_mul=(uint64_t)ChoiceSizeMul->GetClientData(ChoiceSizeMul->GetSelection());
-  int part_type=(int)ChoicePartitionType->GetClientData(ChoicePartitionType->GetSelection());
+  int part_type=(uint64_t)ChoicePartitionType->GetClientData(ChoicePartitionType->GetSelection());
   uint64_t size=SpinCtrlPartitionSize->GetValue()*(size_mul/disk->GetDiskGeometry().bps);
-  unsigned fs_type=(unsigned)ChoiceFsType->GetClientData(ChoiceFsType->GetSelection());
-  unsigned alignment_type=(unsigned)ChoiceAlignTo->GetClientData(ChoiceAlignTo->GetSelection());
+  unsigned fs_type=(uint64_t)ChoiceFsType->GetClientData(ChoiceFsType->GetSelection());
+  unsigned alignment_type=(uint64_t)ChoiceAlignTo->GetClientData(ChoiceAlignTo->GetSelection());
 
   uint64_t sect_before=SpinCtrlFreePrepending->GetValue()*(size_mul/disk->GetDiskGeometry().bps);
 
@@ -233,7 +234,7 @@ void DlgNewPart::OnButtonCancelClick(wxCommandEvent& event)
 void DlgNewPart::OnChoicePartitionTypeSelect(wxCommandEvent& event)
 {
    ChoiceFsType->Clear();
-  if((int)event.GetClientData()==PART_GPT)
+  if((long long)event.GetClientData()==PART_GPT)
     {
        for(int i=0;i<disk->guid_man->Count();i++)
          {
@@ -242,7 +243,7 @@ void DlgNewPart::OnChoicePartitionTypeSelect(wxCommandEvent& event)
          }
        ChoiceFsType->SetSelection(5);
     }
-  else if((int)event.GetClientData()==PART_PRIMARY)
+  else if((long long)event.GetClientData()==PART_PRIMARY)
     {
        for(int i=0;i<disk->fsid_man->Count();i++)
          {
@@ -252,7 +253,7 @@ void DlgNewPart::OnChoicePartitionTypeSelect(wxCommandEvent& event)
 
        ChoiceFsType->SetSelection(5);
     }
-  else if((int)event.GetClientData()==PART_EXTENDED)
+  else if((long long)event.GetClientData()==PART_EXTENDED)
     {
        for(int i=0;i<disk->fsid_man->Count(FS_EXTENDED);i++)
          {
@@ -262,7 +263,7 @@ void DlgNewPart::OnChoicePartitionTypeSelect(wxCommandEvent& event)
 
        ChoiceFsType->SetSelection(1);
     }
-  else if((int)event.GetClientData()==PART_MBR_GPT)
+  else if((long long)event.GetClientData()==PART_MBR_GPT)
     {
        for(int i=0;i<disk->fsid_man->Count(FS_GPT);i++)
          {
@@ -287,7 +288,7 @@ void DlgNewPart::OnChoicePartitionTypeSelect(wxCommandEvent& event)
        ChoiceFsType->SetSelection(5);
     };
 
-    if((int)event.GetClientData()!=PART_MBR_GPT)
+    if((long long)event.GetClientData()!=PART_MBR_GPT)
       {
         ChoiceSizeMul->Enable();
         SpinCtrlPartitionSize->Enable();
@@ -423,4 +424,30 @@ void DlgNewPart::OnSpinCtrlPartitionSizeChange(wxSpinEvent& event)
   }
 
    partition_size_old=SpinCtrlPartitionSize->GetValue();
+}
+
+void DlgNewPart::OnPartitionViewLeftDClick(wxMouseEvent& event)
+{
+     // let the partitionView control to process the message, then update
+     event.Skip();
+
+     int lpos= partitionView->GetLeftSliderPos();
+     int rpos= partitionView->GetRightSliderPos();
+     int n_steps=partitionView->GetNumberOfSteps();
+
+     uint64_t units=(uint64_t)ChoiceSizeMul->GetClientData(ChoiceSizeMul->GetSelection());
+
+
+     double step_value=(long double)(disk->GetFreeSpace(selected_frs).length*disk->GetDiskGeometry().bps)/(double)n_steps;
+
+     uint64_t free_prepending=step_value*lpos/units;
+     uint64_t free_following=step_value*(n_steps-rpos)/units;
+     uint64_t part_size=step_value*(rpos-lpos)/units;
+
+     SpinCtrlFreePrepending->SetValue(free_prepending);
+     SpinCtrlFreeFollowing->SetValue(free_following);
+     SpinCtrlPartitionSize->SetValue(part_size);
+
+
+
 }
