@@ -98,7 +98,7 @@ if(partman->CountPartitions()==0 && parent_flag==0)
     free_space.push_back(tmp);
     return;
   }
-// there are no partitions but we are trying to find free space on something else (PART_EXTENDED or PART_MBR_GPT)
+// there are no partitions and we are trying to find free space on something else (PART_EXTENDED or PART_MBR_GPT)
 else if(partman->CountPartitions()==0 && parent_flag!=0)
 {
     return;
