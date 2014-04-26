@@ -25,10 +25,10 @@
 				<Linker>
 					<Add library="libwxmsw30ud_core.a" />
 					<Add library="libwxbase30ud.a" />
-					<Add library="libwxpngud.a" />
-					<Add library="libwxjpegud.a" />
-					<Add library="libwxtiffud.a" />
-					<Add library="libwxzlibud.a" />
+					<Add library="libwxpngd.a" />
+					<Add library="libwxjpegd.a" />
+					<Add library="libwxtiffd.a" />
+					<Add library="libwxzlibd.a" />
 					<Add library="..\..\bin\x32\windows\debug\libPartmod.a" />
 					<Add library="ole32" />
 					<Add library="comctl32" />
@@ -58,7 +58,6 @@
 				</ResourceCompiler>
 				<Linker>
 					<Add option="-s" />
-					<Add option="-static -static-libgcc -static-libstdc++" />
 					<Add library="libwxmsw30u_core.a" />
 					<Add library="libwxbase30u.a" />
 					<Add library="libwxpng.a" />
