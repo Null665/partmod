@@ -24,7 +24,7 @@ wxPartition::wxPartition(wxWindow *parent,
 {
     enabled=true;
     SetMinSize(size );
-    n_steps=10000;
+    n_steps=16368;
     state=S_IDLE;
 
     slider_left_pos=0;
@@ -131,11 +131,13 @@ void wxPartition::mouseMoved(wxMouseEvent& event)
       if(slider_left_pos<=0 && event.m_x<mouse_old_pos.m_x)
       {
         slider_left_pos=0;
+        this->Refresh();
         return;
       }
       else if(slider_right_pos>=GetSize().GetWidth() && event.m_x>mouse_old_pos.m_x)
       {
         slider_right_pos=GetSize().GetWidth();
+        this->Refresh();
         return;
       }
 
@@ -144,7 +146,6 @@ void wxPartition::mouseMoved(wxMouseEvent& event)
       mouse_old_pos=event;
       this->Refresh();
   }
-
 
 }
 
@@ -162,7 +163,7 @@ bool wxPartition::SetLeftSliderPos(unsigned pos)
 {
   if(pos>n_steps)
       return false;
-  slider_left_pos=pos*float(GetSize().GetWidth())/n_steps;
+  slider_left_pos=pos*double(GetSize().GetWidth())/n_steps;
   this->Refresh();
   return true;
 }
@@ -172,7 +173,7 @@ bool wxPartition::SetRightSliderPos(unsigned pos)
 {
   if(pos>n_steps)
       return false;
-  slider_right_pos=pos*float(GetSize().GetWidth())/n_steps;
+  slider_right_pos=ceil(float(pos)*float(GetSize().GetWidth())/float(n_steps));
   this->Refresh();
   return true;
 }
