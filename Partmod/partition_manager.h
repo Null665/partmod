@@ -1,5 +1,15 @@
 #ifndef PARTITION_MANAGER_H
 #define PARTITION_MANAGER_H
+// Free space manager - an internal helper class for class Disk;
+// the purpose of this class is to keep a list of partition and check that they do not overlap,
+// are created correctly (no primary partition in extended partition, etc)
+
+// each partition has its own unique ID, which is required for PendingActionManager, to avoid things like
+// 1. select wipe partition #3
+// 2. delete partition #3 (1GB)
+// 3. create partition #3 (100GB)
+// 4. apply pending actions and delete 100GB of data
+// unique id allows to check that partition exists, and iof it doesn't remove pending actions associated with it
 
 #include "definitions.h"
 #include <vector>

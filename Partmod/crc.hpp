@@ -1,9 +1,21 @@
 #ifndef CRC_H_CODEFROMCPPDOTCOMBYDISCH
 #define CRC_H_CODEFROMCPPDOTCOMBYDISCH
 //
+// CRC32 checksum class
 // Original source: http://www.cplusplus.com/forum/lounge/27570/
 //
+// Usage:
+/*
+    CRC32 crc;
+    crc.Hash(&addr_of_stuff,length);
+    uint32_t hash=crc.Get();
+    crc.Reset();
+    // crc.Hash() again
 
+    or
+
+    uint32_t hash=CRC32(&addr_of_stuff,length);
+*/
 
 #include <stdint.h>
 

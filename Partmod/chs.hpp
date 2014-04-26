@@ -1,6 +1,22 @@
 #ifndef CHS_HPP
 #define CHS_HPP
+// This class allows to convert LBA to CHS adressing used by MBR and vice versa
+// Examples
+/*
+1:
+    CHS chs(cyl,head,sect);
+    chs.SetGeometry(sectors_per_track,tracks_per_cylinder);
+    unsigned sector=chs.ToLBA();
 
+2:
+    CHS chs(1023); // secotr 1023
+    chs.SetGeometry(sectors_per_track,tracks_per_cylinder);
+    chs=2048;
+    chs++; // now 2049
+    MBR_CHS c=chs.ToMbrChs();
+
+
+*/
 #include <stdint.h>
 
 #pragma pack(1)

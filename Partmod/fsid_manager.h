@@ -1,5 +1,8 @@
 #ifndef FSID_MANAGER_H
 #define FSID_MANAGER_H
+//
+// A class for managing MBR file system IDs
+//
 
 #include <stdint.h>
 #include <string>

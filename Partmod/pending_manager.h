@@ -1,6 +1,12 @@
 #ifndef PENDING_MANAGER_H
 #define PENDING_MANAGER_H
-
+//
+// A class to store information about pending actions (partition create,delete,wipe...)
+// It's just container for information; class does not actually do anything to partition tables
+// just stores info what changes were made
+//
+// Info can be used to undo changes to partition table BUT only before the changes are wrtitten to disk
+//
 #include "definitions.h"
 #include <vector>
 #include <utility>

@@ -1,5 +1,10 @@
 #ifndef GUID_MANAGER_H
 #define GUID_MANAGER_H
+// A class for managing GPT fs GUIDs
+// The main purpose is:
+//      ginven GUID such as{ EBD0A0A2-B9E5-4433-87C0-68B6B72699C7} return string "Basic data partition"
+// also, convert __GUID structre to string and vice versa
+//
 
 #include "definitions.h"
 #include <vector>

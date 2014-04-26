@@ -1,10 +1,19 @@
 #ifndef FREE_SPACE_MANAGER_H
 #define FREE_SPACE_MANAGER_H
+// Free space manager - an internal helper class for class Disk;
+// the purpose of this class is to find free disk space (unallocated) between partitions and store info as FREE_SPACE struct
+// this includes space between primary partitions, inside extended partition, and in GPT
+
+// FindFreeSpace() must be called after a change is made to partition structure (after partition creation, deletion..)
+// in Disk class, FreeSpaceManager::FindFreeSpace(...) is called via find_spee_space() function
+
+// FREE_SPACE is defined in definitions.h
 
 #include "definitions.h"
 #include "partition_manager.h"
 #include <vector>
 
+// avoid errors due to WinAPI
 #ifdef GetFreeSpace
   #undef GetFreeSpace
 #endif
