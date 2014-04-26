@@ -301,6 +301,8 @@ void DlgNewPart::OnPartitionViewMouseMove(wxMouseEvent& event)
 {
  if(event.LeftIsDown())
    {
+     partitionView->mouseMoved(event);
+
      int lpos= partitionView->GetLeftSliderPos();
      int rpos= partitionView->GetRightSliderPos();
      int n_steps=partitionView->GetNumberOfSteps();
@@ -319,7 +321,7 @@ void DlgNewPart::OnPartitionViewMouseMove(wxMouseEvent& event)
      SpinCtrlPartitionSize->SetValue(part_size);
 
     // let the partitionView control to process the message
-    event.Skip();
+    //event.Skip();
    }
 }
 
@@ -428,8 +430,10 @@ void DlgNewPart::OnSpinCtrlPartitionSizeChange(wxSpinEvent& event)
 
 void DlgNewPart::OnPartitionViewLeftDClick(wxMouseEvent& event)
 {
-     // let the partitionView control to process the message, then update
-     event.Skip();
+     // send the event to the control manually because control must be updated before retrieving values.
+     // or I could just set values (free_prerpending=0, free_following=0;..) and then update the partitionView
+     // anyway I feel this is not the right way of doing this thing
+     partitionView->mouseLeftDoubleClick(event);
 
      int lpos= partitionView->GetLeftSliderPos();
      int rpos= partitionView->GetRightSliderPos();
@@ -448,6 +452,5 @@ void DlgNewPart::OnPartitionViewLeftDClick(wxMouseEvent& event)
      SpinCtrlFreeFollowing->SetValue(free_following);
      SpinCtrlPartitionSize->SetValue(part_size);
 
-
-
+     // no event.Skip() because event was already sent manually
 }
