@@ -3,16 +3,12 @@
  *
 */
 #include "definitions.h"
-#include "dllcall.hpp"
-
 
 #if defined(_WIN32) || defined (WIN32)
-#include <windows.h>
-#include <winreg.h>
-#include <winioctl.h>
+    #include <windows.h>
+    #include <winreg.h>
 #endif
 
-#include "../diskio/diskio.hpp"
 #include <iomanip>
 #include <sstream>
 #include <cstdlib>
