@@ -31,19 +31,6 @@ bool Dump2File(const char *fn,const void *data,int size)
 }
 
 
-uint64_t chs_to_lba(MBR_CHS _chs,GEOMETRY _dg)
-{
-  uint64_t lba;
-
-  unsigned int
-  tpc=_dg.tpc,
-      spt=_dg.spt;
-
-  lba= ( ( _chs.cylinder * tpc + _chs.head ) * spt ) + _chs.sector - 1;
-
-  return lba;
-}
-
 
 
 string U64ToStr(uint64_t number,unsigned int base)
