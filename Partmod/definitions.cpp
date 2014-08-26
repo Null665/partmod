@@ -142,13 +142,13 @@ void generate_guid(__GUID &guid)
 string get_mount_point(GEN_PART gpart,unsigned int disk_signature)
 {
 
-#pragma pack(1)
-  struct reg_key
+
+  struct alignas(1) reg_key
   {
     uint32_t disk_signature;
     uint64_t offset;
   } data;
-#pragma pack(0)
+
 
   memset(&data,0,sizeof(data));
 

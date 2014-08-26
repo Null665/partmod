@@ -16,12 +16,11 @@
 */
 
 
-#pragma pack(1)
 
 //
 // Partition record of MBR and EBR
 //
-struct PARTITION_RECORD
+struct alignas(1) PARTITION_RECORD
 {
   uint8_t        status;
   MBR_CHS        begin_chs;
@@ -34,7 +33,7 @@ struct PARTITION_RECORD
 //
 // Master Boot Record
 //
-struct MBR
+struct alignas(1) MBR
 {
   uint8_t              boot_code[440];
   uint32_t             disk_signature;
@@ -47,13 +46,12 @@ struct MBR
 //
 // MBR-specific data (in GEN_PART::data )
 //
-struct MBR_SPECIFIC
+struct alignas(1) MBR_SPECIFIC
 {
    uint8_t  fsid;
    uint32_t begin_sector_rel;
 };
 
-#pragma pack()
 
 
 class Disk;

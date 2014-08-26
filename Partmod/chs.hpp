@@ -19,16 +19,14 @@
 */
 #include <stdint.h>
 
-#pragma pack(1)
 // Cylinder-head-sector structure for MBR
-struct MBR_CHS
+struct alignas(1) MBR_CHS
 {
   uint8_t head;             // head (<255)
   uint8_t sector:6;         // sector (<64)
   uint8_t cylinder_bits:2;  // 2 bits of cylinder value
   uint8_t cylinder   ;      // cylinder (<=1023)
 };
-#pragma pack()
 
 //
 // A class for CHS manipulation
