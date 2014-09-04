@@ -12,8 +12,11 @@ using namespace std;
 
 void MBRHelper::ReadPartitionTables()
 {
-MBR mbr;
+MBR mbr={0};
 disk->ReadMBR(mbr);
+
+if(mbr.signature!=BS_MAGIC)
+    throw DiskException("MBR signature invalid (not 0x55AA)");
 
 GEN_PART gpart;
 MBR_SPECIFIC mspec;
