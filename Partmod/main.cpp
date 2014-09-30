@@ -9,7 +9,50 @@
 #include <windowsx.h>
 
 
+#include "disk.h"
+#include "crc.hpp"
 
+void compile_crc_hpp_example()
+{
+    int stuff=10;
+    int length=sizeof(stuff);
+{
+    CRC32 crc;
+    crc.Hash(&stuff,length);
+    uint32_t hash=crc.Get();
+    crc.Reset();
+    // crc.Hash() again
+}
+{
+    uint32_t hash=CRC32(&stuff,length);
+}
+
+}
+
+void compile_chs_hpp_example()
+{
+    int cyl=10,head=2,sect=16;
+    int sectors_per_track=63,tracks_per_cylinder=255;
+ {
+    CHS chs(cyl,head,sect);
+    chs.SetGeometry(sectors_per_track,tracks_per_cylinder);
+    unsigned sector=chs.ToLBA();
+  }
+  {
+    CHS chs(1023); // secotr 1023
+    chs.SetGeometry(sectors_per_track,tracks_per_cylinder);
+    chs=2048;
+    chs++; // now 2049
+    MBR_CHS c=chs.ToMbrChs();
+  }
+}
+
+
+
+
+
+
+#if 0
 #include <cstdlib>
 #include <winioctl.h>
 #include <sstream>
@@ -27,12 +70,6 @@ void UI_CreatePartition(Partition *part);
 void UI_Help();
 
 
-
-
-
-
-
-#if 0
 int main()
 {
 stringstream ss("\\\\.\\PhysicalDrive0");
@@ -81,7 +118,6 @@ return 0;
 
 }
 
-#endif
 
 
 void UI_ListPartitions(Partition *part)
@@ -275,3 +311,4 @@ if(!part->CreatePartition(part_type,size))
   }
 
 }
+#endif
