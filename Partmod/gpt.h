@@ -7,9 +7,9 @@
 
 // ============= GPT disk structs =================
 
-
+#pragma pack(1)
 // GPT partition table header
-struct alignas(1) GPT
+struct GPT
 {
   uint8_t  signature[8];          // "EFI PART"
   uint32_t version;               // 00 00 01 00 for version 1.00
@@ -30,7 +30,7 @@ struct alignas(1) GPT
 };
 
 // GPT partition entry
-struct alignas(1) GPT_ENTRY
+struct GPT_ENTRY
 {
   __GUID   type_guid;              // GUID of partition type
   __GUID   unique_guid;            // GUID unique for this partition
@@ -42,7 +42,7 @@ struct alignas(1) GPT_ENTRY
 
 
 
-struct alignas(1) GPT_SPECIFIC
+struct GPT_SPECIFIC
 {
   __GUID type_guid;
   __GUID unique_guid;
@@ -50,6 +50,7 @@ struct alignas(1) GPT_SPECIFIC
   uint64_t flags;
 };
 
+#pragma pack()
 
 class Disk;
 class GPTHelper

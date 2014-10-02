@@ -104,9 +104,9 @@ typedef uint32_t uid_t;
 
 
 
+#pragma pack(1)
 
-
-struct alignas(1) __GUID
+struct __GUID
 {
   uint32_t one;
   uint16_t two;
@@ -116,7 +116,7 @@ struct alignas(1) __GUID
 
 
 // Disk geometry -- also required when converting MBR_CHS to LBA or LBA to MBR_CHS
-struct alignas(1) GEOMETRY
+struct GEOMETRY
 {
   uint64_t cylinders;   /* number of cylinders  */
   uint16_t tpc;         /* tracks per cylinder  */
@@ -129,7 +129,7 @@ struct alignas(1) GEOMETRY
 //
 // Generic partition
 //
-struct alignas(1) GEN_PART
+struct GEN_PART
 {
   uint8_t  mount_point[256];    // Mount point. Currently unused, might be removed in future
   uint64_t begin_sector;        // In which sector partition starts
@@ -141,7 +141,7 @@ struct alignas(1) GEN_PART
 };
 
 
-struct alignas(1) BACKUP_FILE_HEADER
+struct BACKUP_FILE_HEADER
 {
   uint32_t magic;             // BACKUP_MAGIC
   uint32_t header_size;       // size of backup file header in bytes
@@ -153,6 +153,7 @@ struct alignas(1) BACKUP_FILE_HEADER
   char     reserved[128];
 };
 
+#pragma pack()
 
 // describes where free space blocks are on disk
 struct FREE_SPACE
