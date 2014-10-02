@@ -226,18 +226,20 @@ for(char i='a',j=0;i<='z';i++)
     ss<<"/dev/sd"<<i;
 #endif
     try
-      {
+    {
           disk->Open(ss.str());
-      }
+    }
     catch(DiskException&de)
     {
-
        if(de.error_code==ERR_OPEN_DISK)
-          {
+        {
               disk->Close();
               continue;
-          }
-
+        }
+    }
+    catch(...)
+    {
+        continue;
     }
     diskList->InsertItem(item_index,ss.str().c_str());
 

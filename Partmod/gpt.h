@@ -37,7 +37,7 @@ struct GPT_ENTRY
   uint64_t begin_lba;              // Begining of partition in LBA blocks
   uint64_t end_lba;                // End lba of partition
   uint64_t  flags;                 // Various flags
-  uint16_t name[36];               // Partition name -- 36 UTF-16LE chars
+  char16_t name[36];               // Partition name -- 36 UTF-16LE chars
 } ;
 
 
@@ -46,7 +46,7 @@ struct GPT_SPECIFIC
 {
   __GUID type_guid;
   __GUID unique_guid;
-  uint16_t name[36];
+  char16_t name[36];
   uint64_t flags;
 };
 

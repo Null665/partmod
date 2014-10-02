@@ -155,6 +155,9 @@
 			<Add option="-Wall" />
 			<Add option="-fexceptions" />
 		</Compiler>
+		<Linker>
+			<Add library="pthread" />
+		</Linker>
 		<Unit filename="ctrl_partition.cpp" />
 		<Unit filename="ctrl_partition.h" />
 		<Unit filename="ctrl_partition_list.cpp" />
