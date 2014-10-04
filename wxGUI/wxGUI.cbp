@@ -188,7 +188,11 @@
 		<Unit filename="main_frame.hpp" />
 		<Unit filename="resource.rc">
 			<Option compilerVar="WINDRES" />
+			<Option target="Debug - Windows" />
+			<Option target="Release - Windows" />
+			<Option target="Release - Windows x64" />
 		</Unit>
+		<Unit filename="wxGUI.exe.Manifest" />
 		<Extensions>
 			<code_completion />
 			<envvars />
