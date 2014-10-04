@@ -22,6 +22,7 @@ class DiskIO
 protected:
   DISK_HANDLE hDisk;
   bool is_open;
+  bool read_only;
   bool disk_image;
   GEOMETRY disk_geometry;
 
@@ -33,6 +34,7 @@ public:
 
   void Close();
   bool IsOpen();
+  bool IsReadOnly();
 
   const GEOMETRY &GetDiskGeometry();
   int GetDiskSize(uint64_t &length);
