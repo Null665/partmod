@@ -6,6 +6,8 @@ DiskIO::DiskIO()
 {
     hDisk=0;
     is_open=false;
+    disk_image=false;
+    read_only=true;
 
     memset(&disk_geometry,0,sizeof(GEOMETRY));
 }
@@ -86,4 +88,7 @@ void DiskIO::Sync()
     sync();
 }
 
-
+bool DiskIO::IsReadOnly()
+{
+  return read_only;
+}
