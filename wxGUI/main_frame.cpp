@@ -303,9 +303,17 @@ void MainFrame::OndiskListItemActivated(wxListEvent& event)
 
    if(disk->ErrorOnLoad())
    {
-       wxMessageBox(_("An error occured while loading partition tables."
+       wxMessageBox(_("An error occurRed while loading partition tables."
                       "This means that either the partition table is not valid or that there is a bug in Partmod.\r\n"
                       "If you are not sure, do not modify the partition table -> DO NOT click \'Save\'"),_("Warning"),wxICON_WARNING,this);
+   }
+   if(disk->IsReadOnly())
+   {
+      wxMessageBox(_("Cannot open disk in writable mode. The disk is open in read-only mode.\n"
+                     "If you need full access, make sure that:\n"
+                     "* the disk is not used by other programs\n"
+                     "* you have sufficient access rights (linux: run as root)\n"
+                     "* the media is not write-protected"),_("Disk is read-only"),wxICON_WARNING,this);
    }
    partitionList->Refresh();
 }
