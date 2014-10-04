@@ -922,7 +922,10 @@ bool Disk::ErrorOnLoad()
     return error_on_load;
 }
 
-
+bool Disk::IsReadOnly()
+{
+    return diskio->IsReadOnly();
+}
 
 //
 // ------------------------------------------------------------------------
