@@ -7,9 +7,24 @@ using namespace std;
 
 int DiskIO::open_handle(const char* disk)
 {
+    read_only=false;
+
     hDisk=CreateFile(disk,GENERIC_READ|GENERIC_WRITE,7,0,OPEN_EXISTING,FILE_FLAG_WRITE_THROUGH,0);
-    if(hDisk==INVALID_HANDLE_VALUE)
-        return ERR_OPEN_DISK;
+    DWORD dwRead; // value not used but still required for internal use by DeviceIOCotol
+    int is_writable=DeviceIoControl(hDisk,IOCTL_DISK_IS_WRITABLE,NULL,0,NULL,0,&dwRead,0);
+
+// The following block is executed in two situations:
+// 1: Failed to open the disk; try with less access rights
+// 2: media is not writable; reopen with less access rights because we do not need them anyway
+    if(hDisk==INVALID_HANDLE_VALUE || is_writable==0)
+    {
+      CloseHandle(hDisk);
+      hDisk=CreateFile(disk,GENERIC_READ,7,0,OPEN_EXISTING,FILE_FLAG_WRITE_THROUGH,0);
+      if(hDisk==INVALID_HANDLE_VALUE)
+          return ERR_OPEN_DISK;
+      read_only=true;
+
+    }
     return 0;
 }
 
