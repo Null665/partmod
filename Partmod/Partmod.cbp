@@ -116,6 +116,7 @@
 		<Unit filename="dllcall.cpp" />
 		<Unit filename="dllcall.hpp" />
 		<Unit filename="ebr.cpp" />
+		<Unit filename="ebr.h" />
 		<Unit filename="free_space_manager.cpp" />
 		<Unit filename="free_space_manager.h" />
 		<Unit filename="fsid_manager.cpp" />
