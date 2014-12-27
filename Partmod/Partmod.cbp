@@ -94,7 +94,7 @@
 				<Option createStaticLib="1" />
 				<Linker>
 					<Add option="-s" />
-					<Add library="..\..\bin\libDiskio.a" />
+					<Add library="..\..\bin\x64\windows\release\libDiskio.a" />
 				</Linker>
 			</Target>
 		</Build>
