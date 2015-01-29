@@ -192,7 +192,13 @@
 			<Option target="Release - Windows" />
 			<Option target="Release - Windows x64" />
 		</Unit>
-		<Unit filename="wxGUI.exe.Manifest" />
+		<Unit filename="wxGUI.exe.Manifest">
+			<Option target="Debug - Windows" />
+			<Option target="Release - Windows" />
+		</Unit>
+		<Unit filename="wxGUI_x64.exe.Manifest">
+			<Option target="Release - Windows x64" />
+		</Unit>
 		<Extensions>
 			<code_completion />
 			<envvars />
