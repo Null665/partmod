@@ -21,7 +21,7 @@
 					<Add option="-g" />
 				</Compiler>
 				<Linker>
-					<Add library="..\..\bin\x32\windows\debug\libDiskio.a" />
+					<Add library="../../bin/x32/windows/debug/libDiskio.a" />
 				</Linker>
 			</Target>
 			<Target title="Release - Windows">
@@ -36,7 +36,7 @@
 				<Option createStaticLib="1" />
 				<Linker>
 					<Add option="-s" />
-					<Add library="..\..\bin\x32\windows\release\libDiskio.a" />
+					<Add library="../../bin/x32/windows/release/libDiskio.a" />
 				</Linker>
 			</Target>
 			<Target title="Debug - Linux">
@@ -94,13 +94,13 @@
 				<Option createStaticLib="1" />
 				<Linker>
 					<Add option="-s" />
-					<Add library="..\..\bin\x64\windows\release\libDiskio.a" />
+					<Add library="../../bin/x64/windows/release/libDiskio.a" />
 				</Linker>
 			</Target>
 		</Build>
 		<Compiler>
-			<Add option="-std=c++0x" />
 			<Add option="-Wall" />
+			<Add option="-std=c++11" />
 			<Add option="-fexceptions" />
 		</Compiler>
 		<Unit filename="chs.cpp" />
