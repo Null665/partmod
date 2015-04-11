@@ -13,34 +13,41 @@
 
 int DiskIO::open_handle(const char* disk)
 {
-hDisk=open(disk, O_RDWR|O_LARGEFILE);
-if(hDisk==-1)
-    return ERR_OPEN_DISK;
-return 0;
+  hDisk=open(disk, O_RDWR|O_LARGEFILE);
+  // either it's readonly, or we do not have enough rights. Try again
+  if(hDisk==-1)
+  {
+    hDisk=open(disk, O_RDONLY|O_LARGEFILE);
+    if(hDisk==-1)
+        return ERR_OPEN_DISK;
+    read_only=true;
+  }
+
+  return 0;
 
 }
 void DiskIO::close_handle()
 {
-close(hDisk);
+  close(hDisk);
 }
 
 
 int DiskIO::get_geometry()
 {
-struct hd_geometry dg;
-if(ioctl(hDisk,HDIO_GETGEO,&dg)!=0)
-    return ERR_GET_DISK_GEOMETRY;
+  struct hd_geometry dg;
+  if(ioctl(hDisk,HDIO_GETGEO,&dg)!=0)
+      return ERR_GET_DISK_GEOMETRY;
 
-disk_geometry.cylinders=dg.cylinders;
-disk_geometry.spt=dg.sectors;
-disk_geometry.tpc=dg.heads;
+  disk_geometry.cylinders=dg.cylinders;
+  disk_geometry.spt=dg.sectors;
+  disk_geometry.tpc=dg.heads;
 
-unsigned long bps;
-if(ioctl(hDisk,BLKSSZGET,&bps)!=0)
-    return ERR_GET_DISK_GEOMETRY;
+  unsigned long bps;
+  if(ioctl(hDisk,BLKSSZGET,&bps)!=0)
+      return ERR_GET_DISK_GEOMETRY;
 
-disk_geometry.bps=bps;
-return 0;
+  disk_geometry.bps=bps;
+  return 0;
 }
 
 int DiskIO::seek(uint64_t sector)
@@ -67,23 +74,23 @@ int DiskIO::read(void *buff,uint32_t buffer_size)
 int DiskIO::sync()
 {
 
-return 0;
+  return 0;
 }
 int DiskIO::get_disk_length(uint64_t &ret)
 {
-if(disk_image==false)
+  if(disk_image==false)
   {
-      uint64_t res;
-      ret=1;
-      if(ioctl(hDisk,BLKGETSIZE64,&res)!=0)
-          return ERR_GET_DISK_SIZE;
-      ret=res;
+    uint64_t res;
+    ret=1;
+    if(ioctl(hDisk,BLKGETSIZE64,&res)!=0)
+         return ERR_GET_DISK_SIZE;
+    ret=res;
   }
-else
+  else
   {
-     ret=lseek(hDisk,0,SEEK_END);
-     lseek(hDisk,0,SEEK_SET);
+    ret=lseek(hDisk,0,SEEK_END);
+    lseek(hDisk,0,SEEK_SET);
 
   }
-return 0;
+  return 0;
 }
