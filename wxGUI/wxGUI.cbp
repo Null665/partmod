@@ -29,7 +29,7 @@
 					<Add library="libwxjpegd.a" />
 					<Add library="libwxtiffd.a" />
 					<Add library="libwxzlibd.a" />
-					<Add library="..\..\bin\x32\windows\debug\libPartmod.a" />
+					<Add library="../../bin/x32/windows/debug/libPartmod.a" />
 					<Add library="ole32" />
 					<Add library="comctl32" />
 					<Add library="winspool" />
@@ -64,7 +64,7 @@
 					<Add library="libwxjpeg.a" />
 					<Add library="libwxtiff.a" />
 					<Add library="libwxzlib.a" />
-					<Add library="..\..\bin\x32\windows\release\libPartmod.a" />
+					<Add library="../../bin/x32/windows/release/libPartmod.a" />
 					<Add library="ole32" />
 					<Add library="comctl32" />
 					<Add library="winspool" />
@@ -84,11 +84,11 @@
 				<Option projectLinkerOptionsRelation="2" />
 				<Compiler>
 					<Add option="-g" />
-					<Add option="`wx-config  --version=2.9 --static=no --unicode=no --debug=yes --cflags`" />
+					<Add option="`wx-config  --version=3.0 --static=no --unicode=yes --debug=yes --cflags`" />
 					<Add option="-D__WXDEBUG__" />
 				</Compiler>
 				<Linker>
-					<Add option="`wx-config  --version=2.9 --static=no --unicode=no --debug=yes --libs`" />
+					<Add option="`wx-config  --version=3.0 --static=no --unicode=yes --debug=yes --libs`" />
 					<Add library="libpartmodd" />
 					<Add library="libdiskio-partmodd" />
 					<Add directory="$(TARGET_OUTPUT_DIR)" />
@@ -103,11 +103,11 @@
 				<Option projectLinkerOptionsRelation="2" />
 				<Compiler>
 					<Add option="-O2" />
-					<Add option="`wx-config  --version=2.9 --static=no --unicode=no --debug=no --cflags`" />
+					<Add option="`wx-config  --version=3.0 --static=no --unicode=yes --debug=no --cflags`" />
 				</Compiler>
 				<Linker>
 					<Add option="-s" />
-					<Add option="`wx-config  --version=2.9 --static=no --unicode=no --debug=no --libs`" />
+					<Add option="`wx-config  --version=3.0 --static=no --unicode=yes --debug=no --libs`" />
 					<Add library="libpartmod" />
 					<Add library="libdiskio-partmod" />
 					<Add directory="$(TARGET_OUTPUT_DIR)" />
@@ -138,7 +138,7 @@
 					<Add library="libwxjpeg.a" />
 					<Add library="libwxtiff.a" />
 					<Add library="libwxzlib.a" />
-					<Add library="..\..\bin\x64\windows\release\libPartmod.a" />
+					<Add library="../../bin/x64/windows/release/libPartmod.a" />
 					<Add library="ole32" />
 					<Add library="comctl32" />
 					<Add library="winspool" />
