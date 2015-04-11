@@ -41,7 +41,7 @@
 			</Target>
 			<Target title="Debug - Linux">
 				<Option platforms="Unix;" />
-				<Option output="../../bin/x32/linux/debug/partmod" prefix_auto="1" extension_auto="1" />
+				<Option output="../../bin/x32/linux/debug/partmodd" prefix_auto="1" extension_auto="1" />
 				<Option object_output="../../obj/x32/linux/debug/partmod" />
 				<Option type="3" />
 				<Option compiler="gcc" />
@@ -52,6 +52,7 @@
 				<Compiler>
 					<Add option="-pg" />
 					<Add option="-g" />
+					<Add option="-fPIC" />
 				</Compiler>
 				<Linker>
 					<Add option="-pg" />
@@ -84,7 +85,7 @@
 			</Target>
 			<Target title="Release - Windows x64">
 				<Option platforms="Windows;" />
-				<Option output="../../bin/x64/windows/release/partmod" prefix_auto="1" extension_auto="1" />
+				<Option output="../../bin/x64/windows/release/libpartmod" prefix_auto="1" extension_auto="1" />
 				<Option working_dir="../../bin/x64/windows/release/" />
 				<Option object_output="../../obj/x64/windows/release/partmod" />
 				<Option type="3" />
@@ -94,13 +95,13 @@
 				<Option createStaticLib="1" />
 				<Linker>
 					<Add option="-s" />
-					<Add library="../../bin/x64/windows/release/libDiskio.a" />
+					<Add library="../../bin/libDiskio.a" />
 				</Linker>
 			</Target>
 		</Build>
 		<Compiler>
+			<Add option="-std=c++0x" />
 			<Add option="-Wall" />
-			<Add option="-std=c++11" />
 			<Add option="-fexceptions" />
 		</Compiler>
 		<Unit filename="chs.cpp" />
@@ -116,7 +117,6 @@
 		<Unit filename="dllcall.cpp" />
 		<Unit filename="dllcall.hpp" />
 		<Unit filename="ebr.cpp" />
-		<Unit filename="ebr.h" />
 		<Unit filename="free_space_manager.cpp" />
 		<Unit filename="free_space_manager.h" />
 		<Unit filename="fsid_manager.cpp" />
