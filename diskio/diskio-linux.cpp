@@ -13,6 +13,8 @@
 
 int DiskIO::open_handle(const char* disk)
 {
+  read_only=false;
+
   hDisk=open(disk, O_RDWR|O_LARGEFILE);
   // either it's readonly, or we do not have enough rights. Try again
   if(hDisk==-1)
