@@ -283,7 +283,7 @@ void MainFrame::btn_disable_readonly()
     menuPartition->Enable(ID_WIPE_PARTITION,false);
 
     menuActions->Enable(ID_SAVE_CHANGES,false);
-    menuBackup->Enable(ID_CREATE_BACKUP,false);
+    menuBackup->Enable(ID_RESTORE_BACKUP,false);
   }
 
 }
