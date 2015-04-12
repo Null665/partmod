@@ -322,17 +322,17 @@ void MainFrame::OndiskListItemActivated(wxListEvent& event)
 
    if(disk->ErrorOnLoad())
    {
-       wxMessageBox(_("An error occurRed while loading partition tables."
+       wxMessageBox(_("An error occurred while loading partition tables."
                       "This means that either the partition table is not valid or that there is a bug in Partmod.\r\n"
                       "If you are not sure, do not modify the partition table -> DO NOT click \'Save\'"),_("Warning"),wxICON_WARNING,this);
    }
    if(disk->IsReadOnly())
    {
-      wxMessageBox(_("Cannot open disk in writable mode. The disk is open in read-only mode.\n"
+      wxMessageBox(_("Could not open disk in writable mode. The disk is now open in read-only mode.\n"
                      "If you need full access, make sure that:\n"
                      "* the disk is not used by other programs\n"
-                     "* you have sufficient access rights (linux: run as root)\n"
-                     "* the media is not write-protected"),_("Disk is read-only"),wxICON_WARNING,this);
+                     "* you have sufficient access rights (admin or root)\n"
+                     "* the media is not write-protected (for SD card, check 'lock' switch)"),_("Disk is read-only"),wxICON_WARNING,this);
    }
    partitionList->Refresh();
 }
@@ -386,7 +386,7 @@ void MainFrame::OnMenuOpenDiskImageSelected(wxCommandEvent& event)
 
    if(disk->ErrorOnLoad())
    {
-       wxMessageBox(_("An error occured while loading partition tables."
+       wxMessageBox(_("An error occurred while loading partition tables."
                       "This means that either the partition table is not valid or that there is a bug in Partmod.\r\n"
                       "If you are not sure, do not modify the partition table -> DO NOT click \'Save\'"),_("Warning"),wxICON_WARNING,this);
    }
@@ -445,7 +445,7 @@ void MainFrame::OnMenuSetActiveSelected(wxCommandEvent& event)
      }
    if(disk->CountPartitions(PART_ACTIVE)>0)
      {
-       int r=wxMessageBox(_("One partition is already set as active. Do you want to continue?"),_("Information"), wxYES_NO,this);
+       int r=wxMessageBox(_("Another partition is already set as active. Do you want to change the active partition?"),_("Information"), wxYES_NO,this);
        if(r==wxYES)
          {
            disk->SetActive(partitionList->GetSelectedPartition(),true);
