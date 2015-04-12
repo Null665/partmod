@@ -52,6 +52,7 @@
 				<Compiler>
 					<Add option="-pg" />
 					<Add option="-g" />
+					<Add option="-fPIC" />
 				</Compiler>
 				<Linker>
 					<Add option="-pg" />
@@ -74,6 +75,7 @@
 				<Option createStaticLib="1" />
 				<Compiler>
 					<Add option="-g" />
+					<Add option="-fPIC" />
 				</Compiler>
 				<Linker>
 					<Add option="-s" />

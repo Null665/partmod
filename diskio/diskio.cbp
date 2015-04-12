@@ -46,6 +46,7 @@
 				<Option createStaticLib="1" />
 				<Compiler>
 					<Add option="-g" />
+					<Add option="-fPIC" />
 				</Compiler>
 			</Target>
 			<Target title="Release - Linux">
@@ -61,6 +62,7 @@
 					<Add option="-std=c++0x" />
 					<Add option="-Wall" />
 					<Add option="-fexceptions" />
+					<Add option="-fPIC" />
 				</Compiler>
 			</Target>
 			<Target title="Release - Windows x64">
