@@ -272,6 +272,24 @@ for(char i='a',j=0;i<='z';i++)
 delete disk;
 }
 
+void MainFrame::btn_disable_readonly()
+{
+  if(disk->IsReadOnly())
+  {
+    menuPartition->Enable(ID_DELETE_PARTITION,false);
+    menuPartition->Enable(ID_SET_ACTIVE,false);
+    menuPartition->Enable(ID_SET_INACTIVE,false);
+    menuPartition->Enable(ID_CREATE_PARTITION,false);
+    menuPartition->Enable(ID_WIPE_PARTITION,false);
+
+    menuActions->Enable(ID_SAVE_CHANGES,false);
+    menuBackup->Enable(ID_RESTORE_BACKUP,false);
+  }
+
+}
+
+
+
 void MainFrame::OndiskListItemActivated(wxListEvent& event)
 {
   wxString diskname=diskList->GetItemText ( event.GetIndex());
@@ -299,13 +317,22 @@ void MainFrame::OndiskListItemActivated(wxListEvent& event)
        menuActions->Enable(ID_SAVE_CHANGES,true);
        menuBackup->Enable(ID_CREATE_BACKUP,true);
        menuBackup->Enable(ID_RESTORE_BACKUP,true);
+       btn_disable_readonly();
     }
 
    if(disk->ErrorOnLoad())
    {
-       wxMessageBox(_("An error occured while loading partition tables."
+       wxMessageBox(_("An error occurred while loading partition tables."
                       "This means that either the partition table is not valid or that there is a bug in Partmod.\r\n"
                       "If you are not sure, do not modify the partition table -> DO NOT click \'Save\'"),_("Warning"),wxICON_WARNING,this);
+   }
+   if(disk->IsReadOnly())
+   {
+      wxMessageBox(_("Could not open disk in writable mode. The disk is now open in read-only mode.\n"
+                     "If you need full access, make sure that:\n"
+                     "* the disk is not used by other programs\n"
+                     "* you have sufficient access rights (admin or root)\n"
+                     "* the media is not write-protected (for SD card, check 'lock' switch)"),_("Disk is read-only"),wxICON_WARNING,this);
    }
    partitionList->Refresh();
 }
@@ -354,11 +381,12 @@ void MainFrame::OnMenuOpenDiskImageSelected(wxCommandEvent& event)
         menuActions->Enable(ID_SAVE_CHANGES,true);
         menuBackup->Enable(ID_CREATE_BACKUP,true);
         menuBackup->Enable(ID_RESTORE_BACKUP,true);
+        btn_disable_readonly();
     }
 
    if(disk->ErrorOnLoad())
    {
-       wxMessageBox(_("An error occured while loading partition tables."
+       wxMessageBox(_("An error occurred while loading partition tables."
                       "This means that either the partition table is not valid or that there is a bug in Partmod.\r\n"
                       "If you are not sure, do not modify the partition table -> DO NOT click \'Save\'"),_("Warning"),wxICON_WARNING,this);
    }
@@ -417,7 +445,7 @@ void MainFrame::OnMenuSetActiveSelected(wxCommandEvent& event)
      }
    if(disk->CountPartitions(PART_ACTIVE)>0)
      {
-       int r=wxMessageBox(_("One partition is already set as active. Do you want to continue?"),_("Information"), wxYES_NO,this);
+       int r=wxMessageBox(_("Another partition is already set as active. Do you want to change the active partition?"),_("Information"), wxYES_NO,this);
        if(r==wxYES)
          {
            disk->SetActive(partitionList->GetSelectedPartition(),true);
@@ -514,6 +542,7 @@ void MainFrame::OnPartitionListItemActivated(wxListEvent& event)
 	     menuPartition->Enable(ID_CREATE_PARTITION,false);
 	     menuPartition->Enable(ID_WIPE_PARTITION,true);
 	     menuPartition->Enable(ID_PARTITION_PROPERTIES,true);
+	     btn_disable_readonly();
 	  }
 }
 
@@ -524,15 +553,19 @@ void MainFrame::OnPartitionListItemRClick(wxListEvent& event)
 	menu.SetClientData( data );
 	if(partitionList->GetSelectedFreeSpace()>-1)
 	  {
-          menu.Append(ID_CREATE_PARTITION,"Create new partition...");
+         if(disk->IsReadOnly()==false)
+             menu.Append(ID_CREATE_PARTITION,"Create new partition...");
+          else return;
 	  }
 	else
 	  {
-         menu.Append(ID_WIPE_PARTITION,"Wipe partition");
-         menu.Append(ID_DELETE_PARTITION,"Delete partition");
-         menu.AppendSeparator();
+	     if(disk->IsReadOnly()==false)
+	     {
+           menu.Append(ID_WIPE_PARTITION,"Wipe partition");
+           menu.Append(ID_DELETE_PARTITION,"Delete partition");
+           menu.AppendSeparator();
+	     }
          menu.Append(ID_PARTITION_PROPERTIES,"Properties...");
-
 	  }
 
 	menu.Connect(wxEVT_COMMAND_MENU_SELECTED,(wxObjectEventFunction)&MainFrame::OnPartitionListPopupClick, NULL, this);

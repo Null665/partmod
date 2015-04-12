@@ -106,7 +106,7 @@ string size_str(uint64_t num_of_sect,int bps)
   if(div==0)
     return "[error]";
 
-  tmp<<setprecision(4)<<((long double)num_of_sect/div)<<suffix;
+  tmp<<setprecision(4)<<((double)num_of_sect/div)<<suffix;
   return tmp.str();
 }
 

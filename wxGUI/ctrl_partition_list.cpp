@@ -99,7 +99,21 @@ void wxPartitionList::Refresh()
          tmp.last_sect=U64ToStr(gpart.begin_sector+gpart.length);
          tmp.free="N/A";
          if(gpart.flags&PART_PRIMARY || gpart.flags&PART_EXTENDED || gpart.flags&PART_MBR_GPT || gpart.flags&PART_LOGICAL)
+         {
+             try{
              tmp.fs_type=disk->fsid_man->GetByFsid(disk->GetMBRSpecific(i).fsid).description;
+             }catch(DiskException &de)
+             {
+                 if(de.error_code==ERR_UNKNOWN_FSID)
+                 {
+                    std::string new_type= "[unknown 0x"+U64ToStr(disk->GetMBRSpecific(i).fsid,STR_HEX)+"]";
+                    disk->fsid_man->Add(disk->GetMBRSpecific(i).fsid,new_type,0,0,0/*OR MSDOS FSID?*/);
+                    tmp.fs_type=new_type;
+                 }
+                 else throw de;
+             }
+         }
+
          else if(gpart.flags&PART_GPT)
            {
              try{

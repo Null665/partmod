@@ -1,1 +1,5 @@
-1 24 wxGUI.exe.Manifest
+#ifdef WIN64
+  1 24 wxGUI_x64.exe.Manifest
+#else
+  1 24 wxGUI.exe.Manifest
+#endif

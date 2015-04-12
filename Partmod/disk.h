@@ -105,6 +105,7 @@ public:
   void Open(std::string dsk);
   void OpenDiskImage(std::string dsk,GEOMETRY geom);
   bool IsOpen();
+  bool IsReadOnly();
 
   void Close(); // Close disk/disk image
   int Save();  // Save changes to disk
