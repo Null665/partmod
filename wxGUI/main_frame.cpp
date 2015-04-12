@@ -272,6 +272,24 @@ for(char i='a',j=0;i<='z';i++)
 delete disk;
 }
 
+void MainFrame::btn_disable_readonly()
+{
+  if(disk->IsReadOnly())
+  {
+    menuPartition->Enable(ID_DELETE_PARTITION,false);
+    menuPartition->Enable(ID_SET_ACTIVE,false);
+    menuPartition->Enable(ID_SET_INACTIVE,false);
+    menuPartition->Enable(ID_CREATE_PARTITION,false);
+    menuPartition->Enable(ID_WIPE_PARTITION,false);
+
+    menuActions->Enable(ID_SAVE_CHANGES,false);
+    menuBackup->Enable(ID_CREATE_BACKUP,false);
+  }
+
+}
+
+
+
 void MainFrame::OndiskListItemActivated(wxListEvent& event)
 {
   wxString diskname=diskList->GetItemText ( event.GetIndex());
@@ -299,6 +317,7 @@ void MainFrame::OndiskListItemActivated(wxListEvent& event)
        menuActions->Enable(ID_SAVE_CHANGES,true);
        menuBackup->Enable(ID_CREATE_BACKUP,true);
        menuBackup->Enable(ID_RESTORE_BACKUP,true);
+       btn_disable_readonly();
     }
 
    if(disk->ErrorOnLoad())
@@ -362,6 +381,7 @@ void MainFrame::OnMenuOpenDiskImageSelected(wxCommandEvent& event)
         menuActions->Enable(ID_SAVE_CHANGES,true);
         menuBackup->Enable(ID_CREATE_BACKUP,true);
         menuBackup->Enable(ID_RESTORE_BACKUP,true);
+        btn_disable_readonly();
     }
 
    if(disk->ErrorOnLoad())
@@ -522,6 +542,7 @@ void MainFrame::OnPartitionListItemActivated(wxListEvent& event)
 	     menuPartition->Enable(ID_CREATE_PARTITION,false);
 	     menuPartition->Enable(ID_WIPE_PARTITION,true);
 	     menuPartition->Enable(ID_PARTITION_PROPERTIES,true);
+	     btn_disable_readonly();
 	  }
 }
 
@@ -532,15 +553,19 @@ void MainFrame::OnPartitionListItemRClick(wxListEvent& event)
 	menu.SetClientData( data );
 	if(partitionList->GetSelectedFreeSpace()>-1)
 	  {
-          menu.Append(ID_CREATE_PARTITION,"Create new partition...");
+         if(disk->IsReadOnly()==false)
+             menu.Append(ID_CREATE_PARTITION,"Create new partition...");
+          else return;
 	  }
 	else
 	  {
-         menu.Append(ID_WIPE_PARTITION,"Wipe partition");
-         menu.Append(ID_DELETE_PARTITION,"Delete partition");
-         menu.AppendSeparator();
+	     if(disk->IsReadOnly()==false)
+	     {
+           menu.Append(ID_WIPE_PARTITION,"Wipe partition");
+           menu.Append(ID_DELETE_PARTITION,"Delete partition");
+           menu.AppendSeparator();
+	     }
          menu.Append(ID_PARTITION_PROPERTIES,"Properties...");
-
 	  }
 
 	menu.Connect(wxEVT_COMMAND_MENU_SELECTED,(wxObjectEventFunction)&MainFrame::OnPartitionListPopupClick, NULL, this);

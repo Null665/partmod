@@ -122,6 +122,7 @@ class MainFrame: public wxFrame
         void OnPartitionListPopupClick(wxListEvent& event);
 
         void refresh_disk_list();
+        void btn_disable_readonly();
 
 		DECLARE_EVENT_TABLE()
 };
