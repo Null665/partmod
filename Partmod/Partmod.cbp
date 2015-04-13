@@ -129,6 +129,7 @@
 		<Unit filename="guid_manager.h" />
 		<Unit filename="mbr.cpp" />
 		<Unit filename="mbr.h" />
+		<Unit filename="numstr.h" />
 		<Unit filename="partition_manager.cpp" />
 		<Unit filename="partition_manager.h" />
 		<Unit filename="pending_manager.cpp" />
