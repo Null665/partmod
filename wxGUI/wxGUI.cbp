@@ -105,7 +105,7 @@
 				<Option projectLinkerOptionsRelation="2" />
 				<Compiler>
 					<Add option="-O2" />
-					<Add option="`wx-config  --version=2.9 --static=no --unicode=yes --debug=no --cflags`" />
+					<Add option="`wx-config  --static=no --unicode=yes --debug=no --cflags`" />
 				</Compiler>
 				<Linker>
 					<Add option="-s" />
