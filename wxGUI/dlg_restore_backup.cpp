@@ -1,4 +1,5 @@
 #include "dlg_restore_backup.h"
+#include "../Partmod/numstr.h"
 
 //(*InternalHeaders(DlgRestoreBackup)
 #include <wx/intl.h>
@@ -176,9 +177,9 @@ void DlgRestoreBackup::update_fields()
  // file.seekg(0);
  // file.read((char*)&bfh,bfh.header_size);
 
-  TextNumberOfSectors->SetValue(U64ToStr(bfh.n_sect));
-  TextNumPart->SetValue(U64ToStr(bfh.n_partitions));
-  TextChecksum->SetValue(U64ToStr(bfh.checksum,STR_HEX));
+  TextNumberOfSectors->SetValue(to_string(bfh.n_sect));
+  TextNumPart->SetValue(to_string(bfh.n_partitions));
+  TextChecksum->SetValue(to_string(bfh.checksum,STR_HEX));
   TextDescription->SetValue(bfh.description);
 
   file.close();

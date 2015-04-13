@@ -7,6 +7,7 @@
 #include "disk_exception.h"
 #include "chs.hpp"
 #include "crc.hpp"
+#include "numstr.h"
 #include <algorithm>
 #include <cstring>
 #include <fstream>
@@ -328,7 +329,7 @@ void Disk::CreatePartitionExtended(int which_frs,uint64_t size,uint64_t sect_bef
       throw DiskException(ERR_PART_TOO_BIG);
 
   if(fsid_man->GetByFsid(fsid).fsid_partmod!=FS_EXTENDED)
-      throw DiskException("File system id "+U64ToStr(fsid)+" is not compatible with selected partition type");
+      throw DiskException("File system id "+to_string(fsid)+" is not compatible with selected partition type");
 
   uint64_t begin_unaligned=frs.begin_sector+sect_before;
   new_part.begin_sector=align_to(begin_unaligned,GetDiskGeometry(),alignment);

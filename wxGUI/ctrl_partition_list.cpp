@@ -1,10 +1,11 @@
 #include "ctrl_partition_list.h"
+#include "../Partmod/numstr.h"
 #include <algorithm>
 using std::sort;
 
 bool cmp_lv(lvlist a,lvlist b)
 {
-  return StrToU64((char*)a.begin_sect.c_str())<StrToU64((char*)b.begin_sect.c_str());
+  return strtoull((char*)a.begin_sect.c_str(),0,10) < strtoull((char*)b.begin_sect.c_str(),0,10);
 }
 
 
@@ -94,9 +95,9 @@ void wxPartitionList::Refresh()
          else
              tmp.mountpoint=get_mount_point(gpart,disk->GetDiskSignature());
 
-         tmp.partition=U64ToStr(i+1);
-         tmp.begin_sect=U64ToStr(gpart.begin_sector);
-         tmp.last_sect=U64ToStr(gpart.begin_sector+gpart.length);
+         tmp.partition=to_string(i+1);
+         tmp.begin_sect=to_string(gpart.begin_sector);
+         tmp.last_sect=to_string(gpart.begin_sector+gpart.length);
          tmp.free="N/A";
          if(gpart.flags&PART_PRIMARY || gpart.flags&PART_EXTENDED || gpart.flags&PART_MBR_GPT || gpart.flags&PART_LOGICAL)
          {
@@ -106,7 +107,7 @@ void wxPartitionList::Refresh()
              {
                  if(de.error_code==ERR_UNKNOWN_FSID)
                  {
-                    std::string new_type= "[unknown 0x"+U64ToStr(disk->GetMBRSpecific(i).fsid,STR_HEX)+"]";
+                    std::string new_type= "[unknown 0x"+to_string(disk->GetMBRSpecific(i).fsid,STR_HEX)+"]";
                     disk->fsid_man->Add(disk->GetMBRSpecific(i).fsid,new_type,0,0,0/*OR MSDOS FSID?*/);
                     tmp.fs_type=new_type;
                  }
@@ -140,8 +141,8 @@ void wxPartitionList::Refresh()
          tmp.type="Free space";
          tmp.fs_type="";
          tmp.mountpoint="";
-         tmp.begin_sect=U64ToStr(frs.begin_sector);
-         tmp.last_sect=U64ToStr(frs.begin_sector+frs.length);
+         tmp.begin_sect=to_string(frs.begin_sector);
+         tmp.last_sect=to_string(frs.begin_sector+frs.length);
          tmp.flags=frs.type;
          tmp.selection_type=S_FREE_SPACE;
          tmp.num=i;

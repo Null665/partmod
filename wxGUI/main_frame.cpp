@@ -18,6 +18,7 @@ using namespace std;
 #include "dlg_fsid_list.h"
 #include "dlg_pending_list.h"
 
+#include "../Partmod/numstr.h"
 
 
 //(*IdInit(MainFrame)
@@ -257,12 +258,12 @@ for(char i='a',j=0;i<='z';i++)
         free+=disk->GetFreeSpace(i).length;
 
     diskList->SetItem(item_index,3,size_str(free,disk->GetDiskGeometry().bps).c_str(),-1);
-    diskList->SetItem(item_index,4,U64ToStr(disk->GetDiskGeometry().cylinders).c_str(),-1);
-    diskList->SetItem(item_index,5,U64ToStr(disk->GetDiskGeometry().bps).c_str(),-1);
-    diskList->SetItem(item_index,6,U64ToStr(disk->GetDiskGeometry().spt).c_str(),-1);
-    diskList->SetItem(item_index,7,U64ToStr(disk->GetDiskGeometry().tpc).c_str(),-1);
-    diskList->SetItem(item_index,8,U64ToStr(disk->LastSector()).c_str(),-1);
-    diskList->SetItem(item_index,9,U64ToStr(disk->GetDiskSignature(),STR_HEX).c_str(),-1);
+    diskList->SetItem(item_index,4,to_string(disk->GetDiskGeometry().cylinders).c_str(),-1);
+    diskList->SetItem(item_index,5,to_string(disk->GetDiskGeometry().bps).c_str(),-1);
+    diskList->SetItem(item_index,6,to_string(disk->GetDiskGeometry().spt).c_str(),-1);
+    diskList->SetItem(item_index,7,to_string(disk->GetDiskGeometry().tpc).c_str(),-1);
+    diskList->SetItem(item_index,8,to_string(disk->LastSector()).c_str(),-1);
+    diskList->SetItem(item_index,9,to_string(disk->GetDiskSignature(),STR_HEX).c_str(),-1);
 
     disk->Close();
     j++;

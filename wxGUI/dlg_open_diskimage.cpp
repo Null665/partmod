@@ -1,4 +1,5 @@
 #include "dlg_open_diskimage.h"
+#include "../Partmod/numstr.h"
 #include <string>
 #include <wx/filedlg.h>
 #include <wx/msgdlg.h>
@@ -100,7 +101,7 @@ void DlgOpenDiskImage::OnButtonOKClick(wxCommandEvent& event)
     TextBPS->GetLineText(0).ToLong(&bps);
     TextSPT->GetLineText(0).ToLong(&spt);
     TextTPC->GetLineText(0).ToLong(&tpc);
-    cylinders=StrToU64(string(TextCylinders->GetLineText(0).c_str()));
+    cylinders=strtoull(TextCylinders->GetLineText(0).c_str(),0,10);
 
 
 
@@ -166,10 +167,10 @@ void DlgOpenDiskImage::set_values()
         chs.SetTPC(255);
 
 
-    TextBPS->SetValue(U64ToStr(bps).c_str());
-    TextSPT->SetValue(U64ToStr(chs.GetSPT()).c_str());
-    TextTPC->SetValue(U64ToStr(chs.GetTPC()).c_str());
-    TextCylinders->SetValue(U64ToStr(chs.GetCylinder()).c_str());
+    TextBPS->SetValue(to_string(bps).c_str());
+    TextSPT->SetValue(to_string(chs.GetSPT()).c_str());
+    TextTPC->SetValue(to_string(chs.GetTPC()).c_str());
+    TextCylinders->SetValue(to_string(chs.GetCylinder()).c_str());
 }
 
 

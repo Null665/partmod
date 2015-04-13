@@ -1,5 +1,6 @@
 #include "ctrl_pending_list.h"
 #include <sstream>
+#include "../Partmod/numstr.h"
 using std::stringstream;
 
 
@@ -44,7 +45,7 @@ void wxPendingList::Refresh()
     {
         PENDING p=disk->GetPending(i);
 
-        InsertItem(i,U64ToStr(i));
+        InsertItem(i,to_string(i));
 
         stringstream ss;
         switch(p.action)

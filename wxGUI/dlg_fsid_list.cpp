@@ -1,4 +1,5 @@
 #include "dlg_fsid_list.h"
+#include "../Partmod/numstr.h"
 
 //(*InternalHeaders(DlgFsidList)
 #include <wx/intl.h>
@@ -54,7 +55,7 @@ int DlgFsidList::ShowModal(Disk *disk)
 
     for(unsigned i=0;i<disk->fsid_man->Count();i++)
       {
-          fsidList->InsertItem(i,U64ToStr(disk->fsid_man->Get(i).fsid,STR_HEX));
+          fsidList->InsertItem(i,to_string(disk->fsid_man->Get(i).fsid,STR_HEX));
 
           if(disk->fsid_man->Get(i).min_size>-1)
               fsidList->SetItem(i,1,size_str(disk->fsid_man->Get(i).min_size,1));

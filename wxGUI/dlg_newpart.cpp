@@ -1,6 +1,7 @@
 #include "dlg_newpart.hpp"
 #include "../Partmod/definitions.h"
 #include "../Partmod/disk_exception.h"
+#include "../Partmod/numstr.h"
 #include <wx/wx.h>
 //(*InternalHeaders(DlgNewPart)
 #include <wx/intl.h>
@@ -270,7 +271,7 @@ void DlgNewPart::OnChoicePartitionTypeSelect(wxCommandEvent& event)
            ChoiceFsType-> Append(disk->fsid_man->GetByPartmodFsid(FS_GPT,i).description.c_str());
            ChoiceFsType->SetClientData(i,(void*)disk->fsid_man->GetByPartmodFsid(FS_GPT,i).fsid);
          }
-       SpinCtrlPartitionSize->SetValue(U64ToStr(disk->GetFreeSpace(selected_frs).length));
+       SpinCtrlPartitionSize->SetValue(to_string(disk->GetFreeSpace(selected_frs).length));
        ChoiceSizeMul->Select(3);
        ChoiceSizeMul->Disable();
        SpinCtrlPartitionSize->Disable();

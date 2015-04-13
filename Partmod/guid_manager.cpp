@@ -1,6 +1,7 @@
 #include "guid_manager.h"
 #include "disk.h"
 #include "disk_exception.h"
+#include "numstr.h"
 using namespace std;
 
 uint64_t invert_endianess(uint64_t val)
@@ -93,10 +94,10 @@ __GUID GuidManager::StringToGuid(std::string guid_str)
     guid_parts[3]=guid_str.substr(19,4);
     guid_parts[3]+=guid_str.substr(24,35);
 
-    guid.one=StrToU64(guid_parts[0],16);
-    guid.two=StrToU64(guid_parts[1],16);
-    guid.three=StrToU64(guid_parts[2],16);
-    guid.four=StrToU64(guid_parts[3],16);
+    guid.one=strtoul(guid_parts[0].c_str(),0,16);
+    guid.two=strtoul(guid_parts[1].c_str(),0,16);
+    guid.three=strtoul(guid_parts[2].c_str(),0,16);
+    guid.four=strtoull(guid_parts[3].c_str(),0,16);
     guid.four=invert_endianess(guid.four);
 
     return guid;
@@ -127,11 +128,11 @@ string GuidManager::GetGuidAsString(uint32_t which)
   const __GUID &guid=Get(which);
 
   string parts[5];
-  parts[0]=U64ToStr(guid.one,16);
-  parts[1]=U64ToStr(guid.two,16);
-  parts[2]=U64ToStr(guid.three,16);
-  parts[3]=U64ToStr(invert_endianess(guid.four)>>48,16);
-  parts[4]=U64ToStr(invert_endianess(guid.four)&0xFFFFFFFFFFFF,16);
+  parts[0]=to_string(guid.one,16);
+  parts[1]=to_string(guid.two,16);
+  parts[2]=to_string(guid.three,16);
+  parts[3]=to_string(invert_endianess(guid.four)>>48,16);
+  parts[4]=to_string(invert_endianess(guid.four)&0xFFFFFFFFFFFF,16);
 
   string str;
   str=parts[0]+"-"+parts[1]+"-"+parts[2]+"-"+parts[3]+"-"+parts[4];
@@ -142,11 +143,11 @@ string GuidManager::GetGuidAsString(uint32_t which)
 string GuidManager::GuidToString(const __GUID &guid)
 {
   string parts[5];
-  parts[0]=U64ToStr(guid.one,16);
-  parts[1]=U64ToStr(guid.two,16);
-  parts[2]=U64ToStr(guid.three,16);
-  parts[3]=U64ToStr(invert_endianess(guid.four)>>48,16);
-  parts[4]=U64ToStr(invert_endianess(guid.four)&0xFFFFFFFFFFFF,16);
+  parts[0]=to_string(guid.one,16);
+  parts[1]=to_string(guid.two,16);
+  parts[2]=to_string(guid.three,16);
+  parts[3]=to_string(invert_endianess(guid.four)>>48,16);
+  parts[4]=to_string(invert_endianess(guid.four)&0xFFFFFFFFFFFF,16);
 
   string str;
   str=parts[0]+"-"+parts[1]+"-"+parts[2]+"-"+parts[3]+"-"+parts[4];

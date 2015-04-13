@@ -1,4 +1,5 @@
 #include "dlg_partition_properties.h"
+#include "../Partmod/numstr.h"
 
 //(*InternalHeaders(DlgPartitionProperties)
 #include <wx/intl.h>
@@ -92,9 +93,9 @@ int DlgPartitionProperties::ShowModal(Disk *disk,int part)
   this->disk=disk;
   GEN_PART gpart=disk->GetPartition(part);
 
-  TextBeginSector->SetValue(U64ToStr(gpart.begin_sector));
-  TextEndSector->SetValue(U64ToStr(gpart.begin_sector+gpart.length));
-  TextLength->SetValue(U64ToStr(gpart.length));
+  TextBeginSector->SetValue(to_string(gpart.begin_sector));
+  TextEndSector->SetValue(to_string(gpart.begin_sector+gpart.length));
+  TextLength->SetValue(to_string(gpart.length));
 
   if(gpart.flags&PART_PRIMARY)
       TextPartitionType->SetValue(_("Primary"));
@@ -109,7 +110,7 @@ int DlgPartitionProperties::ShowModal(Disk *disk,int part)
 
   if(gpart.flags&PART_PRIMARY || gpart.flags&PART_EXTENDED || gpart.flags&PART_LOGICAL)
     {
-      TextFsId->SetValue(U64ToStr(disk->GetMBRSpecific(part).fsid));
+      TextFsId->SetValue(to_string(disk->GetMBRSpecific(part).fsid));
       TextFsIdString->SetValue(disk->fsid_man->GetByFsid(disk->GetMBRSpecific(part).fsid).description);
 
       if(gpart.flags&PART_ACTIVE)
