@@ -27,45 +27,6 @@ bool Dump2File(const char *fn,const void *data,int size)
 }
 
 
-
-
-string U64ToStr(uint64_t number,unsigned int base)
-{
-  stringstream ss;
-
-  switch (base)
-    {
-    case STR_OCT:
-      ss<<oct;
-      break;
-    case STR_HEX:
-      ss<<hex;
-      break;
-    }
-  ss <<number;
-  return ss.str();
-}
-
-uint64_t StrToU64(string str,unsigned base)
-{
-  uint64_t result;
-  stringstream ss;
-
-  switch (base)
-    {
-    case STR_OCT:
-      ss<<oct;
-      break;
-    case STR_HEX:
-      ss<<hex;
-      break;
-    }
-
-  ss<<str;
-  ss>>result;
-  return result;
-}
-
 string size_str(uint64_t num_of_sect,int bps)
 {
   string suffix;

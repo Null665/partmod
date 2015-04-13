@@ -114,12 +114,6 @@ typedef uint32_t uid_t;  //!< Unique partition ID
 #define WIPE_ZEROS                2 //!< Fill with 0
 //@}
 
-
-// For U64ToStr() and StrToU64
-#define STR_OCT                   8 //!< Octal string
-#define STR_DEC                  10 //!< Decimal string
-#define STR_HEX                  16 //!< Hex string
-
 #define BACKUP_MAGIC               0x4E756C6C //!< Backup file magic number
 
 
@@ -198,11 +192,6 @@ struct FREE_SPACE
   uint32_t type;          //!< type of free space. See FREE_* preprocessor macros
 };
 
-
-
-// String to number and number to string
-std::string U64ToStr(uint64_t number,unsigned int base=STR_DEC);
-uint64_t StrToU64(std::string str,unsigned int base=STR_DEC);
 
 //
 /// Convert number of sectors to a meaningful size interpretation
