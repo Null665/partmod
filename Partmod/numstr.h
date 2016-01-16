@@ -50,6 +50,8 @@ template<typename T> std::string to_string (T number, unsigned base)
   {
       return to_string (numebr,STR_DEC);
   }
+#else
+ using std::to_string;
 #endif
 
 
