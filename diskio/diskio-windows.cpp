@@ -66,14 +66,14 @@ return 0;
 int DiskIO::write(const void *buff,uint32_t buffer_size)
 {
 DWORD dwWritten=0;
-
+/*
 if(buffer_size%disk_geometry.bps==0)
   {
     if(!WriteFile(hDisk,buff,buffer_size,&dwWritten,0) || dwWritten!=buffer_size)
         return ERR_WRITE;
 
   }
-else
+else*/
   {
     DWORD dwRead;
 
