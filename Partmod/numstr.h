@@ -23,7 +23,7 @@
  * \param number     number to_convert
  * \param base       Number base to use. See numbase
 */
-template<typename T> std::string to_string (T number, unsigned base)
+template<typename T> std::string to_string (T number, unsigned base=10)
 {
   std::stringstream ss;
 
