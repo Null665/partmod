@@ -8,11 +8,11 @@ const char *error_table[]=
   "Could not create a file",
   "Could not read from disk",
   "Could not write to disk",                         // 5
-  "Colud not seek to specified position ",
+  "Could not seek to specified position ",
   "Partition doesn't exist",
   "LBA Extended partition not found",
   "Impossible to resize partition",
-  "Failed to resize a partiton",                      //10
+  "Failed to resize a partition",                      //10
   "Cannot create more than 4 primary partitions",
   "Disk is full",
   "Unknown error",
@@ -37,3 +37,34 @@ const char *error_table[]=
   "Unknown file system ID",
   "",
 };
+
+
+
+
+ DiskException::DiskException(int error_code)
+  {
+    this->error_code=error_code;
+  }
+ DiskException::DiskException(int error_code,std::string message)
+  {
+    this->error_code=error_code;
+    this->message=message;
+  }
+ DiskException::DiskException(std::string message)
+  {
+    this->error_code=0;
+    this->message=message;
+  }
+ const char* DiskException::what() const noexcept
+  {
+    std::stringstream ss;
+    if(this->error_code!=0)
+        ss <<"Error code: "<<this->error_code<<"("<<error_table[this->error_code]<<")"<<'\n';
+    if(!message.empty())
+        ss <<"Message: "<<message<<'\n';
+
+    this->ret=ss.str(); // returning stringstream::str::c_str() doesn't always work for some reason
+    return ret.c_str();
+
+  }
+ DiskException::~DiskException() throw(){}

@@ -48,38 +48,20 @@ extern const char *error_table[];
 
 class DiskException:public std::exception
 {
+private:
+  mutable std::string ret; // string returned by what().
 public:
 
  int error_code;
  std::string message;
 
 
- DiskException(int error_code)
-  {
-    this->error_code=error_code;
-  }
- DiskException(int error_code,std::string message)
-  {
-    this->error_code=error_code;
-    this->message=message;
-  }
- DiskException(std::string message)
-  {
-    this->error_code=0;
-    this->message=message;
-  }
- virtual const char* what() const throw()
-  {
-    std::stringstream ss;
-    if(error_code!=0)
-        ss <<"Error code: "<<error_code<<"("<<error_table[error_code]<<")"<<'\n';
-    if(!message.empty())
-        ss <<"Message: "<<message<<'\n';
+ DiskException(int error_code);
+ DiskException(int error_code,std::string message);
+ DiskException(std::string message);
 
-    return ss.str().c_str();
-
-  }
-  ~DiskException() throw(){}
+ const char* what() const noexcept;
+  ~DiskException();
 
 };
 
