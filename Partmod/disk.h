@@ -153,7 +153,10 @@ public:
   void CheckDisk(std::vector<DISK_ERROR> &error_list);
 
   MBR_SPECIFIC GetMBRSpecific(unsigned p);
+  MBR_SPECIFIC GetMBRSpecific(const GEN_PART &gpart);
+
   GPT_SPECIFIC GetGPTSpecific(unsigned p);
+  GPT_SPECIFIC GetGPTSpecific(const GEN_PART &gpart);
 
 // Pending actions
   void Undo();

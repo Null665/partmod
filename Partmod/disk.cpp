@@ -866,6 +866,20 @@ MBR_SPECIFIC Disk::GetMBRSpecific(unsigned p)
 }
 
 
+MBR_SPECIFIC Disk::GetMBRSpecific(const GEN_PART &gpart)
+{
+    MBR_SPECIFIC mspec;
+    memcpy(&mspec,gpart.data,sizeof(MBR_SPECIFIC));
+    return mspec;
+}
+GPT_SPECIFIC Disk::GetGPTSpecific(const GEN_PART &gpart)
+{
+    GPT_SPECIFIC gspec;
+    memcpy(&gspec,gpart.data,sizeof(GPT_SPECIFIC));
+    return gspec;
+}
+
+
 
 
 void Disk::ReadMBR(MBR &mbr)
